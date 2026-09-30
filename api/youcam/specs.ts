@@ -10,6 +10,15 @@ const MB = 1024 * 1024;
 /** The engine version used for apparel. V2, V3 and V4 all cost 2 units per result. */
 export const APPAREL_FEATURE: YouCamFeature = 'cloth-v4';
 
+/** Units per result, from GET /s2s/v2.0/credit/feature-cost (2026-09-30). */
+export const UNIT_COST: Record<YouCamFeature, number> = {
+  cloth: 2,
+  'cloth-v3': 2,
+  'cloth-v4': 2,
+  'makeup-vto': 1,
+  'hair-color': 1,
+};
+
 interface ImageLimits {
   minShortSide: number;
   minLongSide: number;

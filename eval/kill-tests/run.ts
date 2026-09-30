@@ -25,6 +25,7 @@ import {
   hairColorTaskBody,
   lipColorTaskBody,
   TARGET_LONG_SIDE,
+  UNIT_COST,
 } from '../../api/youcam/specs.js';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -39,13 +40,6 @@ const FIXTURES = join(ROOT, 'fixtures/youcam/captured');
 const POLL_MS = 5_000;
 const TIMEOUT_MS = 180_000;
 const FILE_ID_TTL_MS = 29 * 24 * 3600 * 1000; // documented retention is 30 days
-const FALLBACK_COST: Record<YouCamFeature, number> = {
-  cloth: 2,
-  'cloth-v3': 2,
-  'cloth-v4': 2,
-  'makeup-vto': 1,
-  'hair-color': 1,
-};
 
 type Pose = 'standing' | 'seated';
 
@@ -212,7 +206,7 @@ async function planRun(
     category,
     color,
     inputHash,
-    cost: costs.get(feature) ?? FALLBACK_COST[feature],
+    cost: costs.get(feature) ?? UNIT_COST[feature],
     problems,
     done,
   };

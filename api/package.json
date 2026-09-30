@@ -13,6 +13,7 @@
     "kill-tests": "tsx ../eval/kill-tests/run.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "hono": "^4.13.12",
     "sharp": "^0.35.5",
     "zod": "^4.6.5"

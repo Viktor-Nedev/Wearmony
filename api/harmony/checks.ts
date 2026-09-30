@@ -22,7 +22,7 @@ export interface PhotoQuality {
 /** Checks a normalized participant photo (already rotated and stripped of metadata). */
 export async function checkPhotoQuality(
   image: Uint8Array,
-  config: typeof HARMONY_CONFIG.photo = HARMONY_CONFIG.photo,
+  config: Record<keyof typeof HARMONY_CONFIG.photo, number> = HARMONY_CONFIG.photo,
 ): Promise<PhotoQuality> {
   const meta = await sharp(image).metadata();
   const width = meta.width ?? 0;
@@ -73,7 +73,7 @@ export async function checkApparelRender(
   photo: Uint8Array,
   render: Uint8Array,
   garmentColors: DominantColor[] | null,
-  config: typeof HARMONY_CONFIG.checks = HARMONY_CONFIG.checks,
+  config: Record<keyof typeof HARMONY_CONFIG.checks, number> = HARMONY_CONFIG.checks,
 ): Promise<RenderCheck> {
   const [a, b] = await Promise.all([fixedGrid(photo), fixedGrid(render)]);
   let total = 0;

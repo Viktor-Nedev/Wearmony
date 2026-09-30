@@ -1,9 +1,20 @@
+import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
-import { createMockProvider, MOCK_FAIL_MARKER } from './mock.js';
-import { UnknownTaskError, type TryOnRequest } from './types.js';
+import { createMockProvider, MOCK_NOT_APPLIED_MESSAGE } from './mock.js';
+import type { TryOnInput } from './provider.js';
 
 const DURATION = 4000;
-const request: TryOnRequest = { kind: 'apparel', photoRef: 'photos/p1.jpg', itemRef: 'items/dress.jpg' };
+
+async function input(overrides: Partial<TryOnInput> = {}): Promise<TryOnInput> {
+  const image = await sharp({ create: { width: 300, height: 400, channels: 3, background: '#DADDE2' } }).jpeg().toBuffer();
+  return {
+    kind: 'apparel',
+    image,
+    imageHash: 'a1b2c3d4e5f6a7b8',
+    garment: { image, hash: 'g1', category: 'full_body', colorHex: '#B0304A' },
+    ...overrides,
+  };
+}
 
 function clock(start = 1_000_000) {
   let t = start;
@@ -11,46 +22,55 @@ function clock(start = 1_000_000) {
 }
 
 describe('mock try-on provider', () => {
-  it('moves from queued to running to success', async () => {
+  it('reports progress, then a simulated image of the same size', async () => {
     const c = clock();
     const provider = createMockProvider({ durationMs: DURATION, now: c.now });
-    const { taskId } = await provider.start(request);
+    const source = await input();
+    const taskId = await provider.start(source);
 
-    expect((await provider.status(taskId)).state).toBe('queued');
-
+    expect(await provider.check(taskId, async () => source)).toEqual({ state: 'running', progress: 0 });
     c.advance(DURATION / 2);
-    const running = await provider.status(taskId);
-    expect(running.state).toBe('running');
-    expect(running.progress).toBeCloseTo(0.5);
+    expect(await provider.check(taskId, async () => source)).toEqual({ state: 'running', progress: 0.5 });
 
     c.advance(DURATION);
-    const done = await provider.status(taskId);
-    expect(done).toMatchObject({ state: 'success', progress: 1, failure: null, mock: true });
+    const done = await provider.check(taskId, async () => source);
+    expect(done.state).toBe('success');
+    if (done.state !== 'success') return;
+    const meta = await sharp(done.image).metadata();
+    expect([meta.width, meta.height]).toEqual([300, 400]);
+    // The garment color now covers the middle of the image.
+    const { data } = await sharp(done.image).extract({ left: 150, top: 250, width: 1, height: 1 }).raw().toBuffer({ resolveWithObject: true });
+    expect(data[0]).toBeGreaterThan(data[2]! + 40);
   });
 
-  it('simulates a silent failure for items marked as failing', async () => {
+  it('simulates a silent failure when asked', async () => {
     const c = clock();
     const provider = createMockProvider({ durationMs: DURATION, now: c.now });
-    const { taskId } = await provider.start({ ...request, itemRef: `${MOCK_FAIL_MARKER}-dress.jpg` });
-
+    const source = await input({ simulateFailure: true });
+    const taskId = await provider.start(source);
     c.advance(DURATION);
-    const status = await provider.status(taskId);
-    expect(status.state).toBe('failed');
-    expect(status.failure?.reason).toBe('garment_not_applied');
+    expect(await provider.check(taskId, async () => source)).toEqual({
+      state: 'failed',
+      reason: 'garment_not_applied',
+      code: 'mock_failure',
+      message: MOCK_NOT_APPLIED_MESSAGE,
+    });
   });
 
-  it('keeps no state, so a fresh provider can read an existing task', async () => {
+  it('keeps no state, so another instance can read a task', async () => {
     const c = clock();
-    const { taskId } = await createMockProvider({ durationMs: DURATION, now: c.now }).start(request);
+    const source = await input({ kind: 'hair', colorHex: '#6B2A3A' });
+    const taskId = await createMockProvider({ durationMs: DURATION, now: c.now }).start(source);
     c.advance(DURATION);
     const other = createMockProvider({ durationMs: DURATION, now: c.now });
-    expect((await other.status(taskId)).state).toBe('success');
+    expect((await other.check(taskId, async () => source)).state).toBe('success');
   });
 
-  it('rejects unknown task ids', async () => {
+  it('rejects unknown task ids and costs nothing', async () => {
     const provider = createMockProvider({ durationMs: DURATION });
-    for (const id of ['', 'abc', 'mock.apparel.s', 'mock.shoes.s.abc.123', 'live.apparel.s.abc.123']) {
-      await expect(provider.status(id)).rejects.toBeInstanceOf(UnknownTaskError);
-    }
+    const result = await provider.check('mock.shoes.s.abc.123', async () => input());
+    expect(result).toMatchObject({ state: 'failed', reason: 'provider_error' });
+    expect(provider.cost('apparel')).toBe(0);
+    expect(await provider.balance()).toBeNull();
   });
 });

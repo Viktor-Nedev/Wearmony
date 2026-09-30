@@ -47,8 +47,11 @@ export const HARMONY_CONFIG = {
     mergeDeltaE: 6,
     /** Colors covering less of the garment than this share are dropped as accents. */
     minShare: 0.08,
-    /** Border pixels within this ΔE00 of the border's median color count as background. */
-    backgroundDeltaE: 14,
+    /**
+     * Pixels within this ΔE00 of the border's median color count as background.
+     * Kept small so pale garments (ivory, champagne) on a white background survive.
+     */
+    backgroundDeltaE: 8,
     /** The background is only removed if at least this share of the border is uniform. */
     uniformBorderShare: 0.6,
   },

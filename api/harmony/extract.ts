@@ -9,7 +9,7 @@ export interface DominantColor {
   share: number;
 }
 
-type ExtractionConfig = typeof HARMONY_CONFIG.extraction;
+export type ExtractionConfig = Record<keyof typeof HARMONY_CONFIG.extraction, number>;
 
 export interface SampledImage {
   width: number;
