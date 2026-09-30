@@ -1,0 +1,29 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+service-account*.json
+
+# Vercel / Firebase local state
+.vercel/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Personal test photos never leave this machine
+eval/photos/
+eval/**/private/
+
+# Editors and OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
