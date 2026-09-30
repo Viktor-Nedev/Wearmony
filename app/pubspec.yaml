@@ -16,8 +16,12 @@ dependencies:
     sdk: flutter
   go_router: ^17.2.3
   http: ^1.6.0
+  image_picker: ^1.2.2
   # Pinned by flutter_localizations; "any" lets the SDK choose.
   intl: any
+  qr_flutter: ^4.1.0
+  shared_preferences: ^2.5.5
+  supabase_flutter: ^2.18.0
 
 dev_dependencies:
   flutter_test:

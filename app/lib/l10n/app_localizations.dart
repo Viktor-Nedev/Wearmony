@@ -128,23 +128,167 @@ abstract class AppLocalizations {
   /// **'Join with a code'**
   String get joinWithCode;
 
+  /// No description provided for @openDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the demo event'**
+  String get openDemo;
+
+  /// No description provided for @demoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A seeded prom with illustrated people. No photos needed.'**
+  String get demoHint;
+
+  /// No description provided for @yourEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Your events'**
+  String get yourEvents;
+
+  /// No description provided for @organizerRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get organizerRole;
+
+  /// No description provided for @participantRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Participant'**
+  String get participantRole;
+
+  /// No description provided for @inclusionLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Inclusion results: standing vs seated'**
+  String get inclusionLink;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
   /// No description provided for @apiStatusMock.
   ///
   /// In en, this message translates to:
-  /// **'API: mock mode'**
+  /// **'Try-on: simulated (mock mode)'**
   String get apiStatusMock;
 
   /// No description provided for @apiStatusLive.
   ///
   /// In en, this message translates to:
-  /// **'API: live'**
+  /// **'Try-on: live YouCam API'**
   String get apiStatusLive;
 
   /// No description provided for @apiStatusOffline.
   ///
   /// In en, this message translates to:
-  /// **'API offline'**
+  /// **'Can\'t reach Wearmony'**
   String get apiStatusOffline;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorGeneric;
+
+  /// No description provided for @errorOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach Wearmony. Check your connection and try again.'**
+  String get errorOffline;
+
+  /// No description provided for @linkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get linkCopied;
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @signInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInTitle;
+
+  /// No description provided for @signInExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with your email to create or join events.'**
+  String get signInExplain;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @passwordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// No description provided for @signInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInButton;
+
+  /// No description provided for @signUpButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get signUpButton;
+
+  /// No description provided for @checkEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email to confirm your account, then sign in.'**
+  String get checkEmail;
 
   /// No description provided for @createEventTitle.
   ///
@@ -173,7 +317,7 @@ abstract class AppLocalizations {
   /// No description provided for @templateTheatre.
   ///
   /// In en, this message translates to:
-  /// **'Theatre'**
+  /// **'Theatre cast'**
   String get templateTheatre;
 
   /// No description provided for @templateGroup.
@@ -181,6 +325,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Group photo'**
   String get templateGroup;
+
+  /// No description provided for @templatePromHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Couples and friends coordinating for the prom.'**
+  String get templatePromHint;
+
+  /// No description provided for @templateTheatreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A cast trying costumes together.'**
+  String get templateTheatreHint;
+
+  /// No description provided for @templateGroupHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Weddings, family photos, any group.'**
+  String get templateGroupHint;
+
+  /// No description provided for @budgetPerPersonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget per person (optional)'**
+  String get budgetPerPersonLabel;
+
+  /// No description provided for @budgetTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total budget (optional)'**
+  String get budgetTotalLabel;
+
+  /// No description provided for @amountsInEuro.
+  ///
+  /// In en, this message translates to:
+  /// **'Amounts in euro.'**
+  String get amountsInEuro;
 
   /// No description provided for @createEventButton.
   ///
@@ -200,17 +380,1144 @@ abstract class AppLocalizations {
   /// **'Event code'**
   String get joinCodeLabel;
 
+  /// No description provided for @yourNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, as the group will see it'**
+  String get yourNameLabel;
+
   /// No description provided for @joinButton.
   ///
   /// In en, this message translates to:
   /// **'Join'**
   String get joinButton;
 
-  /// No description provided for @notConnectedYet.
+  /// No description provided for @joiningEvent.
   ///
   /// In en, this message translates to:
-  /// **'Not connected yet: saving arrives with account setup.'**
-  String get notConnectedYet;
+  /// **'You are joining {name}.'**
+  String joiningEvent(Object name);
+
+  /// No description provided for @codeNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No event uses this code.'**
+  String get codeNotFound;
+
+  /// No description provided for @tabBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get tabBoard;
+
+  /// No description provided for @tabMyLook.
+  ///
+  /// In en, this message translates to:
+  /// **'My look'**
+  String get tabMyLook;
+
+  /// No description provided for @tabTogether.
+  ///
+  /// In en, this message translates to:
+  /// **'Together'**
+  String get tabTogether;
+
+  /// No description provided for @tabCatalogue.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalogue'**
+  String get tabCatalogue;
+
+  /// No description provided for @tabHarmony.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony'**
+  String get tabHarmony;
+
+  /// No description provided for @tabInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get tabInvite;
+
+  /// No description provided for @tabSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get tabSettings;
+
+  /// No description provided for @demoBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo event: the people and renders are illustrations, not real photos.'**
+  String get demoBanner;
+
+  /// No description provided for @mockBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Mock mode: try-on results are simulated, no YouCam calls are made.'**
+  String get mockBanner;
+
+  /// No description provided for @consentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you add a photo'**
+  String get consentTitle;
+
+  /// No description provided for @consentAdult.
+  ///
+  /// In en, this message translates to:
+  /// **'I am 18 or older.'**
+  String get consentAdult;
+
+  /// No description provided for @consentPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'My photo is visible only to people in this event and to vendors I choose to share it with.'**
+  String get consentPrivate;
+
+  /// No description provided for @consentDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'I can delete my photo and every render at any time.'**
+  String get consentDelete;
+
+  /// No description provided for @consentPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Try-on is a visual preview, not a fit guarantee.'**
+  String get consentPreview;
+
+  /// No description provided for @consentButton.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree'**
+  String get consentButton;
+
+  /// No description provided for @photoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your photo'**
+  String get photoTitle;
+
+  /// No description provided for @photoTipsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For the best result'**
+  String get photoTipsTitle;
+
+  /// No description provided for @photoTipLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Even, bright light.'**
+  String get photoTipLight;
+
+  /// No description provided for @photoTipFrame.
+  ///
+  /// In en, this message translates to:
+  /// **'Face and shoulders fully visible; include as much of your outfit area as you can.'**
+  String get photoTipFrame;
+
+  /// No description provided for @photoTipAlone.
+  ///
+  /// In en, this message translates to:
+  /// **'Only you in the photo.'**
+  String get photoTipAlone;
+
+  /// No description provided for @photoTipClothes.
+  ///
+  /// In en, this message translates to:
+  /// **'Lighter, fitted clothing works better than dark or bulky clothes.'**
+  String get photoTipClothes;
+
+  /// No description provided for @poseQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'In this photo I am'**
+  String get poseQuestion;
+
+  /// No description provided for @poseStanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing'**
+  String get poseStanding;
+
+  /// No description provided for @poseSeated.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated'**
+  String get poseSeated;
+
+  /// No description provided for @poseSeatedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated photos are welcome. If a full-length outfit does not apply, Wearmony retries with upper-body framing automatically.'**
+  String get poseSeatedNote;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get takePhoto;
+
+  /// No description provided for @choosePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a photo'**
+  String get choosePhoto;
+
+  /// No description provided for @checkingPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your photo…'**
+  String get checkingPhoto;
+
+  /// No description provided for @photoReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Your photo is ready.'**
+  String get photoReady;
+
+  /// No description provided for @replacePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace photo'**
+  String get replacePhoto;
+
+  /// No description provided for @deletePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete photo'**
+  String get deletePhoto;
+
+  /// No description provided for @photoNextStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: pick your look'**
+  String get photoNextStep;
+
+  /// No description provided for @issue_too_small.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is too small. Use a larger, sharper photo.'**
+  String get issue_too_small;
+
+  /// No description provided for @issue_unusual_ratio.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is very tall or very wide. Use a normal portrait photo.'**
+  String get issue_unusual_ratio;
+
+  /// No description provided for @issue_too_dark.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is quite dark; try brighter light.'**
+  String get issue_too_dark;
+
+  /// No description provided for @issue_too_bright.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is very bright; try softer light.'**
+  String get issue_too_bright;
+
+  /// No description provided for @issue_low_contrast.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo looks flat or washed out.'**
+  String get issue_low_contrast;
+
+  /// No description provided for @warning_dark_clothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark clothing on the photo can stop the outfit from applying. A photo in lighter clothing works better.'**
+  String get warning_dark_clothing;
+
+  /// No description provided for @sectionOutfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Outfit'**
+  String get sectionOutfit;
+
+  /// No description provided for @sectionMakeup.
+  ///
+  /// In en, this message translates to:
+  /// **'Lip color'**
+  String get sectionMakeup;
+
+  /// No description provided for @sectionHair.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair color'**
+  String get sectionHair;
+
+  /// No description provided for @catalogueEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The organizer has not added items yet.'**
+  String get catalogueEmpty;
+
+  /// No description provided for @lookTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total {amount}'**
+  String lookTotal(Object amount);
+
+  /// No description provided for @tryOnButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it on'**
+  String get tryOnButton;
+
+  /// No description provided for @kindApparel.
+  ///
+  /// In en, this message translates to:
+  /// **'outfit'**
+  String get kindApparel;
+
+  /// No description provided for @kindMakeup.
+  ///
+  /// In en, this message translates to:
+  /// **'lip color'**
+  String get kindMakeup;
+
+  /// No description provided for @kindHair.
+  ///
+  /// In en, this message translates to:
+  /// **'hair color'**
+  String get kindHair;
+
+  /// No description provided for @renderRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Trying on the {kind}…'**
+  String renderRunning(Object kind);
+
+  /// No description provided for @renderIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Press \"Try it on\" to see this look on your photo.'**
+  String get renderIdle;
+
+  /// No description provided for @renderNoPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your photo to try looks on.'**
+  String get renderNoPhoto;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add my photo'**
+  String get addPhoto;
+
+  /// No description provided for @renderEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick an outfit, a lip color or a hair color.'**
+  String get renderEmpty;
+
+  /// No description provided for @renderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Try-on did not work'**
+  String get renderFailed;
+
+  /// No description provided for @mockBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulated result (mock mode, no YouCam call)'**
+  String get mockBadge;
+
+  /// No description provided for @demoRenderBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Illustration (demo data), not a real render'**
+  String get demoRenderBadge;
+
+  /// No description provided for @previewDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Visual preview, not a fit guarantee.'**
+  String get previewDisclaimer;
+
+  /// No description provided for @checkNotApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'The outfit may not have been applied to this photo. A photo in lighter, fitted clothing usually helps.'**
+  String get checkNotApplied;
+
+  /// No description provided for @checkDrift.
+  ///
+  /// In en, this message translates to:
+  /// **'Check this render: its colors differ from the catalogue photo.'**
+  String get checkDrift;
+
+  /// No description provided for @failure_garment_not_applied.
+  ///
+  /// In en, this message translates to:
+  /// **'The outfit was not applied to the photo. This often happens when the clothing on the photo is dark or bulky; try a photo in lighter, fitted clothing.'**
+  String get failure_garment_not_applied;
+
+  /// No description provided for @failure_pose_not_supported.
+  ///
+  /// In en, this message translates to:
+  /// **'The try-on engine could not read the pose in this photo. Use a photo where your shoulders and upper body are clearly visible.'**
+  String get failure_pose_not_supported;
+
+  /// No description provided for @failure_face_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No face was found. Use a photo with your face fully visible, facing the camera.'**
+  String get failure_face_not_found;
+
+  /// No description provided for @failure_multiple_people.
+  ///
+  /// In en, this message translates to:
+  /// **'More than one person is in the photo. Use a photo of just you.'**
+  String get failure_multiple_people;
+
+  /// No description provided for @failure_image_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This photo or item image cannot be used. Try a different one.'**
+  String get failure_image_invalid;
+
+  /// No description provided for @failure_content_rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The try-on engine rejected this image.'**
+  String get failure_content_rejected;
+
+  /// No description provided for @failure_budget_exhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'The render budget is used up. Your look is saved, and the organizer can raise the budget.'**
+  String get failure_budget_exhausted;
+
+  /// No description provided for @failure_provider_error.
+  ///
+  /// In en, this message translates to:
+  /// **'The try-on service had a problem.'**
+  String get failure_provider_error;
+
+  /// No description provided for @failure_timeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The try-on took too long.'**
+  String get failure_timeout;
+
+  /// No description provided for @lockLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock my look'**
+  String get lockLook;
+
+  /// No description provided for @unlockLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get unlockLook;
+
+  /// No description provided for @lockedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked: this is your final look.'**
+  String get lockedNote;
+
+  /// No description provided for @shareHair.
+  ///
+  /// In en, this message translates to:
+  /// **'Share hair color with my hairdresser'**
+  String get shareHair;
+
+  /// No description provided for @shareLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my look with a shop'**
+  String get shareLook;
+
+  /// No description provided for @shareLinkReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only link, valid until {date}:'**
+  String shareLinkReady(Object date);
+
+  /// No description provided for @copyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get copyLink;
+
+  /// No description provided for @myData.
+  ///
+  /// In en, this message translates to:
+  /// **'My data'**
+  String get myData;
+
+  /// No description provided for @togetherNoPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your partner to see yourselves side by side.'**
+  String get togetherNoPartner;
+
+  /// No description provided for @partnerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get partnerLabel;
+
+  /// No description provided for @noPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'No partner'**
+  String get noPartner;
+
+  /// No description provided for @youAndPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'You and {name}'**
+  String youAndPartner(Object name);
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// No description provided for @boardRendered.
+  ///
+  /// In en, this message translates to:
+  /// **'{rendered} of {total} rendered'**
+  String boardRendered(Object rendered, Object total);
+
+  /// No description provided for @boardLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{locked} locked'**
+  String boardLocked(Object locked);
+
+  /// No description provided for @budgetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get budgetTitle;
+
+  /// No description provided for @budgetTotalOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} of {cap}'**
+  String budgetTotalOf(Object cap, Object total);
+
+  /// No description provided for @budgetPerPersonCap.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {amount} per person'**
+  String budgetPerPersonCap(Object amount);
+
+  /// No description provided for @overBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Over budget'**
+  String get overBudget;
+
+  /// No description provided for @overBudgetCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} over the per-person budget'**
+  String overBudgetCount(Object count);
+
+  /// No description provided for @unitsUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Try-on units used: {used} of {cap}'**
+  String unitsUsed(Object cap, Object used);
+
+  /// No description provided for @unitsSimulated.
+  ///
+  /// In en, this message translates to:
+  /// **'Renders here are simulated and use no units.'**
+  String get unitsSimulated;
+
+  /// No description provided for @noLookYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No look yet'**
+  String get noLookYet;
+
+  /// No description provided for @noPhotoYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No photo yet'**
+  String get noPhotoYet;
+
+  /// No description provided for @withPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'with {name}'**
+  String withPartner(Object name);
+
+  /// No description provided for @seatedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated'**
+  String get seatedLabel;
+
+  /// No description provided for @lockedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get lockedLabel;
+
+  /// No description provided for @groupHarmony.
+  ///
+  /// In en, this message translates to:
+  /// **'Group harmony {score}/100'**
+  String groupHarmony(Object score);
+
+  /// No description provided for @addPeopleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite people with the code {code}.'**
+  String addPeopleHint(Object code);
+
+  /// No description provided for @harmonyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Color harmony'**
+  String get harmonyTitle;
+
+  /// No description provided for @harmonyWeakest.
+  ///
+  /// In en, this message translates to:
+  /// **'Weakest pair'**
+  String get harmonyWeakest;
+
+  /// No description provided for @harmonyNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Add outfits to see how the group\'s colors work together.'**
+  String get harmonyNoData;
+
+  /// No description provided for @harmonyNoWarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'No near-miss colors. The group reads as intentional.'**
+  String get harmonyNoWarnings;
+
+  /// No description provided for @harmonyWarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get harmonyWarnings;
+
+  /// No description provided for @harmonyAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All comparisons'**
+  String get harmonyAll;
+
+  /// No description provided for @harmonyWithoutOutfit.
+  ///
+  /// In en, this message translates to:
+  /// **'No outfit yet: {names}'**
+  String harmonyWithoutOutfit(Object names);
+
+  /// No description provided for @relationMatched.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched'**
+  String get relationMatched;
+
+  /// No description provided for @relationNearMiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Near-miss'**
+  String get relationNearMiss;
+
+  /// No description provided for @relationComplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'Complementary'**
+  String get relationComplementary;
+
+  /// No description provided for @relationContrast.
+  ///
+  /// In en, this message translates to:
+  /// **'Contrast'**
+  String get relationContrast;
+
+  /// No description provided for @pairMatched.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} and {b} match: both wear {color}.'**
+  String pairMatched(Object a, Object b, Object color);
+
+  /// No description provided for @pairNearMiss.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {colorA} and {b}\'s {colorB} are close but not the same shade (ΔE {de}). Side by side this can look like a mistake: match them exactly or pick clearly different colors.'**
+  String pairNearMiss(
+    Object a,
+    Object b,
+    Object colorA,
+    Object colorB,
+    Object de,
+  );
+
+  /// No description provided for @pairComplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {colorA} and {b}\'s {colorB} are complementary colors that set each other off.'**
+  String pairComplementary(Object a, Object b, Object colorA, Object colorB);
+
+  /// No description provided for @pairContrast.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {colorA} and {b}\'s {colorB} are clearly different, which reads as intentional.'**
+  String pairContrast(Object a, Object b, Object colorA, Object colorB);
+
+  /// No description provided for @selfMatched.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {subject} matches the {color} outfit.'**
+  String selfMatched(Object a, Object color, Object subject);
+
+  /// No description provided for @selfNearMiss.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {colorA} {subject} is close to, but not the same as, the {colorB} outfit (ΔE {de}). Match it or choose a clearly different shade.'**
+  String selfNearMiss(
+    Object a,
+    Object colorA,
+    Object colorB,
+    Object de,
+    Object subject,
+  );
+
+  /// No description provided for @selfComplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {colorA} {subject} is complementary to the {colorB} outfit.'**
+  String selfComplementary(
+    Object a,
+    Object colorA,
+    Object colorB,
+    Object subject,
+  );
+
+  /// No description provided for @selfContrast.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}\'s {colorA} {subject} stands apart from the {colorB} outfit, which reads as intentional.'**
+  String selfContrast(Object a, Object colorA, Object colorB, Object subject);
+
+  /// No description provided for @subjectLips.
+  ///
+  /// In en, this message translates to:
+  /// **'lip color'**
+  String get subjectLips;
+
+  /// No description provided for @subjectHair.
+  ///
+  /// In en, this message translates to:
+  /// **'hair color'**
+  String get subjectHair;
+
+  /// No description provided for @explainButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain in plain words'**
+  String get explainButton;
+
+  /// No description provided for @explainNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Written by Gemini from the results above. Scores come only from the color rules.'**
+  String get explainNote;
+
+  /// No description provided for @harmonyMethodTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get harmonyMethodTitle;
+
+  /// No description provided for @harmonyMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Garment colors come from the catalogue photos (background removed, k-means clustering in CIELAB). Every pair is compared with CIEDE2000: under 2 is a match, 2 to 8 is a near-miss that can look like a mistake, and opposite hues are complementary. Lip and hair colors are compared with the same person\'s outfit. The group score is the weakest pair, not an average. Harmony is about colors only, never about bodies or skin.'**
+  String get harmonyMethod;
+
+  /// No description provided for @colorBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'black'**
+  String get colorBlack;
+
+  /// No description provided for @colorWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'white'**
+  String get colorWhite;
+
+  /// No description provided for @colorGray.
+  ///
+  /// In en, this message translates to:
+  /// **'gray'**
+  String get colorGray;
+
+  /// No description provided for @colorBeige.
+  ///
+  /// In en, this message translates to:
+  /// **'beige'**
+  String get colorBeige;
+
+  /// No description provided for @colorBrown.
+  ///
+  /// In en, this message translates to:
+  /// **'brown'**
+  String get colorBrown;
+
+  /// No description provided for @colorRed.
+  ///
+  /// In en, this message translates to:
+  /// **'red'**
+  String get colorRed;
+
+  /// No description provided for @colorBurgundy.
+  ///
+  /// In en, this message translates to:
+  /// **'burgundy'**
+  String get colorBurgundy;
+
+  /// No description provided for @colorPink.
+  ///
+  /// In en, this message translates to:
+  /// **'pink'**
+  String get colorPink;
+
+  /// No description provided for @colorOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'orange'**
+  String get colorOrange;
+
+  /// No description provided for @colorYellow.
+  ///
+  /// In en, this message translates to:
+  /// **'yellow'**
+  String get colorYellow;
+
+  /// No description provided for @colorOlive.
+  ///
+  /// In en, this message translates to:
+  /// **'olive'**
+  String get colorOlive;
+
+  /// No description provided for @colorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'green'**
+  String get colorGreen;
+
+  /// No description provided for @colorTeal.
+  ///
+  /// In en, this message translates to:
+  /// **'teal'**
+  String get colorTeal;
+
+  /// No description provided for @colorBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'blue'**
+  String get colorBlue;
+
+  /// No description provided for @colorNavy.
+  ///
+  /// In en, this message translates to:
+  /// **'navy'**
+  String get colorNavy;
+
+  /// No description provided for @colorPurple.
+  ///
+  /// In en, this message translates to:
+  /// **'purple'**
+  String get colorPurple;
+
+  /// No description provided for @colorLavender.
+  ///
+  /// In en, this message translates to:
+  /// **'lavender'**
+  String get colorLavender;
+
+  /// No description provided for @colorMagenta.
+  ///
+  /// In en, this message translates to:
+  /// **'magenta'**
+  String get colorMagenta;
+
+  /// No description provided for @colorLight.
+  ///
+  /// In en, this message translates to:
+  /// **'light {color}'**
+  String colorLight(Object color);
+
+  /// No description provided for @colorDark.
+  ///
+  /// In en, this message translates to:
+  /// **'dark {color}'**
+  String colorDark(Object color);
+
+  /// No description provided for @colorMuted.
+  ///
+  /// In en, this message translates to:
+  /// **'muted {color}'**
+  String colorMuted(Object color);
+
+  /// No description provided for @catalogueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalogue'**
+  String get catalogueTitle;
+
+  /// No description provided for @addGarment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add outfit'**
+  String get addGarment;
+
+  /// No description provided for @addMakeup.
+  ///
+  /// In en, this message translates to:
+  /// **'Add lip color'**
+  String get addMakeup;
+
+  /// No description provided for @addHair.
+  ///
+  /// In en, this message translates to:
+  /// **'Add hair color'**
+  String get addHair;
+
+  /// No description provided for @itemName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get itemName;
+
+  /// No description provided for @itemPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get itemPrice;
+
+  /// No description provided for @itemCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get itemCategory;
+
+  /// No description provided for @categoryFullBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Full outfit'**
+  String get categoryFullBody;
+
+  /// No description provided for @categoryUpperBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get categoryUpperBody;
+
+  /// No description provided for @categoryLowerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Bottom'**
+  String get categoryLowerBody;
+
+  /// No description provided for @categoryOuter.
+  ///
+  /// In en, this message translates to:
+  /// **'Jacket or outerwear'**
+  String get categoryOuter;
+
+  /// No description provided for @itemColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get itemColor;
+
+  /// No description provided for @chooseItemPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose product photo'**
+  String get chooseItemPhoto;
+
+  /// No description provided for @itemPhotoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A front-facing product photo of one garment on a plain background works best.'**
+  String get itemPhotoHint;
+
+  /// No description provided for @itemNeedsPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a product photo so the outfit can be tried on.'**
+  String get itemNeedsPhoto;
+
+  /// No description provided for @addedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Added by {vendor}'**
+  String addedBy(Object vendor);
+
+  /// No description provided for @colorsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Colors found'**
+  String get colorsFound;
+
+  /// No description provided for @deleteItemConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}? Looks that use it lose this item.'**
+  String deleteItemConfirm(Object name);
+
+  /// No description provided for @inviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite people'**
+  String get inviteTitle;
+
+  /// No description provided for @inviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Event code'**
+  String get inviteCode;
+
+  /// No description provided for @inviteLinkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite link'**
+  String get inviteLinkLabel;
+
+  /// No description provided for @inviteQrHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan to join'**
+  String get inviteQrHint;
+
+  /// No description provided for @vendorLinksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendors'**
+  String get vendorLinksTitle;
+
+  /// No description provided for @vendorCatalogueExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Let a shop or costume keeper add items to this catalogue, without an account.'**
+  String get vendorCatalogueExplain;
+
+  /// No description provided for @vendorNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor name (optional)'**
+  String get vendorNameLabel;
+
+  /// No description provided for @createLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Create link'**
+  String get createLink;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Event settings'**
+  String get settingsTitle;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @deleteEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete event'**
+  String get deleteEvent;
+
+  /// No description provided for @deleteEventConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name} with all photos, renders and links? This cannot be undone.'**
+  String deleteEventConfirm(Object name);
+
+  /// No description provided for @participantsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get participantsTitle;
+
+  /// No description provided for @removeParticipantConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} and delete their photo and renders?'**
+  String removeParticipantConfirm(Object name);
+
+  /// No description provided for @myDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My data'**
+  String get myDataTitle;
+
+  /// No description provided for @myDataExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Your photo and renders are stored only for this event. Photos are resized and stripped of location data before anything is sent to the try-on engine.'**
+  String get myDataExplain;
+
+  /// No description provided for @deletePhotoConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your photo and every render made from it?'**
+  String get deletePhotoConfirm;
+
+  /// No description provided for @leaveEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this event and delete my data'**
+  String get leaveEvent;
+
+  /// No description provided for @leaveEventConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave {name}? Your photo, look and renders are deleted.'**
+  String leaveEventConfirm(Object name);
+
+  /// No description provided for @deleteEverywhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my data in all events'**
+  String get deleteEverywhere;
+
+  /// No description provided for @deleteEverywhereConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave every event you joined and delete all your photos, looks and renders?'**
+  String get deleteEverywhereConfirm;
+
+  /// No description provided for @deletedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted.'**
+  String get deletedDone;
 
   /// No description provided for @vendorTitle.
   ///
@@ -224,77 +1531,155 @@ abstract class AppLocalizations {
   /// **'This page is read-only and the link expires.'**
   String get vendorReadOnly;
 
-  /// No description provided for @pipelineTitle.
+  /// No description provided for @vendorFor.
   ///
   /// In en, this message translates to:
-  /// **'Try-on pipeline check'**
-  String get pipelineTitle;
+  /// **'From {name} for {event}'**
+  String vendorFor(Object event, Object name);
 
-  /// No description provided for @pipelineRunSuccess.
+  /// No description provided for @vendorBefore.
   ///
   /// In en, this message translates to:
-  /// **'Run a successful try-on'**
-  String get pipelineRunSuccess;
+  /// **'Before'**
+  String get vendorBefore;
 
-  /// No description provided for @pipelineRunFailure.
+  /// No description provided for @vendorAfter.
   ///
   /// In en, this message translates to:
-  /// **'Run a failing try-on'**
-  String get pipelineRunFailure;
+  /// **'Preview'**
+  String get vendorAfter;
 
-  /// No description provided for @tryOnQueued.
+  /// No description provided for @vendorExpires.
   ///
   /// In en, this message translates to:
-  /// **'Waiting in queue…'**
-  String get tryOnQueued;
+  /// **'Link valid until {date}'**
+  String vendorExpires(Object date);
 
-  /// No description provided for @tryOnRunning.
+  /// No description provided for @vendorExpired.
   ///
   /// In en, this message translates to:
-  /// **'Rendering… {percent}%'**
-  String tryOnRunning(int percent);
+  /// **'This link has expired.'**
+  String get vendorExpired;
 
-  /// No description provided for @tryOnSuccess.
+  /// No description provided for @vendorNotFound.
   ///
   /// In en, this message translates to:
-  /// **'Render ready.'**
-  String get tryOnSuccess;
+  /// **'This link does not exist or was revoked.'**
+  String get vendorNotFound;
 
-  /// No description provided for @tryOnFailed.
+  /// No description provided for @vendorCatalogueTitle.
   ///
   /// In en, this message translates to:
-  /// **'Try-on failed'**
-  String get tryOnFailed;
+  /// **'Add items to {event}'**
+  String vendorCatalogueTitle(Object event);
 
-  /// No description provided for @tryOnTimeout.
+  /// No description provided for @vendorAddItem.
   ///
   /// In en, this message translates to:
-  /// **'This is taking too long. Please try again.'**
-  String get tryOnTimeout;
+  /// **'Add item'**
+  String get vendorAddItem;
 
-  /// No description provided for @failureGarmentNotApplied.
+  /// No description provided for @vendorItemsInEvent.
   ///
   /// In en, this message translates to:
-  /// **'The outfit was not applied to the photo. This often happens when the original clothing is dark or bulky; try a photo in lighter, fitted clothing.'**
-  String get failureGarmentNotApplied;
+  /// **'Items in this catalogue'**
+  String get vendorItemsInEvent;
 
-  /// No description provided for @failureGeneric.
+  /// No description provided for @inclusionTitle.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong with this render.'**
-  String get failureGeneric;
+  /// **'Inclusion: standing vs seated'**
+  String get inclusionTitle;
 
-  /// No description provided for @mockBadge.
+  /// No description provided for @inclusionIntro.
   ///
   /// In en, this message translates to:
-  /// **'Simulated result (mock mode, no YouCam call)'**
-  String get mockBadge;
+  /// **'Virtual try-on is usually tested on standing models. We measure how Wearmony works for seated people, such as wheelchair users, and publish the numbers as they are.'**
+  String get inclusionIntro;
 
-  /// No description provided for @previewDisclaimer.
+  /// No description provided for @inclusionNotMeasured.
   ///
   /// In en, this message translates to:
-  /// **'Visual preview, not a fit guarantee.'**
-  String get previewDisclaimer;
+  /// **'No measurements yet.'**
+  String get inclusionNotMeasured;
+
+  /// No description provided for @inclusionEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine: {engine}'**
+  String inclusionEngine(Object engine);
+
+  /// No description provided for @inclusionMeasuredAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Measured {date}'**
+  String inclusionMeasuredAt(Object date);
+
+  /// No description provided for @colPose.
+  ///
+  /// In en, this message translates to:
+  /// **'Pose'**
+  String get colPose;
+
+  /// No description provided for @colFraming.
+  ///
+  /// In en, this message translates to:
+  /// **'Framing'**
+  String get colFraming;
+
+  /// No description provided for @colRuns.
+  ///
+  /// In en, this message translates to:
+  /// **'Runs'**
+  String get colRuns;
+
+  /// No description provided for @colApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied'**
+  String get colApplied;
+
+  /// No description provided for @colSilent.
+  ///
+  /// In en, this message translates to:
+  /// **'Silent failures'**
+  String get colSilent;
+
+  /// No description provided for @colErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors'**
+  String get colErrors;
+
+  /// No description provided for @colFaceChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Face changed'**
+  String get colFaceChanged;
+
+  /// No description provided for @colMedianTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Median time'**
+  String get colMedianTime;
+
+  /// No description provided for @framingAsCatalogued.
+  ///
+  /// In en, this message translates to:
+  /// **'As catalogued'**
+  String get framingAsCatalogued;
+
+  /// No description provided for @framingUpperBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper-body fallback'**
+  String get framingUpperBody;
+
+  /// No description provided for @notReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'not reviewed'**
+  String get notReviewed;
 }
 
 class _AppLocalizationsDelegate

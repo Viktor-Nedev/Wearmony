@@ -1,19 +1,18 @@
 import 'package:flutter/widgets.dart';
 
 import 'api/api_client.dart';
+import 'state/session.dart';
 
-/// Makes app-wide services available to the widget tree (and replaceable in tests).
-class AppScope extends InheritedWidget {
-  const AppScope({super.key, required this.api, required super.child});
+/// Makes the session available to the widget tree and rebuilds dependents when it changes.
+class AppScope extends InheritedNotifier<Session> {
+  const AppScope({super.key, required Session session, required super.child})
+    : super(notifier: session);
 
-  final ApiClient api;
-
-  static AppScope of(BuildContext context) {
+  static Session of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();
     assert(scope != null, 'No AppScope above this context');
-    return scope!;
+    return scope!.notifier!;
   }
 
-  @override
-  bool updateShouldNotify(AppScope oldWidget) => api != oldWidget.api;
+  static ApiClient api(BuildContext context) => of(context).api;
 }

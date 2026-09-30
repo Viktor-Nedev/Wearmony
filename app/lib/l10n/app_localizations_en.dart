@@ -25,13 +25,89 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinWithCode => 'Join with a code';
 
   @override
-  String get apiStatusMock => 'API: mock mode';
+  String get openDemo => 'Open the demo event';
 
   @override
-  String get apiStatusLive => 'API: live';
+  String get demoHint =>
+      'A seeded prom with illustrated people. No photos needed.';
 
   @override
-  String get apiStatusOffline => 'API offline';
+  String get yourEvents => 'Your events';
+
+  @override
+  String get organizerRole => 'Organizer';
+
+  @override
+  String get participantRole => 'Participant';
+
+  @override
+  String get inclusionLink => 'Inclusion results: standing vs seated';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get apiStatusMock => 'Try-on: simulated (mock mode)';
+
+  @override
+  String get apiStatusLive => 'Try-on: live YouCam API';
+
+  @override
+  String get apiStatusOffline => 'Can\'t reach Wearmony';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get continueLabel => 'Continue';
+
+  @override
+  String get errorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get errorOffline =>
+      'Can\'t reach Wearmony. Check your connection and try again.';
+
+  @override
+  String get linkCopied => 'Link copied';
+
+  @override
+  String get none => 'None';
+
+  @override
+  String get signInTitle => 'Sign in';
+
+  @override
+  String get signInExplain =>
+      'Sign in with your email to create or join events.';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get signInButton => 'Sign in';
+
+  @override
+  String get signUpButton => 'Create account';
+
+  @override
+  String get checkEmail =>
+      'Check your email to confirm your account, then sign in.';
 
   @override
   String get createEventTitle => 'New event';
@@ -46,10 +122,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get templateProm => 'Prom';
 
   @override
-  String get templateTheatre => 'Theatre';
+  String get templateTheatre => 'Theatre cast';
 
   @override
   String get templateGroup => 'Group photo';
+
+  @override
+  String get templatePromHint =>
+      'Couples and friends coordinating for the prom.';
+
+  @override
+  String get templateTheatreHint => 'A cast trying costumes together.';
+
+  @override
+  String get templateGroupHint => 'Weddings, family photos, any group.';
+
+  @override
+  String get budgetPerPersonLabel => 'Budget per person (optional)';
+
+  @override
+  String get budgetTotalLabel => 'Total budget (optional)';
+
+  @override
+  String get amountsInEuro => 'Amounts in euro.';
 
   @override
   String get createEventButton => 'Create event';
@@ -61,11 +156,676 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinCodeLabel => 'Event code';
 
   @override
+  String get yourNameLabel => 'Your name, as the group will see it';
+
+  @override
   String get joinButton => 'Join';
 
   @override
-  String get notConnectedYet =>
-      'Not connected yet: saving arrives with account setup.';
+  String joiningEvent(Object name) {
+    return 'You are joining $name.';
+  }
+
+  @override
+  String get codeNotFound => 'No event uses this code.';
+
+  @override
+  String get tabBoard => 'Group';
+
+  @override
+  String get tabMyLook => 'My look';
+
+  @override
+  String get tabTogether => 'Together';
+
+  @override
+  String get tabCatalogue => 'Catalogue';
+
+  @override
+  String get tabHarmony => 'Harmony';
+
+  @override
+  String get tabInvite => 'Invite';
+
+  @override
+  String get tabSettings => 'Settings';
+
+  @override
+  String get demoBanner =>
+      'Demo event: the people and renders are illustrations, not real photos.';
+
+  @override
+  String get mockBanner =>
+      'Mock mode: try-on results are simulated, no YouCam calls are made.';
+
+  @override
+  String get consentTitle => 'Before you add a photo';
+
+  @override
+  String get consentAdult => 'I am 18 or older.';
+
+  @override
+  String get consentPrivate =>
+      'My photo is visible only to people in this event and to vendors I choose to share it with.';
+
+  @override
+  String get consentDelete =>
+      'I can delete my photo and every render at any time.';
+
+  @override
+  String get consentPreview =>
+      'Try-on is a visual preview, not a fit guarantee.';
+
+  @override
+  String get consentButton => 'I agree';
+
+  @override
+  String get photoTitle => 'Your photo';
+
+  @override
+  String get photoTipsTitle => 'For the best result';
+
+  @override
+  String get photoTipLight => 'Even, bright light.';
+
+  @override
+  String get photoTipFrame =>
+      'Face and shoulders fully visible; include as much of your outfit area as you can.';
+
+  @override
+  String get photoTipAlone => 'Only you in the photo.';
+
+  @override
+  String get photoTipClothes =>
+      'Lighter, fitted clothing works better than dark or bulky clothes.';
+
+  @override
+  String get poseQuestion => 'In this photo I am';
+
+  @override
+  String get poseStanding => 'Standing';
+
+  @override
+  String get poseSeated => 'Seated';
+
+  @override
+  String get poseSeatedNote =>
+      'Seated photos are welcome. If a full-length outfit does not apply, Wearmony retries with upper-body framing automatically.';
+
+  @override
+  String get takePhoto => 'Take a photo';
+
+  @override
+  String get choosePhoto => 'Choose a photo';
+
+  @override
+  String get checkingPhoto => 'Checking your photo…';
+
+  @override
+  String get photoReady => 'Your photo is ready.';
+
+  @override
+  String get replacePhoto => 'Replace photo';
+
+  @override
+  String get deletePhoto => 'Delete photo';
+
+  @override
+  String get photoNextStep => 'Next: pick your look';
+
+  @override
+  String get issue_too_small =>
+      'The photo is too small. Use a larger, sharper photo.';
+
+  @override
+  String get issue_unusual_ratio =>
+      'The photo is very tall or very wide. Use a normal portrait photo.';
+
+  @override
+  String get issue_too_dark => 'The photo is quite dark; try brighter light.';
+
+  @override
+  String get issue_too_bright => 'The photo is very bright; try softer light.';
+
+  @override
+  String get issue_low_contrast => 'The photo looks flat or washed out.';
+
+  @override
+  String get warning_dark_clothing =>
+      'Dark clothing on the photo can stop the outfit from applying. A photo in lighter clothing works better.';
+
+  @override
+  String get sectionOutfit => 'Outfit';
+
+  @override
+  String get sectionMakeup => 'Lip color';
+
+  @override
+  String get sectionHair => 'Hair color';
+
+  @override
+  String get catalogueEmpty => 'The organizer has not added items yet.';
+
+  @override
+  String lookTotal(Object amount) {
+    return 'Total $amount';
+  }
+
+  @override
+  String get tryOnButton => 'Try it on';
+
+  @override
+  String get kindApparel => 'outfit';
+
+  @override
+  String get kindMakeup => 'lip color';
+
+  @override
+  String get kindHair => 'hair color';
+
+  @override
+  String renderRunning(Object kind) {
+    return 'Trying on the $kind…';
+  }
+
+  @override
+  String get renderIdle =>
+      'Press \"Try it on\" to see this look on your photo.';
+
+  @override
+  String get renderNoPhoto => 'Add your photo to try looks on.';
+
+  @override
+  String get addPhoto => 'Add my photo';
+
+  @override
+  String get renderEmpty => 'Pick an outfit, a lip color or a hair color.';
+
+  @override
+  String get renderFailed => 'Try-on did not work';
+
+  @override
+  String get mockBadge => 'Simulated result (mock mode, no YouCam call)';
+
+  @override
+  String get demoRenderBadge => 'Illustration (demo data), not a real render';
+
+  @override
+  String get previewDisclaimer => 'Visual preview, not a fit guarantee.';
+
+  @override
+  String get checkNotApplied =>
+      'The outfit may not have been applied to this photo. A photo in lighter, fitted clothing usually helps.';
+
+  @override
+  String get checkDrift =>
+      'Check this render: its colors differ from the catalogue photo.';
+
+  @override
+  String get failure_garment_not_applied =>
+      'The outfit was not applied to the photo. This often happens when the clothing on the photo is dark or bulky; try a photo in lighter, fitted clothing.';
+
+  @override
+  String get failure_pose_not_supported =>
+      'The try-on engine could not read the pose in this photo. Use a photo where your shoulders and upper body are clearly visible.';
+
+  @override
+  String get failure_face_not_found =>
+      'No face was found. Use a photo with your face fully visible, facing the camera.';
+
+  @override
+  String get failure_multiple_people =>
+      'More than one person is in the photo. Use a photo of just you.';
+
+  @override
+  String get failure_image_invalid =>
+      'This photo or item image cannot be used. Try a different one.';
+
+  @override
+  String get failure_content_rejected =>
+      'The try-on engine rejected this image.';
+
+  @override
+  String get failure_budget_exhausted =>
+      'The render budget is used up. Your look is saved, and the organizer can raise the budget.';
+
+  @override
+  String get failure_provider_error => 'The try-on service had a problem.';
+
+  @override
+  String get failure_timeout => 'The try-on took too long.';
+
+  @override
+  String get lockLook => 'Lock my look';
+
+  @override
+  String get unlockLook => 'Unlock';
+
+  @override
+  String get lockedNote => 'Locked: this is your final look.';
+
+  @override
+  String get shareHair => 'Share hair color with my hairdresser';
+
+  @override
+  String get shareLook => 'Share my look with a shop';
+
+  @override
+  String shareLinkReady(Object date) {
+    return 'Read-only link, valid until $date:';
+  }
+
+  @override
+  String get copyLink => 'Copy link';
+
+  @override
+  String get myData => 'My data';
+
+  @override
+  String get togetherNoPartner =>
+      'Choose your partner to see yourselves side by side.';
+
+  @override
+  String get partnerLabel => 'Partner';
+
+  @override
+  String get noPartner => 'No partner';
+
+  @override
+  String youAndPartner(Object name) {
+    return 'You and $name';
+  }
+
+  @override
+  String get you => 'You';
+
+  @override
+  String boardRendered(Object rendered, Object total) {
+    return '$rendered of $total rendered';
+  }
+
+  @override
+  String boardLocked(Object locked) {
+    return '$locked locked';
+  }
+
+  @override
+  String get budgetTitle => 'Budget';
+
+  @override
+  String budgetTotalOf(Object cap, Object total) {
+    return '$total of $cap';
+  }
+
+  @override
+  String budgetPerPersonCap(Object amount) {
+    return 'Up to $amount per person';
+  }
+
+  @override
+  String get overBudget => 'Over budget';
+
+  @override
+  String overBudgetCount(Object count) {
+    return '$count over the per-person budget';
+  }
+
+  @override
+  String unitsUsed(Object cap, Object used) {
+    return 'Try-on units used: $used of $cap';
+  }
+
+  @override
+  String get unitsSimulated => 'Renders here are simulated and use no units.';
+
+  @override
+  String get noLookYet => 'No look yet';
+
+  @override
+  String get noPhotoYet => 'No photo yet';
+
+  @override
+  String withPartner(Object name) {
+    return 'with $name';
+  }
+
+  @override
+  String get seatedLabel => 'Seated';
+
+  @override
+  String get lockedLabel => 'Locked';
+
+  @override
+  String groupHarmony(Object score) {
+    return 'Group harmony $score/100';
+  }
+
+  @override
+  String addPeopleHint(Object code) {
+    return 'Invite people with the code $code.';
+  }
+
+  @override
+  String get harmonyTitle => 'Color harmony';
+
+  @override
+  String get harmonyWeakest => 'Weakest pair';
+
+  @override
+  String get harmonyNoData =>
+      'Add outfits to see how the group\'s colors work together.';
+
+  @override
+  String get harmonyNoWarnings =>
+      'No near-miss colors. The group reads as intentional.';
+
+  @override
+  String get harmonyWarnings => 'Warnings';
+
+  @override
+  String get harmonyAll => 'All comparisons';
+
+  @override
+  String harmonyWithoutOutfit(Object names) {
+    return 'No outfit yet: $names';
+  }
+
+  @override
+  String get relationMatched => 'Matched';
+
+  @override
+  String get relationNearMiss => 'Near-miss';
+
+  @override
+  String get relationComplementary => 'Complementary';
+
+  @override
+  String get relationContrast => 'Contrast';
+
+  @override
+  String pairMatched(Object a, Object b, Object color) {
+    return '$a and $b match: both wear $color.';
+  }
+
+  @override
+  String pairNearMiss(
+    Object a,
+    Object b,
+    Object colorA,
+    Object colorB,
+    Object de,
+  ) {
+    return '$a\'s $colorA and $b\'s $colorB are close but not the same shade (ΔE $de). Side by side this can look like a mistake: match them exactly or pick clearly different colors.';
+  }
+
+  @override
+  String pairComplementary(Object a, Object b, Object colorA, Object colorB) {
+    return '$a\'s $colorA and $b\'s $colorB are complementary colors that set each other off.';
+  }
+
+  @override
+  String pairContrast(Object a, Object b, Object colorA, Object colorB) {
+    return '$a\'s $colorA and $b\'s $colorB are clearly different, which reads as intentional.';
+  }
+
+  @override
+  String selfMatched(Object a, Object color, Object subject) {
+    return '$a\'s $subject matches the $color outfit.';
+  }
+
+  @override
+  String selfNearMiss(
+    Object a,
+    Object colorA,
+    Object colorB,
+    Object de,
+    Object subject,
+  ) {
+    return '$a\'s $colorA $subject is close to, but not the same as, the $colorB outfit (ΔE $de). Match it or choose a clearly different shade.';
+  }
+
+  @override
+  String selfComplementary(
+    Object a,
+    Object colorA,
+    Object colorB,
+    Object subject,
+  ) {
+    return '$a\'s $colorA $subject is complementary to the $colorB outfit.';
+  }
+
+  @override
+  String selfContrast(Object a, Object colorA, Object colorB, Object subject) {
+    return '$a\'s $colorA $subject stands apart from the $colorB outfit, which reads as intentional.';
+  }
+
+  @override
+  String get subjectLips => 'lip color';
+
+  @override
+  String get subjectHair => 'hair color';
+
+  @override
+  String get explainButton => 'Explain in plain words';
+
+  @override
+  String get explainNote =>
+      'Written by Gemini from the results above. Scores come only from the color rules.';
+
+  @override
+  String get harmonyMethodTitle => 'How it works';
+
+  @override
+  String get harmonyMethod =>
+      'Garment colors come from the catalogue photos (background removed, k-means clustering in CIELAB). Every pair is compared with CIEDE2000: under 2 is a match, 2 to 8 is a near-miss that can look like a mistake, and opposite hues are complementary. Lip and hair colors are compared with the same person\'s outfit. The group score is the weakest pair, not an average. Harmony is about colors only, never about bodies or skin.';
+
+  @override
+  String get colorBlack => 'black';
+
+  @override
+  String get colorWhite => 'white';
+
+  @override
+  String get colorGray => 'gray';
+
+  @override
+  String get colorBeige => 'beige';
+
+  @override
+  String get colorBrown => 'brown';
+
+  @override
+  String get colorRed => 'red';
+
+  @override
+  String get colorBurgundy => 'burgundy';
+
+  @override
+  String get colorPink => 'pink';
+
+  @override
+  String get colorOrange => 'orange';
+
+  @override
+  String get colorYellow => 'yellow';
+
+  @override
+  String get colorOlive => 'olive';
+
+  @override
+  String get colorGreen => 'green';
+
+  @override
+  String get colorTeal => 'teal';
+
+  @override
+  String get colorBlue => 'blue';
+
+  @override
+  String get colorNavy => 'navy';
+
+  @override
+  String get colorPurple => 'purple';
+
+  @override
+  String get colorLavender => 'lavender';
+
+  @override
+  String get colorMagenta => 'magenta';
+
+  @override
+  String colorLight(Object color) {
+    return 'light $color';
+  }
+
+  @override
+  String colorDark(Object color) {
+    return 'dark $color';
+  }
+
+  @override
+  String colorMuted(Object color) {
+    return 'muted $color';
+  }
+
+  @override
+  String get catalogueTitle => 'Catalogue';
+
+  @override
+  String get addGarment => 'Add outfit';
+
+  @override
+  String get addMakeup => 'Add lip color';
+
+  @override
+  String get addHair => 'Add hair color';
+
+  @override
+  String get itemName => 'Name';
+
+  @override
+  String get itemPrice => 'Price';
+
+  @override
+  String get itemCategory => 'Type';
+
+  @override
+  String get categoryFullBody => 'Full outfit';
+
+  @override
+  String get categoryUpperBody => 'Top';
+
+  @override
+  String get categoryLowerBody => 'Bottom';
+
+  @override
+  String get categoryOuter => 'Jacket or outerwear';
+
+  @override
+  String get itemColor => 'Color';
+
+  @override
+  String get chooseItemPhoto => 'Choose product photo';
+
+  @override
+  String get itemPhotoHint =>
+      'A front-facing product photo of one garment on a plain background works best.';
+
+  @override
+  String get itemNeedsPhoto =>
+      'Add a product photo so the outfit can be tried on.';
+
+  @override
+  String addedBy(Object vendor) {
+    return 'Added by $vendor';
+  }
+
+  @override
+  String get colorsFound => 'Colors found';
+
+  @override
+  String deleteItemConfirm(Object name) {
+    return 'Delete $name? Looks that use it lose this item.';
+  }
+
+  @override
+  String get inviteTitle => 'Invite people';
+
+  @override
+  String get inviteCode => 'Event code';
+
+  @override
+  String get inviteLinkLabel => 'Invite link';
+
+  @override
+  String get inviteQrHint => 'Scan to join';
+
+  @override
+  String get vendorLinksTitle => 'Vendors';
+
+  @override
+  String get vendorCatalogueExplain =>
+      'Let a shop or costume keeper add items to this catalogue, without an account.';
+
+  @override
+  String get vendorNameLabel => 'Vendor name (optional)';
+
+  @override
+  String get createLink => 'Create link';
+
+  @override
+  String get settingsTitle => 'Event settings';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get deleteEvent => 'Delete event';
+
+  @override
+  String deleteEventConfirm(Object name) {
+    return 'Delete $name with all photos, renders and links? This cannot be undone.';
+  }
+
+  @override
+  String get participantsTitle => 'Participants';
+
+  @override
+  String removeParticipantConfirm(Object name) {
+    return 'Remove $name and delete their photo and renders?';
+  }
+
+  @override
+  String get myDataTitle => 'My data';
+
+  @override
+  String get myDataExplain =>
+      'Your photo and renders are stored only for this event. Photos are resized and stripped of location data before anything is sent to the try-on engine.';
+
+  @override
+  String get deletePhotoConfirm =>
+      'Delete your photo and every render made from it?';
+
+  @override
+  String get leaveEvent => 'Leave this event and delete my data';
+
+  @override
+  String leaveEventConfirm(Object name) {
+    return 'Leave $name? Your photo, look and renders are deleted.';
+  }
+
+  @override
+  String get deleteEverywhere => 'Delete my data in all events';
+
+  @override
+  String get deleteEverywhereConfirm =>
+      'Leave every event you joined and delete all your photos, looks and renders?';
+
+  @override
+  String get deletedDone => 'Deleted.';
 
   @override
   String get vendorTitle => 'Shared look';
@@ -74,41 +834,88 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vendorReadOnly => 'This page is read-only and the link expires.';
 
   @override
-  String get pipelineTitle => 'Try-on pipeline check';
-
-  @override
-  String get pipelineRunSuccess => 'Run a successful try-on';
-
-  @override
-  String get pipelineRunFailure => 'Run a failing try-on';
-
-  @override
-  String get tryOnQueued => 'Waiting in queue…';
-
-  @override
-  String tryOnRunning(int percent) {
-    return 'Rendering… $percent%';
+  String vendorFor(Object event, Object name) {
+    return 'From $name for $event';
   }
 
   @override
-  String get tryOnSuccess => 'Render ready.';
+  String get vendorBefore => 'Before';
 
   @override
-  String get tryOnFailed => 'Try-on failed';
+  String get vendorAfter => 'Preview';
 
   @override
-  String get tryOnTimeout => 'This is taking too long. Please try again.';
+  String vendorExpires(Object date) {
+    return 'Link valid until $date';
+  }
 
   @override
-  String get failureGarmentNotApplied =>
-      'The outfit was not applied to the photo. This often happens when the original clothing is dark or bulky; try a photo in lighter, fitted clothing.';
+  String get vendorExpired => 'This link has expired.';
 
   @override
-  String get failureGeneric => 'Something went wrong with this render.';
+  String get vendorNotFound => 'This link does not exist or was revoked.';
 
   @override
-  String get mockBadge => 'Simulated result (mock mode, no YouCam call)';
+  String vendorCatalogueTitle(Object event) {
+    return 'Add items to $event';
+  }
 
   @override
-  String get previewDisclaimer => 'Visual preview, not a fit guarantee.';
+  String get vendorAddItem => 'Add item';
+
+  @override
+  String get vendorItemsInEvent => 'Items in this catalogue';
+
+  @override
+  String get inclusionTitle => 'Inclusion: standing vs seated';
+
+  @override
+  String get inclusionIntro =>
+      'Virtual try-on is usually tested on standing models. We measure how Wearmony works for seated people, such as wheelchair users, and publish the numbers as they are.';
+
+  @override
+  String get inclusionNotMeasured => 'No measurements yet.';
+
+  @override
+  String inclusionEngine(Object engine) {
+    return 'Engine: $engine';
+  }
+
+  @override
+  String inclusionMeasuredAt(Object date) {
+    return 'Measured $date';
+  }
+
+  @override
+  String get colPose => 'Pose';
+
+  @override
+  String get colFraming => 'Framing';
+
+  @override
+  String get colRuns => 'Runs';
+
+  @override
+  String get colApplied => 'Applied';
+
+  @override
+  String get colSilent => 'Silent failures';
+
+  @override
+  String get colErrors => 'Errors';
+
+  @override
+  String get colFaceChanged => 'Face changed';
+
+  @override
+  String get colMedianTime => 'Median time';
+
+  @override
+  String get framingAsCatalogued => 'As catalogued';
+
+  @override
+  String get framingUpperBody => 'Upper-body fallback';
+
+  @override
+  String get notReviewed => 'not reviewed';
 }

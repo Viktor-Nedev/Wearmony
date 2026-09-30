@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'api/api_client.dart';
 import 'app_scope.dart';
 import 'l10n/app_localizations.dart';
 import 'router.dart';
+import 'state/session.dart';
 import 'theme.dart';
 
 const _fallbackLocale = Locale('en');
 
 class WearmonyApp extends StatefulWidget {
-  const WearmonyApp({super.key, required this.api, this.locale, this.initialLocation = '/'});
+  const WearmonyApp({
+    super.key,
+    required this.session,
+    this.initialLocation = '/',
+  });
 
-  final ApiClient api;
-
-  /// Forces a locale (tests, language switch). Null follows the device.
-  final Locale? locale;
+  final Session session;
   final String initialLocation;
 
   @override
@@ -23,7 +24,15 @@ class WearmonyApp extends StatefulWidget {
 }
 
 class _WearmonyAppState extends State<WearmonyApp> {
-  late final GoRouter _router = buildRouter(initialLocation: widget.initialLocation);
+  late final GoRouter _router = buildRouter(
+    initialLocation: widget.initialLocation,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.session.status == SessionStatus.starting) widget.session.start();
+  }
 
   @override
   void dispose() {
@@ -34,20 +43,23 @@ class _WearmonyAppState extends State<WearmonyApp> {
   @override
   Widget build(BuildContext context) {
     return AppScope(
-      api: widget.api,
-      child: MaterialApp.router(
-        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-        theme: buildTheme(Brightness.light),
-        darkTheme: buildTheme(Brightness.dark),
-        locale: widget.locale,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        // English for any language we do not translate (judges, visitors).
-        localeResolutionCallback: (device, supported) => supported.firstWhere(
-          (locale) => locale.languageCode == device?.languageCode,
-          orElse: () => _fallbackLocale,
+      session: widget.session,
+      child: ListenableBuilder(
+        listenable: widget.session,
+        builder: (context, _) => MaterialApp.router(
+          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+          theme: buildTheme(Brightness.light),
+          darkTheme: buildTheme(Brightness.dark),
+          locale: widget.session.locale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          // English for any language we do not translate (judges, visitors).
+          localeResolutionCallback: (device, supported) => supported.firstWhere(
+            (locale) => locale.languageCode == device?.languageCode,
+            orElse: () => _fallbackLocale,
+          ),
+          routerConfig: _router,
         ),
-        routerConfig: _router,
       ),
     );
   }
