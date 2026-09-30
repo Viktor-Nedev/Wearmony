@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { aggregateInclusion, renderInclusionModule } from '../../api/inclusion/aggregate.js';
 import { readImageInfo } from '../../api/lib/image-size.js';
 import { normalizeImage } from '../../api/lib/normalize-image.js';
 import {
@@ -36,6 +37,9 @@ const RESULTS_DIR = join(PHOTOS, 'results');
 const REPORT_JSON = join(ROOT, 'eval/results/kill-tests.json'); // committed, no photos or names
 const REPORT_MD = join(ROOT, 'eval/results/kill-tests.md');
 const FIXTURES = join(ROOT, 'fixtures/youcam/captured');
+// Published on the app's inclusion page and in the README.
+const INCLUSION_MODULE = join(ROOT, 'api/generated/inclusion.ts');
+const ENGINE = 'YouCam AI Clothes V4.0 (cloth-v4)';
 
 const POLL_MS = 5_000;
 const TIMEOUT_MS = 180_000;
@@ -347,6 +351,7 @@ function saveReport(report: Record<string, RunResult>) {
   mkdirSync(join(ROOT, 'eval/results'), { recursive: true });
   writeFileSync(REPORT_JSON, JSON.stringify(runs, null, 2) + '\n');
   writeFileSync(REPORT_MD, renderMarkdown(runs));
+  writeFileSync(INCLUSION_MODULE, renderInclusionModule(aggregateInclusion(runs, ENGINE)));
 }
 
 function renderMarkdown(runs: RunResult[]): string {

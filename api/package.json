@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "kill-tests": "tsx ../eval/kill-tests/run.ts"
+    "kill-tests": "tsx ../eval/kill-tests/run.ts",
+    "check:supabase": "tsx scripts/check-supabase.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",

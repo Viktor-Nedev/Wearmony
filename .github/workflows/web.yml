@@ -1,0 +1,56 @@
+name: Web app
+
+# Builds the Flutter web app and publishes it on GitHub Pages.
+# Needs the repository variable API_BASE_URL (the deployed backend, e.g. https://wearmony-api.vercel.app).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: vars.API_BASE_URL != ''
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.35.6
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: >
+          flutter build web --release
+          --base-href "/${{ github.event.repository.name }}/"
+          --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
+      # Deep links (/join/CODE, /v/TOKEN) load the app through the 404 page.
+      - run: cp build/web/index.html build/web/404.html
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
