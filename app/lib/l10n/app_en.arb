@@ -1,0 +1,41 @@
+{
+  "@@locale": "en",
+  "appTitle": "Wearmony",
+  "slogan": "Try it on together.",
+  "landingPitch": "See how your group looks together before anyone buys an outfit: try-on, color harmony and a shared budget in one place.",
+  "organizeEvent": "Organize an event",
+  "joinWithCode": "Join with a code",
+  "apiStatusMock": "API: mock mode",
+  "apiStatusLive": "API: live",
+  "apiStatusOffline": "API offline",
+  "createEventTitle": "New event",
+  "eventNameLabel": "Event name",
+  "templateLabel": "Template",
+  "templateProm": "Prom",
+  "templateTheatre": "Theatre",
+  "templateGroup": "Group photo",
+  "createEventButton": "Create event",
+  "joinTitle": "Join an event",
+  "joinCodeLabel": "Event code",
+  "joinButton": "Join",
+  "notConnectedYet": "Not connected yet: saving arrives with account setup.",
+  "vendorTitle": "Shared look",
+  "vendorReadOnly": "This page is read-only and the link expires.",
+  "pipelineTitle": "Try-on pipeline check",
+  "pipelineRunSuccess": "Run a successful try-on",
+  "pipelineRunFailure": "Run a failing try-on",
+  "tryOnQueued": "Waiting in queue…",
+  "tryOnRunning": "Rendering… {percent}%",
+  "@tryOnRunning": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "tryOnSuccess": "Render ready.",
+  "tryOnFailed": "Try-on failed",
+  "tryOnTimeout": "This is taking too long. Please try again.",
+  "failureGarmentNotApplied": "The outfit was not applied to the photo. This often happens when the original clothing is dark or bulky; try a photo in lighter, fitted clothing.",
+  "failureGeneric": "Something went wrong with this render.",
+  "mockBadge": "Simulated result (mock mode, no YouCam call)",
+  "previewDisclaimer": "Visual preview, not a fit guarantee."
+}

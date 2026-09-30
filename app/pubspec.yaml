@@ -1,0 +1,29 @@
+name: wearmony
+description: "Group virtual try-on"
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  go_router: ^17.2.3
+  http: ^1.6.0
+  # Pinned by flutter_localizations; "any" lets the SDK choose.
+  intl: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true

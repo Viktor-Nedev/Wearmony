@@ -21,15 +21,37 @@ Every virtual try-on product is built for one person, but event outfits are deci
 ## Repository layout
 
 ```
-app/        Flutter client (web + Android)
-api/        Serverless backend (TypeScript on Vercel)
-  youcam/   the only module that talks to the YouCam API
-  harmony/  color extraction, CIEDE2000, rule thresholds
-  ledger/   API unit budget
-fixtures/   recorded API responses used by tests
-eval/       inclusion evaluation scripts and results
-docs/       methods, screenshots, README assets
+app/          Flutter client (web + Android)
+api/          Serverless backend (TypeScript on Vercel, project root directory)
+  api/        the single Vercel function entry; routes live in http/
+  http/       HTTP routes (Hono)
+  config/     environment parsing
+  youcam/     the only module that talks to the YouCam API (plus its mock)
+  harmony/    color extraction, CIEDE2000, rule thresholds
+  ledger/     API unit budget
+fixtures/     recorded API responses used by tests
+eval/         inclusion evaluation scripts and results
+docs/         methods, screenshots, README assets
 ```
+
+## Run locally (mock mode, zero API calls)
+
+Requirements: Node 22, Flutter 3.35+.
+
+```bash
+cp .env.example .env          # optional: defaults already run in mock mode
+
+cd api
+npm install
+npm test
+npm run dev                   # http://localhost:8787/api/health
+
+cd ../app                     # in a second terminal
+flutter pub get
+flutter run -d chrome
+```
+
+With `YOUCAM_MODE=mock` the backend simulates try-on tasks (queued, running, done or failed) without contacting YouCam, and every simulated result is labeled as such in the app.
 
 ## Limits and honesty
 
