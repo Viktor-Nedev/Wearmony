@@ -9,10 +9,12 @@
     "dev": "tsx watch dev.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "kill-tests": "tsx ../eval/kill-tests/run.ts"
   },
   "dependencies": {
     "hono": "^4.13.12",
+    "sharp": "^0.35.5",
     "zod": "^4.6.5"
   },
   "devDependencies": {

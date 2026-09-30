@@ -1,0 +1,22 @@
+{
+  "people": {
+    "p1": { "file": "people/p1-standing.jpg", "pose": "standing" },
+    "p2": { "file": "people/p2-seated.jpg", "pose": "seated" },
+    "p3": { "file": "people/p3-seated.jpg", "pose": "seated" }
+  },
+  "garments": {
+    "g1": { "file": "garments/g1-dress.jpg", "category": "full_body" },
+    "g2": { "file": "garments/g2-shirt.jpg", "category": "upper_body" },
+    "g3": { "file": "garments/g3-jacket.jpg", "category": "outer" }
+  },
+  "runs": [
+    { "id": "identity-p1-g1", "test": "identity", "person": "p1", "garment": "g1" },
+    { "id": "identity-p1-g2", "test": "identity", "person": "p1", "garment": "g2" },
+    { "id": "identity-p1-g3", "test": "identity", "person": "p1", "garment": "g3" },
+    { "id": "seated-p2-g1", "test": "seated", "person": "p2", "garment": "g1" },
+    { "id": "seated-p2-g1-upper", "test": "seated-mitigation", "person": "p2", "garment": "g1", "category": "upper_body" },
+    { "id": "seated-p3-g2", "test": "seated", "person": "p3", "garment": "g2" },
+    { "id": "makeup-p1", "test": "makeup", "person": "p1", "lipColor": "#A8324A" },
+    { "id": "hair-p1", "test": "hair", "person": "p1", "hairColor": "#6B2A3A" }
+  ]
+}

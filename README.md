@@ -26,6 +26,7 @@ api/          Serverless backend (TypeScript on Vercel, project root directory)
   api/        the single Vercel function entry; routes live in http/
   http/       HTTP routes (Hono)
   config/     environment parsing
+  lib/        image helpers (size check, rotate/resize/strip metadata)
   youcam/     the only module that talks to the YouCam API (plus its mock)
   harmony/    color extraction, CIEDE2000, rule thresholds
   ledger/     API unit budget

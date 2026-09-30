@@ -1,0 +1,8 @@
+{
+  "status": 200,
+  "data": {
+    "error": null,
+    "results": { "url": "https://yce-us.s3-accelerate.amazonaws.com/demo/ttl30/...signature..." },
+    "task_status": "success"
+  }
+}
