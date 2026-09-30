@@ -104,9 +104,10 @@ class _HarmonyTabState extends State<HarmonyTab> with BoardLoader {
                       l10n.harmonyNoWarnings,
                       icon: Icons.check_circle_outline,
                     )
-                  else ...[
+                  else if (report.warnings.length > 1) ...[
+                    // The weakest pair is already shown above.
                     Text(l10n.harmonyWarnings, style: text.titleMedium),
-                    for (final finding in report.warnings)
+                    for (final finding in report.warnings.skip(1))
                       FindingCard(finding: finding),
                   ],
                   if (explainAvailable) ...[

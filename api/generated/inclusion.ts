@@ -29,7 +29,6 @@ export const INCLUSION_RESULTS: InclusionResults = {
   "engine": "YouCam AI Clothes V4.0 (cloth-v4)",
   "groups": [],
   "notes": [
-    "No measurements yet. The table fills in after the evaluation runs on consenting adults.",
     "The YouCam AI Clothes documentation asks for a person standing (no sitting or crouching); this evaluation measures what that means for seated participants.",
     "\"Applied\" counts renders a human reviewer did not reject; \"silent failures\" are renders returned without the garment."
   ]

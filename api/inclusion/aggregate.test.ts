@@ -45,7 +45,7 @@ describe('aggregateInclusion', () => {
   it('reports no measurements honestly', () => {
     const results = aggregateInclusion([], 'cloth-v4');
     expect(results).toMatchObject({ measuredAt: null, groups: [] });
-    expect(results.notes[0]).toMatch(/^No measurements yet/);
+    expect(results.notes.join(' ')).not.toMatch(/\d+ apparel renders/);
   });
 
   it('matches the committed module when nothing has been measured', () => {

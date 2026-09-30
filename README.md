@@ -26,6 +26,14 @@ Try-on is also usually tested on standing models. The YouCam AI Clothes document
 
 The group board shows everyone side by side ("7 of 8 rendered"), per-person and total budget, and the weakest color pair in plain words. English and Bulgarian.
 
+![Group board of the demo prom: everyone side by side, budget, and a near-miss warning between two partners](docs/screenshots/board.png)
+
+| My look (phone) | Together | Hairdresser link | Bulgarian |
+| --- | --- | --- | --- |
+| ![Look builder with a simulated try-on](docs/screenshots/my-look-phone.png) | ![Two partners side by side with their color relation](docs/screenshots/together-phone.png) | ![Read-only vendor page with the chosen hair color and the before photo](docs/screenshots/vendor-hair-phone.png) | ![Landing page in Bulgarian](docs/screenshots/landing-bg.png) |
+
+Screenshots come from the built-in demo event: the people are illustrations, not photos, and its renders are labeled as demo data.
+
 ## How YouCam is used
 
 All YouCam paths and payloads live in one module: [`api/youcam/`](api/youcam). Nothing else touches HTTP details.

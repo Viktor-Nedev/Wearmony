@@ -64,7 +64,7 @@ export function aggregateInclusion(runs: EvalRun[], engine: string): InclusionRe
         `${apparel.length} apparel renders of ${people.size} people (${seatedPeople.size} seated). A small sample: read the numbers as indicative, not as a benchmark.`,
         ...BASE_NOTES,
       ]
-    : ['No measurements yet. The table fills in after the evaluation runs on consenting adults.', ...BASE_NOTES];
+    : [...BASE_NOTES];
 
   return { measuredAt, engine, groups, notes };
 }

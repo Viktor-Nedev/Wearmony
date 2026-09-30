@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../api/models.dart';
 import '../../app_scope.dart';
@@ -48,6 +49,12 @@ class _InclusionScreenState extends State<InclusionScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: context.canPop()
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.home_outlined),
+                onPressed: () => context.go('/'),
+              ),
         title: Text(l10n.inclusionTitle),
         actions: const [LanguageMenu()],
       ),

@@ -188,7 +188,7 @@ export async function seedDemoEvent(services: Services, organizerId: string): Pr
   await repo.upsertParticipant({
     eventId: event.id,
     userId: organizerId,
-    displayName: 'You',
+    displayName: 'Guest',
     pairWith: null,
     photoPath: null,
     photoHash: null,
