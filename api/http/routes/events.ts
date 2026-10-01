@@ -80,7 +80,16 @@ events.post('/events', requireUser, async (c) => {
   return c.json(eventDto(event, { isOrganizer: true, isParticipant: false }), 201);
 });
 
+/** One demo event per visitor: opening the demo again returns the existing one. */
 events.post('/demo', requireUser, async (c) => {
+  const { repo } = c.var.services;
+  const existing = (await repo.listEventsForUser(c.var.userId)).find(
+    (event) => event.demo && event.organizerId === c.var.userId,
+  );
+  if (existing) {
+    const participant = await repo.getParticipant(existing.id, c.var.userId);
+    return c.json(eventDto(existing, { isOrganizer: true, isParticipant: Boolean(participant) }), 200);
+  }
   const event = await seedDemoEvent(c.var.services, c.var.userId);
   return c.json(eventDto(event, { isOrganizer: true, isParticipant: true }), 201);
 });

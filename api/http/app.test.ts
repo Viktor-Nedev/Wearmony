@@ -331,4 +331,14 @@ describe('demo event', () => {
     expect(board.harmony.weakest).toMatchObject({ relation: 'near_miss', names: ['Maria', 'Ivan'], partners: true });
     expect(board.participants.every((p: any) => p.render.mock)).toBe(true);
   });
+
+  it('gives each visitor one demo event', async () => {
+    const t = setup();
+    const first = await t.call('POST', '/demo', OUTSIDER);
+    const again = await t.call('POST', '/demo', OUTSIDER);
+    expect(first.status).toBe(201);
+    expect(again.status).toBe(200);
+    expect(again.json.id).toBe(first.json.id);
+    expect((await t.call('POST', '/demo', ANA)).json.id).not.toBe(first.json.id);
+  });
 });
