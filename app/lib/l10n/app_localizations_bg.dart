@@ -974,4 +974,10 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get stepsTitle => 'Стъпки на пробването';
+
+  @override
+  String get badgeIllustration => 'Илюстрация';
+
+  @override
+  String get badgeSimulated => 'Симулация';
 }

@@ -1776,6 +1776,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try-on steps'**
   String get stepsTitle;
+
+  /// No description provided for @badgeIllustration.
+  ///
+  /// In en, this message translates to:
+  /// **'Illustration'**
+  String get badgeIllustration;
+
+  /// No description provided for @badgeSimulated.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulated'**
+  String get badgeSimulated;
 }
 
 class _AppLocalizationsDelegate

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../theme.dart';
 import '../ui/effects.dart';
@@ -29,7 +30,16 @@ class FormScaffold extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(actions: [...actions, const SizedBox(width: 8)]),
+      appBar: AppBar(
+        // Opened straight from a link there is no page to go back to; offer home instead.
+        leading: context.canPop()
+            ? null
+            : IconButton(
+                icon: const BrandMark(size: 18, showName: false),
+                onPressed: () => context.go('/'),
+              ),
+        actions: [...actions, const SizedBox(width: 8)],
+      ),
       body: AuroraBackground(
         intensity: 0.75,
         child: SafeArea(

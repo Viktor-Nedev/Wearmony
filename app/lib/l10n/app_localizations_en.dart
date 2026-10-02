@@ -970,4 +970,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepsTitle => 'Try-on steps';
+
+  @override
+  String get badgeIllustration => 'Illustration';
+
+  @override
+  String get badgeSimulated => 'Simulated';
 }

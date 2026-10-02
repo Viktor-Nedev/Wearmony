@@ -70,7 +70,8 @@ class _CatalogueTabState extends State<CatalogueTab> {
 
   Future<void> _delete(CatalogItem item) async {
     final l10n = AppLocalizations.of(context);
-    if (!await confirm(context, l10n.deleteItemConfirm(item.name)) || !mounted) {
+    if (!await confirm(context, l10n.deleteItemConfirm(item.name)) ||
+        !mounted) {
       return;
     }
     await runWithFeedback(
@@ -307,6 +308,7 @@ class _ColorStrip extends StatelessWidget {
       child: SizedBox(
         height: 10,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             for (final color in colors)
               Expanded(

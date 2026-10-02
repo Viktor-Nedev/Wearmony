@@ -144,8 +144,12 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
                   const SizedBox(height: 16),
                   LayoutBuilder(
                     builder: (context, constraints) {
-                      final link = _HarmonyLink(finding: pairFinding);
-                      if (constraints.maxWidth < 520) {
+                      final narrow = constraints.maxWidth < 520;
+                      final link = _HarmonyLink(
+                        finding: pairFinding,
+                        horizontal: narrow,
+                      );
+                      if (narrow) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -232,9 +236,12 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
 
 /// The color relation between two people, drawn between their pictures.
 class _HarmonyLink extends StatelessWidget {
-  const _HarmonyLink({required this.finding});
+  const _HarmonyLink({required this.finding, this.horizontal = false});
 
   final HarmonyFinding? finding;
+
+  /// Below the pictures on narrow screens; between them otherwise.
+  final bool horizontal;
 
   @override
   Widget build(BuildContext context) {
@@ -243,46 +250,62 @@ class _HarmonyLink extends StatelessWidget {
     if (f == null) {
       return const Icon(Icons.favorite, color: Brand.rose, size: 32);
     }
+    final color = relationColor(f.relation);
+    final pair = ColorPair(
+      a: hexColor(f.colors[0].hex),
+      b: hexColor(f.colors[1].hex),
+      size: 30,
+    );
+    final pill = RelationPill(
+      relation: f.relation,
+      label: relationName(l10n, f.relation),
+    );
+    final delta = Text(
+      'ΔE ${f.deltaE.toStringAsFixed(1)}',
+      style: Theme.of(context).textTheme.labelMedium,
+    );
+
     return Reveal(
       delay: const Duration(milliseconds: 320),
       scale: 0.8,
       child: Container(
-        width: 112,
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+        width: horizontal ? null : 132,
+        padding: horizontal
+            ? const EdgeInsets.symmetric(vertical: 12, horizontal: 18)
+            : const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: relationColor(f.relation).withValues(alpha: 0.35),
-          ),
+          borderRadius: BorderRadius.circular(horizontal ? 40 : 24),
+          border: Border.all(color: color.withValues(alpha: 0.35)),
           boxShadow: [
             BoxShadow(
-              color: relationColor(f.relation).withValues(alpha: 0.18),
+              color: color.withValues(alpha: 0.18),
               blurRadius: 24,
               offset: const Offset(0, 10),
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ColorPair(
-              a: hexColor(f.colors[0].hex),
-              b: hexColor(f.colors[1].hex),
-              size: 30,
-            ),
-            const SizedBox(height: 10),
-            RelationPill(
-              relation: f.relation,
-              label: relationName(l10n, f.relation),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'ΔE ${f.deltaE.toStringAsFixed(1)}',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          ],
-        ),
+        child: horizontal
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  pair,
+                  const SizedBox(width: 12),
+                  pill,
+                  const SizedBox(width: 10),
+                  delta,
+                ],
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  pair,
+                  const SizedBox(height: 10),
+                  FittedBox(fit: BoxFit.scaleDown, child: pill),
+                  const SizedBox(height: 6),
+                  delta,
+                ],
+              ),
       ),
     );
   }

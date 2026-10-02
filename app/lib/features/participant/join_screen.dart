@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../api/models.dart';
 import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../ui/effects.dart';
@@ -91,10 +92,7 @@ class _JoinScreenState extends State<JoinScreen> {
           controller: _code,
           textCapitalization: TextCapitalization.characters,
           textAlign: TextAlign.center,
-          style: text.headlineSmall?.copyWith(
-            letterSpacing: 8,
-            fontWeight: FontWeight.w700,
-          ),
+          style: Brand.numbers(text.headlineSmall)?.copyWith(letterSpacing: 8),
           decoration: InputDecoration(labelText: l10n.joinCodeLabel),
           onChanged: (_) => _lookUp(),
         ),

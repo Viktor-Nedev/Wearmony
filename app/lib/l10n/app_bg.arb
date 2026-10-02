@@ -276,5 +276,7 @@
   "statBudget": "Общо за групата",
   "yourLook": "Твоята визия",
   "selected": "Избрано",
-  "stepsTitle": "Стъпки на пробването"
+  "stepsTitle": "Стъпки на пробването",
+  "badgeIllustration": "Илюстрация",
+  "badgeSimulated": "Симулация"
 }

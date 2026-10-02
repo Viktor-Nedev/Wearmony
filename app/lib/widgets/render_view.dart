@@ -71,20 +71,21 @@ class RenderView extends StatelessWidget {
     } else if (render.checks?.drift == true) {
       notices.add(NoticeBar(l10n.checkDrift, icon: Icons.palette_outlined));
     }
+    // Simulated or illustrated results are always labeled: a full notice, or a
+    // small badge on the picture in compact layouts.
+    final simulatedLabel = render.resultUrl == null
+        ? null
+        : demo
+        ? (l10n.badgeIllustration, l10n.demoRenderBadge, Icons.brush_outlined)
+        : render.mock
+        ? (l10n.badgeSimulated, l10n.mockBadge, Icons.science_outlined)
+        : null;
     if (render.resultUrl != null) {
-      if (demo) {
+      if (simulatedLabel != null && !compact) {
         notices.add(
           NoticeBar(
-            l10n.demoRenderBadge,
-            icon: Icons.brush_outlined,
-            tone: NoticeTone.simulated,
-          ),
-        );
-      } else if (render.mock) {
-        notices.add(
-          NoticeBar(
-            l10n.mockBadge,
-            icon: Icons.science_outlined,
+            simulatedLabel.$2,
+            icon: simulatedLabel.$3,
             tone: NoticeTone.simulated,
           ),
         );
@@ -146,7 +147,53 @@ class RenderView extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: radius,
-            child: AspectRatio(aspectRatio: 3 / 4, child: picture),
+            child: AspectRatio(
+              aspectRatio: 3 / 4,
+              child: compact && simulatedLabel != null
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        picture,
+                        Positioned(
+                          left: 8,
+                          top: 8,
+                          child: Tooltip(
+                            message: simulatedLabel.$2,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.55),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    simulatedLabel.$3,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    simulatedLabel.$1,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : picture,
+            ),
           ),
         ),
         if (render.steps.length > 1 && !compact) ...[

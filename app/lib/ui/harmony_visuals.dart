@@ -92,6 +92,7 @@ class ColorPair extends StatelessWidget {
         width: size * 1.65,
         height: size,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Positioned(left: size * 0.65 * (1 - t) * 0.5, child: disc(a)),
             Positioned(
