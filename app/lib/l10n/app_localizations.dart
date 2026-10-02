@@ -1680,6 +1680,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'not reviewed'**
   String get notReviewed;
+
+  /// No description provided for @heroEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Group virtual try-on for events'**
+  String get heroEyebrow;
+
+  /// No description provided for @featureTryOnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it on, together'**
+  String get featureTryOnTitle;
+
+  /// No description provided for @featureTryOnBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Outfit, lip color and hair color on your own photo, then everyone side by side.'**
+  String get featureTryOnBody;
+
+  /// No description provided for @featureHarmonyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Color harmony'**
+  String get featureHarmonyTitle;
+
+  /// No description provided for @featureHarmonyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Spots almost-matching colors before the night, explained in one sentence.'**
+  String get featureHarmonyBody;
+
+  /// No description provided for @featureBudgetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared budget'**
+  String get featureBudgetTitle;
+
+  /// No description provided for @featureBudgetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-person and group totals, so nobody is surprised.'**
+  String get featureBudgetBody;
+
+  /// No description provided for @featureInclusiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Made for everyone'**
+  String get featureInclusiveTitle;
+
+  /// No description provided for @featureInclusiveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated photos are supported, and how well they work is measured.'**
+  String get featureInclusiveBody;
+
+  /// No description provided for @statRendered.
+  ///
+  /// In en, this message translates to:
+  /// **'Rendered'**
+  String get statRendered;
+
+  /// No description provided for @statLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked looks'**
+  String get statLocked;
+
+  /// No description provided for @statHarmony.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony'**
+  String get statHarmony;
+
+  /// No description provided for @statBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Group total'**
+  String get statBudget;
+
+  /// No description provided for @yourLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Your look'**
+  String get yourLook;
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get selected;
+
+  /// No description provided for @stepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Try-on steps'**
+  String get stepsTitle;
 }
 
 class _AppLocalizationsDelegate

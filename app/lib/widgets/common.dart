@@ -74,35 +74,46 @@ class NoticeBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final (background, foreground) = switch (tone) {
-      NoticeTone.info => (
-        scheme.secondaryContainer,
-        scheme.onSecondaryContainer,
-      ),
-      NoticeTone.simulated => (
-        scheme.tertiaryContainer,
-        scheme.onTertiaryContainer,
-      ),
-      NoticeTone.warning => (scheme.errorContainer, scheme.onErrorContainer),
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final accent = switch (tone) {
+      NoticeTone.info => Theme.of(context).colorScheme.primary,
+      NoticeTone.simulated => const Color(0xFFB07A2A),
+      NoticeTone.warning => const Color(0xFFC0392B),
     };
-    return DecoratedBox(
+    final foreground = dark
+        ? Color.lerp(accent, Colors.white, 0.55)!
+        : Color.lerp(accent, Colors.black, 0.35)!;
+    return Container(
       decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(8),
+        color: accent.withValues(alpha: dark ? 0.16 : 0.09),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: accent.withValues(alpha: dark ? 0.3 : 0.22)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: 18, color: foreground),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(text, style: TextStyle(color: foreground)),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: dark ? 0.25 : 0.14),
+              shape: BoxShape.circle,
             ),
-          ],
-        ),
+            child: Icon(icon, size: 17, color: foreground),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: foreground,
+                fontWeight: FontWeight.w600,
+                height: 1.35,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

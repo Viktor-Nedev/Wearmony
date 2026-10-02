@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
+import '../../ui/effects.dart';
+import '../../ui/motion.dart';
 import '../../widgets/common.dart';
-import '../../widgets/page_body.dart';
+import '../../widgets/form_scaffold.dart';
 
 /// Explicit consent before any photo is uploaded.
 class ConsentScreen extends StatefulWidget {
@@ -34,34 +36,74 @@ class _ConsentScreenState extends State<ConsentScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
     final statements = [
-      l10n.consentAdult,
-      l10n.consentPrivate,
-      l10n.consentDelete,
-      l10n.consentPreview,
+      (Icons.verified_user_outlined, l10n.consentAdult),
+      (Icons.lock_outline, l10n.consentPrivate),
+      (Icons.delete_outline, l10n.consentDelete),
+      (Icons.visibility_outlined, l10n.consentPreview),
     ];
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.consentTitle)),
-      body: PageBody(
-        children: [
-          for (var i = 0; i < statements.length; i++)
-            CheckboxListTile(
-              value: _checked.contains(i),
-              onChanged: (value) => setState(
-                () => value == true ? _checked.add(i) : _checked.remove(i),
+    return FormScaffold(
+      title: l10n.consentTitle,
+      icon: Icons.shield_outlined,
+      children: [
+        for (final (index, (icon, statement)) in statements.indexed) ...[
+          Reveal(
+            delay: Motion.stagger(index + 1, stepMs: 80),
+            child: Hoverable(
+              onTap: () => setState(
+                () => _checked.contains(index)
+                    ? _checked.remove(index)
+                    : _checked.add(index),
               ),
-              title: Text(statements[i]),
-              controlAffinity: ListTileControlAffinity.leading,
+              child: AnimatedContainer(
+                duration: Motion.medium,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: _checked.contains(index)
+                      ? scheme.primary.withValues(alpha: 0.08)
+                      : scheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: _checked.contains(index)
+                        ? scheme.primary
+                        : scheme.outlineVariant,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(icon, color: scheme.primary),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        statement,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Checkbox(
+                      value: _checked.contains(index),
+                      onChanged: (value) => setState(
+                        () => value == true
+                            ? _checked.add(index)
+                            : _checked.remove(index),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          const SizedBox(height: 24),
-          FilledButton(
-            onPressed: _checked.length == statements.length && !_busy
-                ? _agree
-                : null,
-            child: Text(l10n.consentButton),
           ),
+          const SizedBox(height: 10),
         ],
-      ),
+        const SizedBox(height: 14),
+        BrandButton(
+          label: l10n.consentButton,
+          icon: Icons.check,
+          onPressed: _checked.length == statements.length && !_busy
+              ? _agree
+              : null,
+        ),
+      ],
     );
   }
 }

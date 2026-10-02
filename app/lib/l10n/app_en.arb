@@ -25,7 +25,6 @@
   "errorOffline": "Can't reach Wearmony. Check your connection and try again.",
   "linkCopied": "Link copied",
   "none": "None",
-
   "signInTitle": "Sign in",
   "signInExplain": "Sign in with your email to create or join events.",
   "emailLabel": "Email",
@@ -33,7 +32,6 @@
   "signInButton": "Sign in",
   "signUpButton": "Create account",
   "checkEmail": "Check your email to confirm your account, then sign in.",
-
   "createEventTitle": "New event",
   "eventNameLabel": "Event name",
   "templateLabel": "Template",
@@ -47,14 +45,12 @@
   "budgetTotalLabel": "Total budget (optional)",
   "amountsInEuro": "Amounts in euro.",
   "createEventButton": "Create event",
-
   "joinTitle": "Join an event",
   "joinCodeLabel": "Event code",
   "yourNameLabel": "Your name, as the group will see it",
   "joinButton": "Join",
   "joiningEvent": "You are joining {name}.",
   "codeNotFound": "No event uses this code.",
-
   "tabBoard": "Group",
   "tabMyLook": "My look",
   "tabTogether": "Together",
@@ -64,14 +60,12 @@
   "tabSettings": "Settings",
   "demoBanner": "Demo event: the people and renders are illustrations, not real photos.",
   "mockBanner": "Mock mode: try-on results are simulated, no YouCam calls are made.",
-
   "consentTitle": "Before you add a photo",
   "consentAdult": "I am 18 or older.",
   "consentPrivate": "My photo is visible only to people in this event and to vendors I choose to share it with.",
   "consentDelete": "I can delete my photo and every render at any time.",
   "consentPreview": "Try-on is a visual preview, not a fit guarantee.",
   "consentButton": "I agree",
-
   "photoTitle": "Your photo",
   "photoTipsTitle": "For the best result",
   "photoTipLight": "Even, bright light.",
@@ -95,7 +89,6 @@
   "issue_too_bright": "The photo is very bright; try softer light.",
   "issue_low_contrast": "The photo looks flat or washed out.",
   "warning_dark_clothing": "Dark clothing on the photo can stop the outfit from applying. A photo in lighter clothing works better.",
-
   "sectionOutfit": "Outfit",
   "sectionMakeup": "Lip color",
   "sectionHair": "Hair color",
@@ -133,13 +126,11 @@
   "shareLinkReady": "Read-only link, valid until {date}:",
   "copyLink": "Copy link",
   "myData": "My data",
-
   "togetherNoPartner": "Choose your partner to see yourselves side by side.",
   "partnerLabel": "Partner",
   "noPartner": "No partner",
   "youAndPartner": "You and {name}",
   "you": "You",
-
   "boardRendered": "{rendered} of {total} rendered",
   "boardLocked": "{locked} locked",
   "budgetTitle": "Budget",
@@ -156,7 +147,6 @@
   "lockedLabel": "Locked",
   "groupHarmony": "Group harmony {score}/100",
   "addPeopleHint": "Invite people with the code {code}.",
-
   "harmonyTitle": "Color harmony",
   "harmonyWeakest": "Weakest pair",
   "harmonyNoData": "Add outfits to see how the group's colors work together.",
@@ -182,7 +172,6 @@
   "explainNote": "Written by Gemini from the results above. Scores come only from the color rules.",
   "harmonyMethodTitle": "How it works",
   "harmonyMethod": "Garment colors come from the catalogue photos (background removed, k-means clustering in CIELAB). Every pair is compared with CIEDE2000: under 2 is a match, 2 to 8 is a near-miss that can look like a mistake, and opposite hues are complementary. Lip and hair colors are compared with the same person's outfit. The group score is the weakest pair, not an average. Harmony is about colors only, never about bodies or skin.",
-
   "colorBlack": "black",
   "colorWhite": "white",
   "colorGray": "gray",
@@ -204,7 +193,6 @@
   "colorLight": "light {color}",
   "colorDark": "dark {color}",
   "colorMuted": "muted {color}",
-
   "catalogueTitle": "Catalogue",
   "addGarment": "Add outfit",
   "addMakeup": "Add lip color",
@@ -223,7 +211,6 @@
   "addedBy": "Added by {vendor}",
   "colorsFound": "Colors found",
   "deleteItemConfirm": "Delete {name}? Looks that use it lose this item.",
-
   "inviteTitle": "Invite people",
   "inviteCode": "Event code",
   "inviteLinkLabel": "Invite link",
@@ -232,7 +219,6 @@
   "vendorCatalogueExplain": "Let a shop or costume keeper add items to this catalogue, without an account.",
   "vendorNameLabel": "Vendor name (optional)",
   "createLink": "Create link",
-
   "settingsTitle": "Event settings",
   "saveChanges": "Save changes",
   "saved": "Saved",
@@ -240,7 +226,6 @@
   "deleteEventConfirm": "Delete {name} with all photos, renders and links? This cannot be undone.",
   "participantsTitle": "Participants",
   "removeParticipantConfirm": "Remove {name} and delete their photo and renders?",
-
   "myDataTitle": "My data",
   "myDataExplain": "Your photo and renders are stored only for this event. Photos are resized and stripped of location data before anything is sent to the try-on engine.",
   "deletePhotoConfirm": "Delete your photo and every render made from it?",
@@ -249,7 +234,6 @@
   "deleteEverywhere": "Delete my data in all events",
   "deleteEverywhereConfirm": "Leave every event you joined and delete all your photos, looks and renders?",
   "deletedDone": "Deleted.",
-
   "vendorTitle": "Shared look",
   "vendorReadOnly": "This page is read-only and the link expires.",
   "vendorFor": "From {name} for {event}",
@@ -261,7 +245,6 @@
   "vendorCatalogueTitle": "Add items to {event}",
   "vendorAddItem": "Add item",
   "vendorItemsInEvent": "Items in this catalogue",
-
   "inclusionTitle": "Inclusion: standing vs seated",
   "inclusionIntro": "Virtual try-on is usually tested on standing models. We measure how Wearmony works for seated people, such as wheelchair users, and publish the numbers as they are.",
   "inclusionNotMeasured": "No measurements yet.",
@@ -277,5 +260,21 @@
   "colMedianTime": "Median time",
   "framingAsCatalogued": "As catalogued",
   "framingUpperBody": "Upper-body fallback",
-  "notReviewed": "not reviewed"
+  "notReviewed": "not reviewed",
+  "heroEyebrow": "Group virtual try-on for events",
+  "featureTryOnTitle": "Try it on, together",
+  "featureTryOnBody": "Outfit, lip color and hair color on your own photo, then everyone side by side.",
+  "featureHarmonyTitle": "Color harmony",
+  "featureHarmonyBody": "Spots almost-matching colors before the night, explained in one sentence.",
+  "featureBudgetTitle": "Shared budget",
+  "featureBudgetBody": "Per-person and group totals, so nobody is surprised.",
+  "featureInclusiveTitle": "Made for everyone",
+  "featureInclusiveBody": "Seated photos are supported, and how well they work is measured.",
+  "statRendered": "Rendered",
+  "statLocked": "Locked looks",
+  "statHarmony": "Harmony",
+  "statBudget": "Group total",
+  "yourLook": "Your look",
+  "selected": "Selected",
+  "stepsTitle": "Try-on steps"
 }

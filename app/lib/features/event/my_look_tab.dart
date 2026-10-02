@@ -8,6 +8,10 @@ import '../../api/models.dart';
 import '../../app_scope.dart';
 import '../../config.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme.dart';
+import '../../ui/effects.dart';
+import '../../ui/figure.dart';
+import '../../ui/motion.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/render_view.dart';
@@ -28,6 +32,7 @@ class MyLookTab extends StatefulWidget {
 }
 
 class _MyLookTabState extends State<MyLookTab> {
+  final _sparkles = GlobalKey<SparkleBurstState>();
   Look? _look;
   List<CatalogItem> _items = const [];
   Object? _error;
@@ -109,6 +114,13 @@ class _MyLookTabState extends State<MyLookTab> {
     );
   }
 
+  Future<void> _toggleLock(Look look) async {
+    final locking = !look.locked;
+    final api = AppScope.api(context);
+    await _apply(() => api.lock(_eventId, locking));
+    if (locking && (_look?.locked ?? false)) _sparkles.currentState?.burst();
+  }
+
   Future<void> _share(String scope) async {
     final l10n = AppLocalizations.of(context);
     final link = await runWithFeedback(
@@ -120,13 +132,21 @@ class _MyLookTabState extends State<MyLookTab> {
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
+        icon: const Icon(Icons.link, color: Brand.berry),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l10n.shareLinkReady(formatDate(context, link.expiresAt))),
-            const SizedBox(height: 8),
-            SelectableText(url),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: SelectableText(url),
+            ),
           ],
         ),
         actions: [
@@ -162,31 +182,43 @@ class _MyLookTabState extends State<MyLookTab> {
     final look = _look;
     if (look == null) {
       return _error == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Skeleton(height: 420, radius: 26),
+                  SizedBox(height: 16),
+                  Skeleton(height: 120, radius: 20),
+                ],
+              ),
+            )
           : ErrorRetry(error: _error!, onRetry: _load);
     }
     return LayoutBuilder(
       builder: (context, constraints) {
-        final wide = constraints.maxWidth >= 840;
-        final preview = _preview(context, look);
-        final builder = _builder(context, look);
+        final wide = constraints.maxWidth >= 900;
+        final preview = Reveal(child: _preview(context, look));
+        final builder = Reveal(
+          delay: const Duration(milliseconds: 120),
+          child: _builder(context, look),
+        );
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1100),
+              constraints: const BoxConstraints(maxWidth: 1180),
               child: wide
                   ? Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(width: 360, child: preview),
-                        const SizedBox(width: 24),
+                        SizedBox(width: 400, child: preview),
+                        const SizedBox(width: 32),
                         Expanded(child: builder),
                       ],
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [preview, const SizedBox(height: 24), builder],
+                      children: [preview, const SizedBox(height: 28), builder],
                     ),
             ),
           ),
@@ -200,15 +232,29 @@ class _MyLookTabState extends State<MyLookTab> {
     final me = widget.event.me;
     if (me == null || !me.hasPhoto) {
       return Card(
+        margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(28),
           child: Column(
             children: [
-              const Icon(Icons.add_a_photo_outlined, size: 48),
-              const SizedBox(height: 12),
-              Text(l10n.renderNoPhoto, textAlign: TextAlign.center),
-              const SizedBox(height: 12),
-              FilledButton(onPressed: _goToPhoto, child: Text(l10n.addPhoto)),
+              const Figure(
+                clothing: Color(0xFFCFC3BD),
+                hair: Color(0xFF9C8E87),
+                skin: Color(0xFFE5D6CF),
+                width: 110,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                l10n.renderNoPhoto,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 18),
+              BrandButton(
+                label: l10n.addPhoto,
+                icon: Icons.add_a_photo_outlined,
+                onPressed: _goToPhoto,
+              ),
             ],
           ),
         ),
@@ -226,19 +272,33 @@ class _MyLookTabState extends State<MyLookTab> {
           onRetry: () =>
               _apply(() => AppScope.api(context).render(_eventId, retry: true)),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         if (render.status == 'idle')
-          Text(l10n.renderIdle, textAlign: TextAlign.center),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              l10n.renderIdle,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
         if (render.status == 'empty')
-          Text(l10n.renderEmpty, textAlign: TextAlign.center),
-        const SizedBox(height: 8),
-        FilledButton.icon(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              l10n.renderEmpty,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        BrandButton(
+          label: l10n.tryOnButton,
+          icon: Icons.auto_fix_high,
           onPressed: render.status == 'idle' && !_busy
               ? () => _apply(() => AppScope.api(context).render(_eventId))
               : null,
-          icon: const Icon(Icons.auto_fix_high),
-          label: Text(l10n.tryOnButton),
         ),
+        const SizedBox(height: 4),
         TextButton.icon(
           onPressed: _goToPhoto,
           icon: const Icon(Icons.photo_camera_outlined),
@@ -250,122 +310,131 @@ class _MyLookTabState extends State<MyLookTab> {
 
   Widget _builder(BuildContext context, Look look) {
     final l10n = AppLocalizations.of(context);
-    final text = Theme.of(context).textTheme;
     final garments = _items.where((i) => i.type == ItemType.garment).toList();
     final makeup = _items.where((i) => i.type == ItemType.makeup).toList();
     final hair = _items.where((i) => i.type == ItemType.hair).toList();
     final enabled = !look.locked && !_busy;
 
-    if (_items.isEmpty) return NoticeBar(l10n.catalogueEmpty);
+    if (_items.isEmpty) {
+      return NoticeBar(l10n.catalogueEmpty, icon: Icons.storefront_outlined);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(l10n.sectionOutfit, style: text.titleMedium),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: [
-            _NoneCard(
-              selected: look.garmentId == null,
-              onTap: enabled ? () => _select(ItemType.garment, null) : null,
-            ),
-            for (final item in garments)
-              _GarmentCard(
-                item: item,
-                currency: look.currency,
-                selected: look.garmentId == item.id,
-                onTap: enabled && item.hasImage
-                    ? () => _select(ItemType.garment, item.id)
-                    : null,
+        _Section(
+          icon: Icons.checkroom_outlined,
+          title: l10n.sectionOutfit,
+          child: Wrap(
+            spacing: 14,
+            runSpacing: 14,
+            children: [
+              _NoneCard(
+                selected: look.garmentId == null,
+                onTap: enabled ? () => _select(ItemType.garment, null) : null,
               ),
-          ],
-        ),
-        for (final (title, type, list, selectedId) in [
-          (l10n.sectionMakeup, ItemType.makeup, makeup, look.makeupId),
-          (l10n.sectionHair, ItemType.hair, hair, look.hairId),
-        ])
-          if (list.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Text(title, style: text.titleMedium),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                ChoiceChip(
-                  label: Text(l10n.none),
-                  selected: selectedId == null,
-                  onSelected: enabled ? (_) => _select(type, null) : null,
-                ),
-                for (final item in list)
-                  ChoiceChip(
-                    avatar: ColorDot(item.colorHex, size: 18),
-                    label: Text(
-                      '${item.name} · ${formatMoney(context, item.price, look.currency)}',
-                    ),
-                    selected: selectedId == item.id,
-                    onSelected: enabled ? (_) => _select(type, item.id) : null,
+              for (final (index, item) in garments.indexed)
+                Reveal(
+                  delay: Motion.stagger(index, stepMs: 50),
+                  child: _GarmentCard(
+                    item: item,
+                    currency: look.currency,
+                    selected: look.garmentId == item.id,
+                    onTap: enabled && item.hasImage
+                        ? () => _select(ItemType.garment, item.id)
+                        : null,
                   ),
-              ],
-            ),
-          ],
-        const SizedBox(height: 24),
-        Text(
-          l10n.lookTotal(formatMoney(context, look.total, look.currency)),
-          style: text.titleLarge,
-        ),
-        if (widget.event.budgetPerPerson != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            l10n.budgetPerPersonCap(
-              formatMoney(
-                context,
-                widget.event.budgetPerPerson!,
-                look.currency,
-              ),
-            ),
-            style: text.bodySmall?.copyWith(
-              color: look.total > widget.event.budgetPerPerson!
-                  ? Theme.of(context).colorScheme.error
-                  : null,
-            ),
+                ),
+            ],
           ),
-        ],
-        const SizedBox(height: 16),
-        if (look.locked) ...[
-          NoticeBar(l10n.lockedNote, icon: Icons.lock_outline),
-          const SizedBox(height: 8),
-        ],
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            FilledButton.tonalIcon(
-              onPressed: _busy || look.garmentId == null
-                  ? null
-                  : () => _apply(
-                      () => AppScope.api(context).lock(_eventId, !look.locked),
+        ),
+        for (final (icon, title, type, list, selectedId) in [
+          (
+            Icons.brush_outlined,
+            l10n.sectionMakeup,
+            ItemType.makeup,
+            makeup,
+            look.makeupId,
+          ),
+          (
+            Icons.content_cut,
+            l10n.sectionHair,
+            ItemType.hair,
+            hair,
+            look.hairId,
+          ),
+        ])
+          if (list.isNotEmpty)
+            _Section(
+              icon: icon,
+              title: title,
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 14,
+                children: [
+                  _Swatch(
+                    label: l10n.none,
+                    selected: selectedId == null,
+                    onTap: enabled ? () => _select(type, null) : null,
+                  ),
+                  for (final item in list)
+                    _Swatch(
+                      color: item.colorHex,
+                      label: item.name,
+                      price: formatMoney(context, item.price, look.currency),
+                      selected: selectedId == item.id,
+                      onTap: enabled ? () => _select(type, item.id) : null,
                     ),
-              icon: Icon(look.locked ? Icons.lock_open : Icons.lock_outline),
-              label: Text(look.locked ? l10n.unlockLook : l10n.lockLook),
+                ],
+              ),
             ),
-            if (look.hairId != null)
-              OutlinedButton.icon(
-                onPressed: () => _share('hair'),
-                icon: const Icon(Icons.content_cut),
-                label: Text(l10n.shareHair),
-              ),
-            if (!look.isEmpty)
-              OutlinedButton.icon(
-                onPressed: () => _share('look'),
-                icon: const Icon(Icons.storefront_outlined),
-                label: Text(l10n.shareLook),
-              ),
-          ],
+        const SizedBox(height: 8),
+        _SummaryCard(
+          look: look,
+          event: widget.event,
+          busy: _busy,
+          sparkles: _sparkles,
+          onLock: () => _toggleLock(look),
+          onShare: _share,
         ),
       ],
+    );
+  }
+}
+
+class _Section extends StatelessWidget {
+  const _Section({
+    required this.icon,
+    required this.title,
+    required this.child,
+  });
+
+  final IconData icon;
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 26),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 20,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(title, style: Theme.of(context).textTheme.titleLarge),
+            ],
+          ),
+          const SizedBox(height: 12),
+          child,
+        ],
+      ),
     );
   }
 }
@@ -386,61 +455,109 @@ class _GarmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
     return SizedBox(
-      width: 150,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            color: selected ? scheme.primary : scheme.outlineVariant,
-            width: selected ? 3 : 1,
-          ),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AspectRatio(
-                aspectRatio: 4 / 5,
-                child: ColoredBox(
-                  color: Colors.white,
-                  child: NetImage(
-                    item.imageUrl,
-                    fit: BoxFit.contain,
-                    placeholderIcon: Icons.checkroom,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+      width: 158,
+      child: Hoverable(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: Motion.medium,
+          curve: Motion.curve,
+          decoration: BoxDecoration(
+            color: scheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected
+                  ? scheme.primary
+                  : scheme.outlineVariant.withValues(alpha: 0.6),
+              width: selected ? 2.5 : 1,
+            ),
+            boxShadow: selected
+                ? [
+                    BoxShadow(
+                      color: scheme.primary.withValues(alpha: 0.25),
+                      blurRadius: 18,
+                      offset: const Offset(0, 8),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        for (final color in item.colors.take(3)) ...[
-                          ColorDot(color.hex, size: 14),
-                          const SizedBox(width: 4),
-                        ],
-                        const Spacer(),
-                        Text(
-                          formatMoney(context, item.price, currency),
-                          style: Theme.of(context).textTheme.labelMedium,
+                  ]
+                : null,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Stack(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 4 / 5,
+                      child: ColoredBox(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: NetImage(
+                            item.imageUrl,
+                            fit: BoxFit.contain,
+                            placeholderIcon: Icons.checkroom,
+                          ),
                         ),
-                      ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: AnimatedScale(
+                        scale: selected ? 1 : 0,
+                        duration: Motion.medium,
+                        curve: Curves.elasticOut,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: scheme.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.check,
+                            size: 16,
+                            color: scheme.onPrimary,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: text.labelLarge,
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          for (final color in item.colors.take(3)) ...[
+                            ColorDot(color.hex, size: 13),
+                            const SizedBox(width: 3),
+                          ],
+                          const Spacer(),
+                          Text(
+                            formatMoney(context, item.price, currency),
+                            style: text.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -458,19 +575,217 @@ class _NoneCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return SizedBox(
-      width: 150,
+      width: 110,
       height: 120,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            color: selected ? scheme.primary : scheme.outlineVariant,
-            width: selected ? 3 : 1,
+      child: Hoverable(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: Motion.medium,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected ? scheme.primary : scheme.outlineVariant,
+              width: selected ? 2.5 : 1,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.block, color: scheme.outline),
+                const SizedBox(height: 6),
+                Text(
+                  AppLocalizations.of(context).none,
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            ),
           ),
         ),
-        child: InkWell(
-          onTap: onTap,
-          child: Center(child: Text(AppLocalizations.of(context).none)),
+      ),
+    );
+  }
+}
+
+class _Swatch extends StatelessWidget {
+  const _Swatch({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    this.color,
+    this.price,
+  });
+
+  final String? color;
+  final String label;
+  final String? price;
+  final bool selected;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
+    return SizedBox(
+      width: 88,
+      child: Hoverable(
+        onTap: onTap,
+        borderRadius: 44,
+        child: Column(
+          children: [
+            AnimatedContainer(
+              duration: Motion.medium,
+              curve: Motion.curve,
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selected ? scheme.primary : Colors.transparent,
+                  width: 3,
+                ),
+              ),
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color == null
+                      ? scheme.surfaceContainerHigh
+                      : hexColor(color),
+                  boxShadow: color == null
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: hexColor(color).withValues(alpha: 0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                ),
+                child: color == null
+                    ? Icon(Icons.block, color: scheme.outline, size: 20)
+                    : null,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: text.labelMedium,
+            ),
+            if (price != null)
+              Text(
+                price!,
+                style: text.labelSmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SummaryCard extends StatelessWidget {
+  const _SummaryCard({
+    required this.look,
+    required this.event,
+    required this.busy,
+    required this.sparkles,
+    required this.onLock,
+    required this.onShare,
+  });
+
+  final Look look;
+  final EventInfo event;
+  final bool busy;
+  final GlobalKey<SparkleBurstState> sparkles;
+  final VoidCallback onLock;
+  final void Function(String scope) onShare;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final cap = event.budgetPerPerson;
+    final over = cap != null && look.total > cap;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(22),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(child: Text(l10n.yourLook, style: text.titleLarge)),
+                CountUp(
+                  value: look.total,
+                  format: (v) => formatMoney(context, v, look.currency),
+                  style: Brand.numbers(
+                    text.headlineSmall,
+                  )?.copyWith(color: over ? scheme.error : scheme.primary),
+                ),
+              ],
+            ),
+            if (cap != null) ...[
+              const SizedBox(height: 12),
+              AnimatedBar(
+                value: cap == 0 ? 1 : look.total / cap,
+                color: over ? scheme.error : Brand.champagne,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                l10n.budgetPerPersonCap(
+                  formatMoney(context, cap, look.currency),
+                ),
+                style: text.bodySmall?.copyWith(
+                  color: over ? scheme.error : null,
+                ),
+              ),
+            ],
+            const SizedBox(height: 18),
+            if (look.locked) ...[
+              Reveal(
+                child: NoticeBar(l10n.lockedNote, icon: Icons.lock_outline),
+              ),
+              const SizedBox(height: 12),
+            ],
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                SparkleBurst(
+                  key: sparkles,
+                  child: FilledButton.icon(
+                    onPressed: busy || look.garmentId == null ? null : onLock,
+                    icon: Icon(
+                      look.locked ? Icons.lock_open : Icons.lock_outline,
+                    ),
+                    label: Text(look.locked ? l10n.unlockLook : l10n.lockLook),
+                  ),
+                ),
+                if (look.hairId != null)
+                  OutlinedButton.icon(
+                    onPressed: () => onShare('hair'),
+                    icon: const Icon(Icons.content_cut),
+                    label: Text(l10n.shareHair),
+                  ),
+                if (!look.isEmpty)
+                  OutlinedButton.icon(
+                    onPressed: () => onShare('look'),
+                    icon: const Icon(Icons.storefront_outlined),
+                    label: Text(l10n.shareLook),
+                  ),
+              ],
+            ),
+          ],
         ),
       ),
     );

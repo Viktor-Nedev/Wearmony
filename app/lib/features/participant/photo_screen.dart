@@ -8,7 +8,11 @@ import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
-import '../../widgets/page_body.dart';
+import '../../theme.dart';
+import '../../ui/effects.dart';
+import '../../ui/figure.dart';
+import '../../ui/motion.dart';
+import '../../widgets/form_scaffold.dart';
 
 /// Photo capture with guidance, a pose tag chosen by the participant, and the quality gate result.
 class PhotoScreen extends StatefulWidget {
@@ -98,140 +102,196 @@ class _PhotoScreenState extends State<PhotoScreen> {
         defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.photoTitle)),
-      body: me == null
-          ? const Center(child: CircularProgressIndicator())
-          : PageBody(
+    if (me == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    final scheme = Theme.of(context).colorScheme;
+    final tips = [
+      (Icons.wb_sunny_outlined, l10n.photoTipLight),
+      (Icons.crop_portrait, l10n.photoTipFrame),
+      (Icons.person_outline, l10n.photoTipAlone),
+      (Icons.checkroom_outlined, l10n.photoTipClothes),
+    ];
+
+    Widget poseCard(Pose pose, String label) {
+      final selected = _pose == pose;
+      return Expanded(
+        child: Hoverable(
+          onTap: _busy ? null : () => setState(() => _pose = pose),
+          child: AnimatedContainer(
+            duration: Motion.medium,
+            curve: Motion.curve,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+            decoration: BoxDecoration(
+              color: selected
+                  ? scheme.primary.withValues(alpha: 0.08)
+                  : scheme.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: selected ? scheme.primary : scheme.outlineVariant,
+                width: selected ? 2 : 1,
+              ),
+            ),
+            child: Column(
               children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(l10n.photoTipsTitle, style: text.titleMedium),
-                        const SizedBox(height: 8),
-                        for (final tip in [
-                          l10n.photoTipLight,
-                          l10n.photoTipFrame,
-                          l10n.photoTipAlone,
-                          l10n.photoTipClothes,
-                        ])
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('•  '),
-                                Expanded(child: Text(tip)),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+                Figure(
+                  clothing: selected ? Brand.berry : const Color(0xFFB9ABB3),
+                  hair: const Color(0xFF3B2A20),
+                  seated: pose == Pose.seated,
+                  width: 62,
                 ),
-                const SizedBox(height: 16),
-                Text(l10n.poseQuestion, style: text.titleSmall),
                 const SizedBox(height: 8),
-                SegmentedButton<Pose>(
-                  segments: [
-                    ButtonSegment(
-                      value: Pose.standing,
-                      label: Text(l10n.poseStanding),
-                      icon: const Icon(Icons.accessibility_new),
-                    ),
-                    ButtonSegment(
-                      value: Pose.seated,
-                      label: Text(l10n.poseSeated),
-                      icon: const Icon(Icons.accessible),
-                    ),
-                  ],
-                  selected: {_pose},
-                  onSelectionChanged: _busy
-                      ? null
-                      : (value) => setState(() => _pose = value.first),
-                ),
-                if (_pose == Pose.seated) ...[
-                  const SizedBox(height: 8),
-                  NoticeBar(l10n.poseSeatedNote, icon: Icons.accessible),
-                ],
-                const SizedBox(height: 16),
-                if (me.hasPhoto)
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 280),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: AspectRatio(
-                          aspectRatio: 3 / 4,
-                          child: NetImage(me.photoUrl),
-                        ),
-                      ),
-                    ),
-                  ),
-                if (_busy) ...[
-                  const SizedBox(height: 16),
-                  const LinearProgressIndicator(),
-                  const SizedBox(height: 8),
-                  Text(l10n.checkingPhoto, textAlign: TextAlign.center),
-                ],
-                if (_rejection != null) ...[
-                  const SizedBox(height: 16),
-                  NoticeBar(
-                    _rejection!,
-                    icon: Icons.error_outline,
-                    tone: NoticeTone.warning,
-                  ),
-                ],
-                if (me.hasPhoto && quality != null && !_busy) ...[
-                  const SizedBox(height: 16),
-                  if (quality.issues.isEmpty && quality.warnings.isEmpty)
-                    NoticeBar(l10n.photoReady, icon: Icons.check_circle_outline)
-                  else
-                    for (final issue in [
-                      ...quality.issues,
-                      ...quality.warnings,
-                    ]) ...[
-                      NoticeBar(
-                        photoIssueText(l10n, issue),
-                        icon: Icons.tips_and_updates_outlined,
-                        tone: NoticeTone.warning,
-                      ),
-                      const SizedBox(height: 8),
-                    ],
-                ],
-                const SizedBox(height: 16),
-                if (hasCamera)
-                  FilledButton.icon(
-                    onPressed: _busy ? null : () => _pick(ImageSource.camera),
-                    icon: const Icon(Icons.photo_camera_outlined),
-                    label: Text(l10n.takePhoto),
-                  ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: _busy ? null : () => _pick(ImageSource.gallery),
-                  icon: const Icon(Icons.photo_library_outlined),
-                  label: Text(
-                    me.hasPhoto ? l10n.replacePhoto : l10n.choosePhoto,
-                  ),
-                ),
-                if (me.hasPhoto) ...[
-                  const SizedBox(height: 8),
-                  FilledButton.tonal(
-                    onPressed: _busy
-                        ? null
-                        : () => context.go('/e/${widget.eventId}?tab=myLook'),
-                    child: Text(l10n.photoNextStep),
-                  ),
-                  TextButton(
-                    onPressed: _busy ? null : _delete,
-                    child: Text(l10n.deletePhoto),
-                  ),
-                ],
+                Text(label, style: text.titleSmall),
               ],
             ),
+          ),
+        ),
+      );
+    }
+
+    return FormScaffold(
+      title: l10n.photoTitle,
+      icon: Icons.photo_camera_outlined,
+      maxWidth: 640,
+      children: [
+        Text(l10n.photoTipsTitle, style: text.titleSmall),
+        const SizedBox(height: 10),
+        for (final (index, (icon, tip)) in tips.indexed)
+          Reveal(
+            delay: Motion.stagger(index + 1, stepMs: 70),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      color: scheme.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, size: 18, color: scheme.primary),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(child: Text(tip)),
+                ],
+              ),
+            ),
+          ),
+        const SizedBox(height: 16),
+        Text(l10n.poseQuestion, style: text.titleSmall),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            poseCard(Pose.standing, l10n.poseStanding),
+            const SizedBox(width: 12),
+            poseCard(Pose.seated, l10n.poseSeated),
+          ],
+        ),
+        AnimatedSize(
+          duration: Motion.medium,
+          child: _pose == Pose.seated
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: NoticeBar(l10n.poseSeatedNote, icon: Icons.accessible),
+                )
+              : const SizedBox(width: double.infinity),
+        ),
+        const SizedBox(height: 20),
+        if (me.hasPhoto || _busy)
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 280),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: AspectRatio(
+                  aspectRatio: 3 / 4,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      if (me.hasPhoto)
+                        NetImage(me.photoUrl)
+                      else
+                        ColoredBox(color: scheme.surfaceContainerHigh),
+                      if (_busy) const ScanningOverlay(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        if (_busy) ...[
+          const SizedBox(height: 12),
+          Text(
+            l10n.checkingPhoto,
+            textAlign: TextAlign.center,
+            style: text.titleSmall,
+          ),
+        ],
+        if (_rejection != null) ...[
+          const SizedBox(height: 16),
+          Reveal(
+            child: NoticeBar(
+              _rejection!,
+              icon: Icons.error_outline,
+              tone: NoticeTone.warning,
+            ),
+          ),
+        ],
+        if (me.hasPhoto && quality != null && !_busy) ...[
+          const SizedBox(height: 16),
+          if (quality.issues.isEmpty && quality.warnings.isEmpty)
+            Reveal(
+              child: NoticeBar(
+                l10n.photoReady,
+                icon: Icons.check_circle_outline,
+              ),
+            )
+          else
+            for (final (index, issue) in [
+              ...quality.issues,
+              ...quality.warnings,
+            ].indexed) ...[
+              Reveal(
+                delay: Motion.stagger(index),
+                child: NoticeBar(
+                  photoIssueText(l10n, issue),
+                  icon: Icons.tips_and_updates_outlined,
+                  tone: NoticeTone.warning,
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+        ],
+        const SizedBox(height: 20),
+        if (hasCamera) ...[
+          BrandButton(
+            label: l10n.takePhoto,
+            icon: Icons.photo_camera_outlined,
+            onPressed: _busy ? null : () => _pick(ImageSource.camera),
+          ),
+          const SizedBox(height: 10),
+        ],
+        OutlinedButton.icon(
+          onPressed: _busy ? null : () => _pick(ImageSource.gallery),
+          icon: const Icon(Icons.photo_library_outlined),
+          label: Text(me.hasPhoto ? l10n.replacePhoto : l10n.choosePhoto),
+        ),
+        if (me.hasPhoto) ...[
+          const SizedBox(height: 10),
+          FilledButton.tonalIcon(
+            onPressed: _busy
+                ? null
+                : () => context.go('/e/${widget.eventId}?tab=myLook'),
+            icon: const Icon(Icons.arrow_forward),
+            label: Text(l10n.photoNextStep),
+          ),
+          TextButton(
+            onPressed: _busy ? null : _delete,
+            child: Text(l10n.deletePhoto),
+          ),
+        ],
+      ],
     );
   }
 }

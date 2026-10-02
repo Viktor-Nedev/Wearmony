@@ -923,4 +923,55 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get notReviewed => 'непрегледано';
+
+  @override
+  String get heroEyebrow => 'Групово виртуално пробване за събития';
+
+  @override
+  String get featureTryOnTitle => 'Пробвайте заедно';
+
+  @override
+  String get featureTryOnBody =>
+      'Тоалет, червило и цвят на косата върху собствената ти снимка, после всички един до друг.';
+
+  @override
+  String get featureHarmonyTitle => 'Хармония на цветовете';
+
+  @override
+  String get featureHarmonyBody =>
+      'Открива почти еднаквите цветове преди вечерта и го обяснява с едно изречение.';
+
+  @override
+  String get featureBudgetTitle => 'Общ бюджет';
+
+  @override
+  String get featureBudgetBody => 'Суми на човек и за групата, без изненади.';
+
+  @override
+  String get featureInclusiveTitle => 'За всички';
+
+  @override
+  String get featureInclusiveBody =>
+      'Снимки в седнало положение се поддържат, а колко добре работят се измерва.';
+
+  @override
+  String get statRendered => 'Пробвали';
+
+  @override
+  String get statLocked => 'Заключени визии';
+
+  @override
+  String get statHarmony => 'Хармония';
+
+  @override
+  String get statBudget => 'Общо за групата';
+
+  @override
+  String get yourLook => 'Твоята визия';
+
+  @override
+  String get selected => 'Избрано';
+
+  @override
+  String get stepsTitle => 'Стъпки на пробването';
 }

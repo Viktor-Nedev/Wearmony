@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import '../../api/models.dart';
 import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme.dart';
+import '../../ui/effects.dart';
+import '../../ui/harmony_visuals.dart';
+import '../../ui/motion.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
-import '../../widgets/page_body.dart';
 import '../../widgets/session_widgets.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -39,115 +42,433 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final text = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
-    final config = AppScope.of(context).config;
-
     return Scaffold(
-      appBar: AppBar(actions: const [LanguageMenu()]),
-      body: PageBody(
-        children: [
-          const SizedBox(height: 16),
-          Text(
-            l10n.appTitle,
-            style: text.displaySmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.slogan,
-            style: text.titleLarge?.copyWith(color: scheme.primary),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            l10n.landingPitch,
-            style: text.bodyLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32),
-          FilledButton.icon(
-            onPressed: () => context.push('/create'),
-            icon: const Icon(Icons.event_outlined),
-            label: Text(l10n.organizeEvent),
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: () => context.push('/join'),
-            icon: const Icon(Icons.group_add_outlined),
-            label: Text(l10n.joinWithCode),
-          ),
-          const SizedBox(height: 12),
-          TextButton.icon(
-            onPressed: _openingDemo ? null : _openDemo,
-            icon: _openingDemo
-                ? const SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.auto_awesome_outlined),
-            label: Text(l10n.openDemo),
-          ),
-          Text(
-            l10n.demoHint,
-            style: text.bodySmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          if (config?.isMock ?? false) ...[
-            NoticeBar(
-              l10n.mockBanner,
-              icon: Icons.science_outlined,
-              tone: NoticeTone.simulated,
-            ),
-            const SizedBox(height: 12),
-          ],
-          const ApiStatusChip(),
-          const SizedBox(height: 24),
-          FutureBuilder<List<EventInfo>>(
-            future: _events,
-            builder: (context, snapshot) {
-              final events = snapshot.data ?? const [];
-              if (events.isEmpty) return const SizedBox.shrink();
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(l10n.yourEvents, style: text.titleMedium),
-                  const SizedBox(height: 8),
-                  for (final event in events)
-                    Card(
-                      child: ListTile(
-                        leading: Icon(
-                          event.demo
-                              ? Icons.auto_awesome_outlined
-                              : Icons.celebration_outlined,
-                        ),
-                        title: Text(event.name),
-                        subtitle: Text(
-                          [
-                            templateName(l10n, event.template),
-                            if (event.isOrganizer) l10n.organizerRole,
-                            if (event.isParticipant) l10n.participantRole,
-                          ].join(' · '),
-                        ),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => context.push('/e/${event.id}'),
-                      ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const BrandMark(size: 24),
+        actions: const [LanguageMenu(), SizedBox(width: 8)],
+      ),
+      body: AuroraBackground(
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final wide = constraints.maxWidth >= 980;
+              final hero = _Hero(
+                wide: wide,
+                openingDemo: _openingDemo,
+                onOpenDemo: _openDemo,
+              );
+              const showcase = Reveal(
+                delay: Duration(milliseconds: 280),
+                scale: 0.94,
+                child: HarmonyShowcase(),
+              );
+              return SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1160),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: wide ? 56 : 8),
+                        if (wide)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(flex: 11, child: hero),
+                              const SizedBox(width: 56),
+                              const Expanded(flex: 9, child: showcase),
+                            ],
+                          )
+                        else ...[
+                          hero,
+                          const SizedBox(height: 32),
+                          showcase,
+                        ],
+                        SizedBox(height: wide ? 72 : 40),
+                        _Features(wide: wide),
+                        const SizedBox(height: 40),
+                        _YourEvents(events: _events),
+                        const SizedBox(height: 32),
+                        const _Footer(),
+                      ],
                     ),
-                ],
+                  ),
+                ),
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Hero extends StatelessWidget {
+  const _Hero({
+    required this.wide,
+    required this.openingDemo,
+    required this.onOpenDemo,
+  });
+
+  final bool wide;
+  final bool openingDemo;
+  final VoidCallback onOpenDemo;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final align = wide ? CrossAxisAlignment.start : CrossAxisAlignment.center;
+    final textAlign = wide ? TextAlign.start : TextAlign.center;
+    final config = AppScope.of(context).config;
+
+    final buttons = [
+      BrandButton(
+        label: l10n.organizeEvent,
+        icon: Icons.event_outlined,
+        onPressed: () => context.push('/create'),
+        expand: !wide,
+      ),
+      OutlinedButton.icon(
+        onPressed: () => context.push('/join'),
+        icon: const Icon(Icons.group_add_outlined),
+        label: Text(l10n.joinWithCode),
+        style: OutlinedButton.styleFrom(minimumSize: const Size(0, 54)),
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: align,
+      children: [
+        Reveal(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerLowest.withValues(alpha: 0.7),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: scheme.outlineVariant.withValues(alpha: 0.6),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.auto_awesome, size: 16, color: Brand.berry),
+                const SizedBox(width: 8),
+                Flexible(child: Text(l10n.heroEyebrow, style: text.labelLarge)),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 22),
+        Reveal(
+          delay: const Duration(milliseconds: 80),
+          child: GradientText(
+            l10n.slogan,
+            textAlign: textAlign,
+            style: (wide ? text.displayLarge : text.displayMedium)?.copyWith(
+              height: 1.05,
+            ),
+          ),
+        ),
+        const SizedBox(height: 18),
+        Reveal(
+          delay: const Duration(milliseconds: 160),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 560),
+            child: Text(
+              l10n.landingPitch,
+              textAlign: textAlign,
+              style: text.titleMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+                height: 1.5,
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 32),
+        Reveal(
+          delay: const Duration(milliseconds: 240),
+          child: wide
+              ? Row(
+                  children: [
+                    SizedBox(width: 260, child: buttons[0]),
+                    const SizedBox(width: 12),
+                    buttons[1],
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    buttons[0],
+                    const SizedBox(height: 12),
+                    buttons[1],
+                  ],
+                ),
+        ),
+        const SizedBox(height: 12),
+        Reveal(
+          delay: const Duration(milliseconds: 320),
+          child: Column(
+            crossAxisAlignment: align,
+            children: [
+              TextButton.icon(
+                onPressed: openingDemo ? null : onOpenDemo,
+                icon: openingDemo
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.auto_awesome_outlined),
+                label: Text(l10n.openDemo),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  l10n.demoHint,
+                  style: text.bodySmall,
+                  textAlign: textAlign,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (config?.isMock ?? false) ...[
+          const SizedBox(height: 20),
+          Reveal(
+            delay: const Duration(milliseconds: 400),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: NoticeBar(
+                l10n.mockBanner,
+                icon: Icons.science_outlined,
+                tone: NoticeTone.simulated,
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _Features extends StatelessWidget {
+  const _Features({required this.wide});
+
+  final bool wide;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final features = [
+      (Icons.checkroom_outlined, l10n.featureTryOnTitle, l10n.featureTryOnBody),
+      (
+        Icons.palette_outlined,
+        l10n.featureHarmonyTitle,
+        l10n.featureHarmonyBody,
+      ),
+      (Icons.savings_outlined, l10n.featureBudgetTitle, l10n.featureBudgetBody),
+      (
+        Icons.accessible_forward,
+        l10n.featureInclusiveTitle,
+        l10n.featureInclusiveBody,
+      ),
+    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth >= 980
+            ? 4
+            : (constraints.maxWidth >= 560 ? 2 : 1);
+        final width = (constraints.maxWidth - 16 * (columns - 1)) / columns;
+        return Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: [
+            for (final (index, (icon, title, body)) in features.indexed)
+              SizedBox(
+                width: width,
+                child: Reveal(
+                  delay: Motion.stagger(index, stepMs: 90),
+                  child: Hoverable(
+                    child: _FeatureCard(icon: icon, title: title, body: body),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _FeatureCard extends StatelessWidget {
+  const _FeatureCard({
+    required this.icon,
+    required this.title,
+    required this.body,
+  });
+
+  final IconData icon;
+  final String title;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    return GlassCard(
+      padding: const EdgeInsets.all(20),
+      radius: 22,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              gradient: Brand.gradient,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: Colors.white),
+          ),
           const SizedBox(height: 16),
-          TextButton.icon(
-            onPressed: () => context.push('/inclusion'),
-            icon: const Icon(Icons.accessible_forward),
-            label: Text(l10n.inclusionLink),
+          Text(title, style: text.titleLarge?.copyWith(fontSize: 20)),
+          const SizedBox(height: 6),
+          Text(
+            body,
+            style: text.bodyMedium?.copyWith(
+              height: 1.45,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _YourEvents extends StatelessWidget {
+  const _YourEvents({required this.events});
+
+  final Future<List<EventInfo>>? events;
+
+  IconData _icon(EventTemplate template) => switch (template) {
+    EventTemplate.prom => Icons.school_outlined,
+    EventTemplate.theatre => Icons.theater_comedy_outlined,
+    EventTemplate.group => Icons.groups_outlined,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    return FutureBuilder<List<EventInfo>>(
+      future: events,
+      builder: (context, snapshot) {
+        final list = snapshot.data ?? const <EventInfo>[];
+        if (list.isEmpty) return const SizedBox.shrink();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.yourEvents, style: text.headlineSmall),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 14,
+              runSpacing: 14,
+              children: [
+                for (final (index, event) in list.indexed)
+                  Reveal(
+                    delay: Motion.stagger(index),
+                    child: SizedBox(
+                      width: 360,
+                      child: Hoverable(
+                        onTap: () => context.push('/e/${event.id}'),
+                        child: GlassCard(
+                          padding: const EdgeInsets.all(18),
+                          radius: 22,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  gradient: event.demo ? null : Brand.gradient,
+                                  color: event.demo
+                                      ? Brand.champagne.withValues(alpha: 0.35)
+                                      : null,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Icon(
+                                  event.demo
+                                      ? Icons.auto_awesome
+                                      : _icon(event.template),
+                                  color: event.demo ? Brand.plum : Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      event.name,
+                                      style: text.titleMedium,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      [
+                                        templateName(l10n, event.template),
+                                        if (event.isOrganizer)
+                                          l10n.organizerRole,
+                                        if (event.isParticipant)
+                                          l10n.participantRole,
+                                      ].join(' · '),
+                                      style: text.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Icon(Icons.arrow_forward_rounded),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _Footer extends StatelessWidget {
+  const _Footer();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 12,
+      runSpacing: 8,
+      children: [
+        const ApiStatusChip(),
+        TextButton.icon(
+          onPressed: () => context.push('/inclusion'),
+          icon: const Icon(Icons.accessible_forward),
+          label: Text(l10n.inclusionLink),
+        ),
+      ],
     );
   }
 }

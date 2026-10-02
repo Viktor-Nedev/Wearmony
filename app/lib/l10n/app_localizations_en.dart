@@ -918,4 +918,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notReviewed => 'not reviewed';
+
+  @override
+  String get heroEyebrow => 'Group virtual try-on for events';
+
+  @override
+  String get featureTryOnTitle => 'Try it on, together';
+
+  @override
+  String get featureTryOnBody =>
+      'Outfit, lip color and hair color on your own photo, then everyone side by side.';
+
+  @override
+  String get featureHarmonyTitle => 'Color harmony';
+
+  @override
+  String get featureHarmonyBody =>
+      'Spots almost-matching colors before the night, explained in one sentence.';
+
+  @override
+  String get featureBudgetTitle => 'Shared budget';
+
+  @override
+  String get featureBudgetBody =>
+      'Per-person and group totals, so nobody is surprised.';
+
+  @override
+  String get featureInclusiveTitle => 'Made for everyone';
+
+  @override
+  String get featureInclusiveBody =>
+      'Seated photos are supported, and how well they work is measured.';
+
+  @override
+  String get statRendered => 'Rendered';
+
+  @override
+  String get statLocked => 'Locked looks';
+
+  @override
+  String get statHarmony => 'Harmony';
+
+  @override
+  String get statBudget => 'Group total';
+
+  @override
+  String get yourLook => 'Your look';
+
+  @override
+  String get selected => 'Selected';
+
+  @override
+  String get stepsTitle => 'Try-on steps';
 }

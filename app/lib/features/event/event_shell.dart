@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../api/models.dart';
 import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
+import '../../ui/effects.dart';
+import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/session_widgets.dart';
 import 'board_tab.dart';
@@ -98,17 +101,47 @@ class _EventShellState extends State<EventShell> {
     final tabs = _tabs(event);
     final initial = tabs.indexWhere((t) => t.name == widget.initialTab);
     final config = AppScope.of(context).config;
+    final text = Theme.of(context).textTheme;
 
     return DefaultTabController(
       length: tabs.length,
       initialIndex: initial < 0 ? 0 : initial,
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: 68,
           leading: IconButton(
-            icon: const Icon(Icons.home_outlined),
+            tooltip: l10n.appTitle,
+            icon: const BrandMark(size: 18, showName: false),
             onPressed: () => context.go('/'),
           ),
-          title: Text(event.name),
+          titleSpacing: 4,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(event.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  _HeaderChip(
+                    icon: _templateIcon(event.template),
+                    label: templateName(l10n, event.template),
+                  ),
+                  const SizedBox(width: 6),
+                  _HeaderChip(
+                    icon: Icons.tag,
+                    label: event.joinCode,
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: event.joinCode));
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(l10n.linkCopied)));
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
           actions: [
             if (event.isParticipant)
               IconButton(
@@ -118,11 +151,25 @@ class _EventShellState extends State<EventShell> {
                     context.push('/e/${event.id}/data').then((_) => _load()),
               ),
             const LanguageMenu(),
+            const SizedBox(width: 4),
           ],
           bottom: TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            tabs: [for (final tab in tabs) Tab(text: _label(l10n, tab))],
+            labelStyle: text.labelLarge,
+            tabs: [
+              for (final tab in tabs)
+                Tab(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(_tabIcon(tab), size: 18),
+                      const SizedBox(width: 8),
+                      Text(_label(l10n, tab)),
+                    ],
+                  ),
+                ),
+            ],
           ),
         ),
         body: Column(
@@ -148,6 +195,60 @@ class _EventShellState extends State<EventShell> {
             Expanded(
               child: TabBarView(
                 children: [for (final tab in tabs) _content(tab, event)],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _tabIcon(EventTab tab) => switch (tab) {
+    EventTab.myLook => Icons.checkroom_outlined,
+    EventTab.together => Icons.favorite_border,
+    EventTab.board => Icons.groups_outlined,
+    EventTab.harmony => Icons.palette_outlined,
+    EventTab.catalogue => Icons.storefront_outlined,
+    EventTab.invite => Icons.qr_code_2,
+    EventTab.settings => Icons.tune,
+  };
+
+  IconData _templateIcon(EventTemplate template) => switch (template) {
+    EventTemplate.prom => Icons.school_outlined,
+    EventTemplate.theatre => Icons.theater_comedy_outlined,
+    EventTemplate.group => Icons.groups_outlined,
+  };
+}
+
+class _HeaderChip extends StatelessWidget {
+  const _HeaderChip({required this.icon, required this.label, this.onTap});
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: scheme.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 13, color: scheme.primary),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: scheme.primary,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],

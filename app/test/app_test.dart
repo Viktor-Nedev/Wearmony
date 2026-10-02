@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wearmony/api/models.dart';
 import 'package:wearmony/app.dart';
 import 'package:wearmony/l10n/app_localizations.dart';
+import 'package:wearmony/ui/motion.dart';
 import 'package:wearmony/util/harmony_text.dart';
 import 'package:wearmony/widgets/render_view.dart';
 
@@ -28,7 +29,11 @@ Future<void> unmount(WidgetTester tester) =>
     tester.pumpWidget(const SizedBox());
 
 void main() {
-  setUp(() => SharedPreferences.setMockInitialValues({}));
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    // Looping effects (aurora, shimmer, showcase) never settle; tests run with reduced motion.
+    Motion.forceReduced = true;
+  });
 
   testWidgets(
     'landing shows both roles, the demo and the simulated try-on notice',
@@ -83,6 +88,9 @@ void main() {
   testWidgets(
     'the group board shows progress, budget and the near-miss between partners',
     (tester) async {
+      tester.view.physicalSize = const Size(1400, 2200);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       final backend = FakeBackend({
         'GET /api/config': (_) => config(),
         'GET /api/events/e1': (_) => eventJson(),
@@ -96,7 +104,7 @@ void main() {
       );
 
       expect(find.text('1 of 2 rendered'), findsOneWidget);
-      expect(find.text('Group harmony 31/100'), findsOneWidget);
+      expect(find.text('31/100'), findsOneWidget);
       expect(
         find.textContaining(
           "Maria's pink and Ivan's pink are close but not the same shade (ΔE 4.6)",
@@ -104,7 +112,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('with Ivan'), findsOneWidget);
-      expect(find.text('Seated'), findsOneWidget);
+      expect(find.byTooltip('Seated'), findsOneWidget);
       await unmount(tester);
     },
   );

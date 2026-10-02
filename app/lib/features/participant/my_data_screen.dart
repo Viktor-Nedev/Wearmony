@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../../api/models.dart';
 import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
+import '../../ui/motion.dart';
 import '../../widgets/common.dart';
-import '../../widgets/page_body.dart';
+import '../../widgets/form_scaffold.dart';
 
 /// Where a participant deletes their own data, at any time.
 class MyDataScreen extends StatefulWidget {
@@ -73,31 +74,64 @@ class _MyDataScreenState extends State<MyDataScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.myDataTitle)),
-      body: PageBody(
-        children: [
-          Text(l10n.myDataExplain),
-          const SizedBox(height: 24),
-          OutlinedButton.icon(
-            onPressed: _deletePhoto,
-            icon: const Icon(Icons.no_photography_outlined),
-            label: Text(l10n.deletePhoto),
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: _leave,
-            icon: const Icon(Icons.logout),
-            label: Text(l10n.leaveEvent),
-          ),
-          const SizedBox(height: 12),
-          FilledButton.tonalIcon(
-            onPressed: _deleteEverywhere,
-            icon: const Icon(Icons.delete_forever_outlined),
-            label: Text(l10n.deleteEverywhere),
-          ),
-        ],
+    const red = Color(0xFFC0392B);
+    final scheme = Theme.of(context).colorScheme;
+    final actions = [
+      (Icons.no_photography_outlined, l10n.deletePhoto, _deletePhoto, false),
+      (Icons.logout, l10n.leaveEvent, _leave, false),
+      (
+        Icons.delete_forever_outlined,
+        l10n.deleteEverywhere,
+        _deleteEverywhere,
+        true,
       ),
+    ];
+    return FormScaffold(
+      title: l10n.myDataTitle,
+      icon: Icons.privacy_tip_outlined,
+      subtitle: l10n.myDataExplain,
+      children: [
+        for (final (index, (icon, label, action, danger))
+            in actions.indexed) ...[
+          Reveal(
+            delay: Motion.stagger(index + 1, stepMs: 80),
+            child: Hoverable(
+              onTap: action,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: danger
+                      ? red.withValues(alpha: 0.07)
+                      : scheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: danger
+                        ? red.withValues(alpha: 0.4)
+                        : scheme.outlineVariant,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(icon, color: danger ? red : scheme.primary),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: danger ? red : null,
+                        ),
+                      ),
+                    ),
+                    Icon(Icons.chevron_right, color: danger ? red : null),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
+      ],
     );
   }
 }

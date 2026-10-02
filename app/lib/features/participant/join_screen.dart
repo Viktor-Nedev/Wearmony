@@ -6,7 +6,9 @@ import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
-import '../../widgets/page_body.dart';
+import '../../ui/effects.dart';
+import '../../ui/motion.dart';
+import '../../widgets/form_scaffold.dart';
 
 class JoinScreen extends StatefulWidget {
   const JoinScreen({super.key, this.initialCode});
@@ -80,43 +82,65 @@ class _JoinScreenState extends State<JoinScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final canJoin = _preview != null && _name.text.trim().isNotEmpty && !_busy;
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.joinTitle)),
-      body: PageBody(
-        children: [
-          TextField(
-            controller: _code,
-            textCapitalization: TextCapitalization.characters,
-            decoration: InputDecoration(labelText: l10n.joinCodeLabel),
-            onChanged: (_) => _lookUp(),
+    final text = Theme.of(context).textTheme;
+    return FormScaffold(
+      title: l10n.joinTitle,
+      icon: Icons.group_add_outlined,
+      children: [
+        TextField(
+          controller: _code,
+          textCapitalization: TextCapitalization.characters,
+          textAlign: TextAlign.center,
+          style: text.headlineSmall?.copyWith(
+            letterSpacing: 8,
+            fontWeight: FontWeight.w700,
           ),
-          const SizedBox(height: 8),
-          if (_preview != null)
-            NoticeBar(
-              '${l10n.joiningEvent(_preview!.name)} (${templateName(l10n, _preview!.template)})',
-              icon: Icons.celebration_outlined,
-            )
-          else if (_previewError != null)
-            NoticeBar(
-              l10n.codeNotFound,
-              icon: Icons.search_off,
-              tone: NoticeTone.warning,
-            ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _name,
-            textCapitalization: TextCapitalization.words,
-            maxLength: 40,
-            decoration: InputDecoration(labelText: l10n.yourNameLabel),
-            onChanged: (_) => setState(() {}),
+          decoration: InputDecoration(labelText: l10n.joinCodeLabel),
+          onChanged: (_) => _lookUp(),
+        ),
+        AnimatedSize(
+          duration: Motion.medium,
+          curve: Motion.curve,
+          child: _preview != null
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Reveal(
+                    key: ValueKey(_preview!.name),
+                    child: NoticeBar(
+                      '${l10n.joiningEvent(_preview!.name)} (${templateName(l10n, _preview!.template)})',
+                      icon: Icons.celebration_outlined,
+                    ),
+                  ),
+                )
+              : _previewError != null
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: NoticeBar(
+                    l10n.codeNotFound,
+                    icon: Icons.search_off,
+                    tone: NoticeTone.warning,
+                  ),
+                )
+              : const SizedBox(width: double.infinity),
+        ),
+        const SizedBox(height: 18),
+        TextField(
+          controller: _name,
+          textCapitalization: TextCapitalization.words,
+          maxLength: 40,
+          decoration: InputDecoration(
+            labelText: l10n.yourNameLabel,
+            prefixIcon: const Icon(Icons.person_outline),
           ),
-          const SizedBox(height: 16),
-          FilledButton(
-            onPressed: canJoin ? _join : null,
-            child: Text(l10n.joinButton),
-          ),
-        ],
-      ),
+          onChanged: (_) => setState(() {}),
+        ),
+        const SizedBox(height: 12),
+        BrandButton(
+          label: l10n.joinButton,
+          icon: Icons.arrow_forward,
+          onPressed: canJoin ? _join : null,
+        ),
+      ],
     );
   }
 }

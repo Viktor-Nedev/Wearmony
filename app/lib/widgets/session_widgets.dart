@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../app_scope.dart';
 import '../l10n/app_localizations.dart';
 import '../state/session.dart';
-import 'page_body.dart';
+import '../ui/effects.dart';
+import '../ui/motion.dart';
+import 'common.dart';
+import 'form_scaffold.dart';
 
 /// Shows [child] once the user is signed in; otherwise a spinner, an offline notice or sign-in.
 class SessionGate extends StatelessWidget {
@@ -18,7 +21,22 @@ class SessionGate extends StatelessWidget {
     return switch (session.status) {
       SessionStatus.ready => child,
       SessionStatus.starting => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+        body: AuroraBackground(
+          intensity: 0.6,
+          child: Center(
+            child: Reveal(
+              scale: 0.9,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BrandMark(size: 40),
+                  SizedBox(height: 24),
+                  SizedBox(width: 120, child: LinearProgressIndicator()),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       SessionStatus.signInRequired => const SignInScreen(),
       SessionStatus.offline => Scaffold(
@@ -89,44 +107,46 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.signInTitle),
-        actions: const [LanguageMenu()],
-      ),
-      body: PageBody(
-        children: [
-          Text(l10n.signInExplain),
+    return FormScaffold(
+      title: l10n.signInTitle,
+      subtitle: l10n.signInExplain,
+      icon: Icons.login,
+      children: [
+        TextField(
+          controller: _email,
+          keyboardType: TextInputType.emailAddress,
+          autofillHints: const [AutofillHints.email],
+          decoration: InputDecoration(
+            labelText: l10n.emailLabel,
+            prefixIcon: const Icon(Icons.alternate_email),
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextField(
+          controller: _password,
+          obscureText: true,
+          autofillHints: const [AutofillHints.password],
+          decoration: InputDecoration(
+            labelText: l10n.passwordLabel,
+            prefixIcon: const Icon(Icons.lock_outline),
+          ),
+        ),
+        const SizedBox(height: 20),
+        BrandButton(
+          label: l10n.signInButton,
+          icon: Icons.arrow_forward,
+          onPressed: _busy ? null : () => _submit(create: false),
+        ),
+        const SizedBox(height: 10),
+        OutlinedButton(
+          onPressed: _busy ? null : () => _submit(create: true),
+          child: Text(l10n.signUpButton),
+        ),
+        if (_message != null) ...[
           const SizedBox(height: 16),
-          TextField(
-            controller: _email,
-            keyboardType: TextInputType.emailAddress,
-            autofillHints: const [AutofillHints.email],
-            decoration: InputDecoration(labelText: l10n.emailLabel),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            autofillHints: const [AutofillHints.password],
-            decoration: InputDecoration(labelText: l10n.passwordLabel),
-          ),
-          const SizedBox(height: 16),
-          FilledButton(
-            onPressed: _busy ? null : () => _submit(create: false),
-            child: Text(l10n.signInButton),
-          ),
-          const SizedBox(height: 8),
-          OutlinedButton(
-            onPressed: _busy ? null : () => _submit(create: true),
-            child: Text(l10n.signUpButton),
-          ),
-          if (_message != null) ...[
-            const SizedBox(height: 16),
-            Text(_message!),
-          ],
+          NoticeBar(_message!, icon: Icons.mark_email_unread_outlined),
         ],
-      ),
+      ],
     );
   }
 }
@@ -165,8 +185,6 @@ class ApiStatusChip extends StatelessWidget {
         : config.isMock
         ? (l10n.apiStatusMock, Icons.science_outlined)
         : (l10n.apiStatusLive, Icons.cloud_done_outlined);
-    return Center(
-      child: Chip(avatar: Icon(icon, size: 18), label: Text(label)),
-    );
+    return Chip(avatar: Icon(icon, size: 18), label: Text(label));
   }
 }
