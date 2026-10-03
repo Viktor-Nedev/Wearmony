@@ -460,5 +460,9 @@
   "built2": "If a full-length outfit fails on a seated photo, Wearmony retries once with upper-body framing.",
   "built3": "Every render is checked for an outfit that was not applied, so a silent failure is labeled, not shown as a result.",
   "built4": "The demo prom includes a seated participant, so the flow can be tried without photos.",
-  "inclusionDemoCta": "See the demo group"
+  "inclusionDemoCta": "See the demo group",
+  "inclusionNoteSample": "{renders} apparel renders of {people} people ({seated} seated). A small sample: read the numbers as indicative, not as a benchmark.",
+  "@inclusionNoteSample": {"placeholders":{"renders":{"type":"int"},"people":{"type":"int"},"seated":{"type":"int"}}},
+  "inclusionNoteDocs": "The YouCam AI Clothes documentation asks for a person standing (no sitting or crouching); this evaluation measures what that means for seated participants.",
+  "inclusionNoteApplied": "\"Applied\" counts renders a human reviewer did not reject; \"silent failures\" are renders returned without the garment."
 }

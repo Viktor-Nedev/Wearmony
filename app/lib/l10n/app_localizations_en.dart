@@ -1632,4 +1632,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inclusionDemoCta => 'See the demo group';
+
+  @override
+  String inclusionNoteSample(int renders, int people, int seated) {
+    return '$renders apparel renders of $people people ($seated seated). A small sample: read the numbers as indicative, not as a benchmark.';
+  }
+
+  @override
+  String get inclusionNoteDocs =>
+      'The YouCam AI Clothes documentation asks for a person standing (no sitting or crouching); this evaluation measures what that means for seated participants.';
+
+  @override
+  String get inclusionNoteApplied =>
+      '\"Applied\" counts renders a human reviewer did not reject; \"silent failures\" are renders returned without the garment.';
 }

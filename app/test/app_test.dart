@@ -499,6 +499,48 @@ void main() {
     expect(find.textContaining('%'), findsNothing);
   });
 
+  testWidgets('measured inclusion results are described in Bulgarian too', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1300, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/inclusion': (_) => {
+        'measuredAt': '2026-10-10T10:00:00Z',
+        'engine': 'YouCam AI Clothes V4.0 (cloth-v4)',
+        'groups': [
+          {
+            'pose': 'seated',
+            'framing': 'as_catalogued',
+            'runs': 6,
+            'success': 4,
+            'silentFailures': 1,
+            'errors': 1,
+            'identityDrift': null,
+            'medianLatencySeconds': 21.0,
+          },
+        ],
+        'sample': {'renders': 12, 'people': 5, 'seated': 2},
+        'notes': ['English only'],
+      },
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/inclusion',
+      locale: const Locale('bg'),
+    );
+
+    expect(
+      find.textContaining('12 пробвания на дрехи върху 5 души (2 седнали)'),
+      findsOneWidget,
+    );
+    expect(find.text('English only'), findsNothing);
+    expect(find.text('Какво ще бъде публикувано'), findsNothing);
+  });
+
   testWidgets('a render that did not apply the outfit is labeled honestly', (
     tester,
   ) async {

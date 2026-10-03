@@ -890,6 +890,7 @@ class InclusionResults {
     required this.engine,
     required this.groups,
     required this.notes,
+    this.sample,
   });
 
   factory InclusionResults.fromJson(Json json) => InclusionResults(
@@ -897,10 +898,22 @@ class InclusionResults {
     engine: json['engine'] as String? ?? '',
     groups: _list(json['groups'], InclusionGroup.fromJson),
     notes: _strings(json['notes']),
+    sample: json['sample'] is Json
+        ? (
+            renders: (json['sample']['renders'] as num?)?.toInt() ?? 0,
+            people: (json['sample']['people'] as num?)?.toInt() ?? 0,
+            seated: (json['sample']['seated'] as num?)?.toInt() ?? 0,
+          )
+        : null,
   );
 
   final String? measuredAt;
   final String engine;
   final List<InclusionGroup> groups;
+
+  /// The same facts as English sentences; the app shows its own localized notes.
   final List<String> notes;
+
+  /// How many apparel renders, people and seated people the numbers come from.
+  final ({int renders, int people, int seated})? sample;
 }

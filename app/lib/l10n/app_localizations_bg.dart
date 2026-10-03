@@ -1644,4 +1644,17 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get inclusionDemoCta => 'Виж демо групата';
+
+  @override
+  String inclusionNoteSample(int renders, int people, int seated) {
+    return '$renders пробвания на дрехи върху $people души ($seated седнали). Малка извадка: числата са ориентировъчни, а не сравнителен тест.';
+  }
+
+  @override
+  String get inclusionNoteDocs =>
+      'Документацията на YouCam AI Clothes изисква човекът да стои прав (без сядане или клякане); тази оценка измерва какво означава това за седналите участници.';
+
+  @override
+  String get inclusionNoteApplied =>
+      '„Приложено“ брои резултатите, които проверяващ човек не е отхвърлил; „тихи неуспехи“ са резултатите, върнати без дрехата.';
 }

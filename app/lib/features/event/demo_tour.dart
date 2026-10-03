@@ -137,21 +137,31 @@ class _DemoTourButtonState extends State<DemoTourButton> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
+    final narrow = MediaQuery.sizeOf(context).width < 600;
     return PulseGlow(
       color: Brand.berry,
       radius: 20,
       active: !_opened,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
-        child: FilledButton.tonalIcon(
-          onPressed: _open,
-          style: FilledButton.styleFrom(
-            visualDensity: VisualDensity.compact,
-            backgroundColor: scheme.primary.withValues(alpha: 0.12),
-          ),
-          icon: const Icon(Icons.explore_outlined, size: 18),
-          label: Text(l10n.tourButton),
-        ),
+        child: narrow
+            ? IconButton.filledTonal(
+                tooltip: l10n.tourButton,
+                onPressed: _open,
+                style: IconButton.styleFrom(
+                  backgroundColor: scheme.primary.withValues(alpha: 0.12),
+                ),
+                icon: const Icon(Icons.explore_outlined),
+              )
+            : FilledButton.tonalIcon(
+                onPressed: _open,
+                style: FilledButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  backgroundColor: scheme.primary.withValues(alpha: 0.12),
+                ),
+                icon: const Icon(Icons.explore_outlined, size: 18),
+                label: Text(l10n.tourButton),
+              ),
       ),
     );
   }

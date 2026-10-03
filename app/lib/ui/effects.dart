@@ -695,6 +695,14 @@ class _SkeletonState extends State<Skeleton>
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    // On dark glass the surface colors are near black, so use soft white instead.
+    final base = dark
+        ? Colors.white.withValues(alpha: 0.07)
+        : scheme.surfaceContainerHigh;
+    final shine = dark
+        ? Colors.white.withValues(alpha: 0.16)
+        : scheme.surfaceContainerLowest;
     Widget box(double t) => Container(
       height: widget.height,
       width: widget.width,
@@ -703,11 +711,7 @@ class _SkeletonState extends State<Skeleton>
         gradient: LinearGradient(
           begin: Alignment(-1.5 + 3 * t, 0),
           end: Alignment(-0.5 + 3 * t, 0),
-          colors: [
-            scheme.surfaceContainerHigh,
-            scheme.surfaceContainerLowest,
-            scheme.surfaceContainerHigh,
-          ],
+          colors: [base, shine, base],
         ),
       ),
     );

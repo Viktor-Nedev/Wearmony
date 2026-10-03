@@ -66,7 +66,8 @@ export function aggregateInclusion(runs: EvalRun[], engine: string): InclusionRe
       ]
     : [...BASE_NOTES];
 
-  return { measuredAt, engine, groups, notes };
+  const sample = apparel.length ? { renders: apparel.length, people: people.size, seated: seatedPeople.size } : null;
+  return { measuredAt, engine, groups, sample, notes };
 }
 
 export function renderInclusionModule(results: InclusionResults): string {
@@ -107,6 +108,9 @@ export interface InclusionResults {
   measuredAt: string | null;
   engine: string;
   groups: InclusionGroup[];
+  /** How many apparel renders, people and seated people the numbers come from. */
+  sample: { renders: number; people: number; seated: number } | null;
+  /** The same facts as plain English sentences; the app localizes its own. */
   notes: string[];
 }
 `;

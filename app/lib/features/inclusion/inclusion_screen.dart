@@ -263,7 +263,16 @@ class _InclusionScreenState extends State<InclusionScreen> {
                                   ),
                           ),
                           const SizedBox(height: 16),
-                          for (final (index, note) in results.notes.indexed)
+                          for (final (index, note) in [
+                            if (results.sample != null)
+                              l10n.inclusionNoteSample(
+                                results.sample!.renders,
+                                results.sample!.people,
+                                results.sample!.seated,
+                              ),
+                            l10n.inclusionNoteDocs,
+                            l10n.inclusionNoteApplied,
+                          ].indexed)
                             Reveal(
                               delay: Motion.stagger(index + 3),
                               child: Padding(

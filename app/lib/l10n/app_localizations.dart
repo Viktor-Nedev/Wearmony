@@ -2826,6 +2826,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'See the demo group'**
   String get inclusionDemoCta;
+
+  /// No description provided for @inclusionNoteSample.
+  ///
+  /// In en, this message translates to:
+  /// **'{renders} apparel renders of {people} people ({seated} seated). A small sample: read the numbers as indicative, not as a benchmark.'**
+  String inclusionNoteSample(int renders, int people, int seated);
+
+  /// No description provided for @inclusionNoteDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'The YouCam AI Clothes documentation asks for a person standing (no sitting or crouching); this evaluation measures what that means for seated participants.'**
+  String get inclusionNoteDocs;
+
+  /// No description provided for @inclusionNoteApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Applied\" counts renders a human reviewer did not reject; \"silent failures\" are renders returned without the garment.'**
+  String get inclusionNoteApplied;
 }
 
 class _AppLocalizationsDelegate
