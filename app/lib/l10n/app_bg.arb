@@ -356,5 +356,6 @@
   "fixShareTextMe": "{name}, пробвай {item}: до мен резултатът е „{relation}“, а не почти еднакви цветове.",
   "harmonyMapSemantics": "Карта на хармонията за {people} души с {nearMisses, plural, =0{нула сблъсъка} =1{един сблъсък} other{{nearMisses} сблъсъка}}.",
   "frameSemantics": "Групова снимка на {event}: {names}.",
-  "openTheatreDemo": "Демо с театрална трупа"
+  "openTheatreDemo": "Демо с театрална трупа",
+  "notPreviewed": "Нова визия, още без преглед"
 }

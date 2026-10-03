@@ -1282,4 +1282,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openTheatreDemo => 'Theatre cast demo';
+
+  @override
+  String get notPreviewed => 'New look, not previewed yet';
 }

@@ -362,5 +362,6 @@
   "harmonyMapSemantics": "Harmony map of {people} people with {nearMisses, plural, =0{no near-misses} =1{one near-miss} other{{nearMisses} near-misses}}.",
   "@harmonyMapSemantics": {"placeholders":{"people":{"type":"int"},"nearMisses":{"type":"int"}}},
   "frameSemantics": "Group photo of {event}: {names}.",
-  "openTheatreDemo": "Theatre cast demo"
+  "openTheatreDemo": "Theatre cast demo",
+  "notPreviewed": "New look, not previewed yet"
 }

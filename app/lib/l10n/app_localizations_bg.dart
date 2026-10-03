@@ -1291,4 +1291,7 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get openTheatreDemo => 'Демо с театрална трупа';
+
+  @override
+  String get notPreviewed => 'Нова визия, още без преглед';
 }

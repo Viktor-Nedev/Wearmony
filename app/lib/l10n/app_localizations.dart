@@ -2256,6 +2256,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theatre cast demo'**
   String get openTheatreDemo;
+
+  /// No description provided for @notPreviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'New look, not previewed yet'**
+  String get notPreviewed;
 }
 
 class _AppLocalizationsDelegate
