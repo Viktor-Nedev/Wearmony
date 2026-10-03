@@ -22,7 +22,7 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
   Future<List<EventInfo>>? _events;
-  bool _openingDemo = false;
+  EventTemplate? _openingDemo;
 
   @override
   void didChangeDependencies() {
@@ -30,14 +30,14 @@ class _LandingScreenState extends State<LandingScreen> {
     _events ??= AppScope.api(context).myEvents();
   }
 
-  Future<void> _openDemo() async {
-    setState(() => _openingDemo = true);
+  Future<void> _openDemo(EventTemplate template) async {
+    setState(() => _openingDemo = template);
     final event = await runWithFeedback(
       context,
-      () => AppScope.api(context).createDemo(),
+      () => AppScope.api(context).createDemo(template: template),
     );
     if (!mounted) return;
-    setState(() => _openingDemo = false);
+    setState(() => _openingDemo = null);
     if (event != null) context.go('/e/${event.id}');
   }
 
@@ -115,8 +115,10 @@ class _Hero extends StatelessWidget {
   });
 
   final bool wide;
-  final bool openingDemo;
-  final VoidCallback onOpenDemo;
+
+  /// The demo being opened, if any.
+  final EventTemplate? openingDemo;
+  final ValueChanged<EventTemplate> onOpenDemo;
 
   @override
   Widget build(BuildContext context) {
@@ -220,16 +222,35 @@ class _Hero extends StatelessWidget {
           child: Column(
             crossAxisAlignment: align,
             children: [
-              TextButton.icon(
-                onPressed: openingDemo ? null : onOpenDemo,
-                icon: openingDemo
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.auto_awesome_outlined),
-                label: Text(l10n.openDemo),
+              Wrap(
+                alignment: wide ? WrapAlignment.start : WrapAlignment.center,
+                children: [
+                  for (final (template, icon, label) in [
+                    (
+                      EventTemplate.prom,
+                      Icons.auto_awesome_outlined,
+                      l10n.openDemo,
+                    ),
+                    (
+                      EventTemplate.theatre,
+                      Icons.theater_comedy_outlined,
+                      l10n.openTheatreDemo,
+                    ),
+                  ])
+                    TextButton.icon(
+                      onPressed: openingDemo != null
+                          ? null
+                          : () => onOpenDemo(template),
+                      icon: openingDemo == template
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Icon(icon),
+                      label: Text(label),
+                    ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),

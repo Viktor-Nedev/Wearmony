@@ -5,8 +5,8 @@
   "landingPitch": "See how your group looks together before anyone buys an outfit: try-on, color harmony and a shared budget in one place.",
   "organizeEvent": "Organize an event",
   "joinWithCode": "Join with a code",
-  "openDemo": "Open the demo event",
-  "demoHint": "A seeded prom with illustrated people. No photos needed.",
+  "openDemo": "Prom demo",
+  "demoHint": "Ready-made events with illustrated people: a prom and a school play. No photos needed.",
   "yourEvents": "Your events",
   "organizerRole": "Organizer",
   "participantRole": "Participant",
@@ -361,5 +361,6 @@
   "fixShareTextMe": "{name}, try {item} instead: next to me it reads as “{relation}”, not a near-miss.",
   "harmonyMapSemantics": "Harmony map of {people} people with {nearMisses, plural, =0{no near-misses} =1{one near-miss} other{{nearMisses} near-misses}}.",
   "@harmonyMapSemantics": {"placeholders":{"people":{"type":"int"},"nearMisses":{"type":"int"}}},
-  "frameSemantics": "Group photo of {event}: {names}."
+  "frameSemantics": "Group photo of {event}: {names}.",
+  "openTheatreDemo": "Theatre cast demo"
 }

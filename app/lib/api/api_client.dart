@@ -104,8 +104,17 @@ class ApiClient {
     ),
   );
 
-  Future<EventInfo> createDemo() async =>
-      EventInfo.fromJson(await _send('POST', 'demo'));
+  /// The visitor's demo event of this kind (a prom or a theatre cast), created once.
+  Future<EventInfo> createDemo({
+    EventTemplate template = EventTemplate.prom,
+  }) async => EventInfo.fromJson(
+    await _send(
+      'POST',
+      template == EventTemplate.prom
+          ? 'demo'
+          : 'demo?template=${template.name}',
+    ),
+  );
 
   Future<EventInfo> event(String eventId) async =>
       EventInfo.fromJson(await _send('GET', 'events/$eventId'));
@@ -264,14 +273,15 @@ class ApiClient {
   Future<FixSuggestions> suggestions(
     String eventId, {
     String? user,
-  }) async => FixSuggestions.fromJson(
-    await _send(
-      'GET',
-      user == null
-          ? 'events/$eventId/harmony/suggestions'
-          : 'events/$eventId/harmony/suggestions?user=${Uri.encodeQueryComponent(user)}',
-    ),
-  );
+    String? withUser,
+  }) async {
+    final query = {'user': ?user, 'with': ?withUser};
+    final path = Uri(
+      path: 'events/$eventId/harmony/suggestions',
+      queryParameters: query.isEmpty ? null : query,
+    ).toString();
+    return FixSuggestions.fromJson(await _send('GET', path));
+  }
 
   Future<String> explainHarmony(String eventId, String language) async =>
       ((await _send(

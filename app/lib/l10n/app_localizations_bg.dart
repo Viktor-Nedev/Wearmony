@@ -25,10 +25,11 @@ class AppLocalizationsBg extends AppLocalizations {
   String get joinWithCode => 'Влез с код';
 
   @override
-  String get openDemo => 'Отвори демо събитието';
+  String get openDemo => 'Демо бал';
 
   @override
-  String get demoHint => 'Примерен бал с илюстрирани хора. Не са нужни снимки.';
+  String get demoHint =>
+      'Готови събития с илюстрирани хора: бал и училищна пиеса. Не са нужни снимки.';
 
   @override
   String get yourEvents => 'Твоите събития';
@@ -1073,12 +1074,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String fixShareText(Object item, Object name, Object other, Object relation) {
-    return '$name, пробвай $item: до $other се получава „$relation“, а не почти еднакви цветове.';
+    return '$name, пробвай $item: до $other резултатът е „$relation“, а не почти еднакви цветове.';
   }
 
   @override
   String fixShareTextSelf(Object item, Object name, Object relation) {
-    return '$name, пробвай $item: с тоалета се получава „$relation“, а не почти еднакви цветове.';
+    return '$name, пробвай $item: с тоалета резултатът е „$relation“, а не почти еднакви цветове.';
   }
 
   @override
@@ -1268,7 +1269,7 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String fixShareTextMe(Object item, Object name, Object relation) {
-    return '$name, пробвай $item: до мен се получава „$relation“, а не почти еднакви цветове.';
+    return '$name, пробвай $item: до мен резултатът е „$relation“, а не почти еднакви цветове.';
   }
 
   @override
@@ -1287,4 +1288,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String frameSemantics(Object event, Object names) {
     return 'Групова снимка на $event: $names.';
   }
+
+  @override
+  String get openTheatreDemo => 'Демо с театрална трупа';
 }

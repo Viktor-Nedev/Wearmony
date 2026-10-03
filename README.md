@@ -11,6 +11,7 @@ Built for the *YouCam API Skin AI & eCommerce VTO Hackathon*.
 - Web app: see [Deploy](docs/deploy.md) (GitHub Pages)
 - Android: APK on the Releases page
 - Runs fully offline in mock mode: no accounts or API keys needed ([Run locally](#run-locally))
+- Two ready-made demo events with illustrated people: a prom and a school theatre cast
 
 ## Problem
 
@@ -36,19 +37,35 @@ The group board shows everyone side by side ("7 of 8 rendered"), per-person and 
 
 English and Bulgarian throughout.
 
-![Group board of the demo prom: everyone side by side, budget, and a near-miss warning between two partners](docs/screenshots/board.png)
+![Group board of the demo prom: everyone side by side, budget, a near-miss warning between two partners and the way into the group photo](docs/screenshots/board.png)
+
+**How to fix it**: a participant in a near-miss with their partner gets swaps from the catalogue, each with what it would change.
+
+![Near-miss between two pinks with three suggested swaps, the group score before and after, and the price change](docs/screenshots/fix.png)
+
+**Group photo**: everyone's current look in one frame, ready to save or share.
+
+![Group photo of the demo prom on a ballroom backdrop: six illustrated people, partners side by side, harmony score and the group's palette](docs/screenshots/group-photo.jpg)
+
+**Same engine, another event**: the theatre cast demo finds two nearly matching teal doublets, and Mercutio is played from a wheelchair.
+
+![Group photo of the theatre cast demo on a stage backdrop with red curtains](docs/screenshots/theatre-photo.jpg)
 
 | My look: before/after slider | Together | Hairdresser link | Bulgarian |
 | --- | --- | --- | --- |
 | ![Look builder with a before/after slider over a simulated try-on](docs/screenshots/my-look-phone.png) | ![Two partners side by side with their color relation](docs/screenshots/together-phone.png) | ![Read-only vendor page with the chosen hair color and the before photo](docs/screenshots/vendor-hair-phone.png) | ![Landing page in Bulgarian](docs/screenshots/landing-bg.jpg) |
 
-| Harmony report | Catalogue with extracted colors | Dark mode |
+| Harmony report | Harmony map | Budget and readiness |
 | --- | --- | --- |
-| ![Animated harmony gauge and the weakest pair explained](docs/screenshots/harmony.png) | ![Catalogue cards with a strip of the extracted garment colors](docs/screenshots/catalogue.png) | ![Landing page in dark mode](docs/screenshots/landing-dark.jpg) |
+| ![Animated harmony gauge, the weakest pair explained and fix suggestions](docs/screenshots/harmony.png) | ![The group as a ring of outfit colors with one line per pair; the near-miss glows red](docs/screenshots/harmony-map.png) | ![Spending by outfits, lip and hair colors, each person against the cap, and who is ready](docs/screenshots/budget.png) |
 
-Screenshots come from the built-in demo event: the people are illustrations, not photos, and its renders are labeled as demo data.
+| Catalogue with extracted colors | Invite with QR code | Dark mode |
+| --- | --- | --- |
+| ![Catalogue cards with a strip of the extracted garment colors](docs/screenshots/catalogue.png) | ![Invite page with the event code, link and QR code](docs/screenshots/invite.png) | ![Landing page in dark mode](docs/screenshots/landing-dark.jpg) |
 
-The interface uses Playfair Display and Manrope (both with Cyrillic), a plum, rose and champagne palette with light and dark themes, and motion throughout: a drifting aurora backdrop, staggered reveals, a before/after wipe on each try-on, a scanning beam while a render runs, an animated harmony gauge, and sparkles when a look is locked. All motion switches off when the system asks for reduced motion.
+Screenshots come from the built-in demo events: the people are illustrations, not photos, and their renders are labeled as demo data.
+
+The interface uses Playfair Display and Manrope (both with Cyrillic), a plum, rose and champagne palette with light and dark themes, and motion throughout: a drifting aurora backdrop, staggered reveals, a before/after wipe on each try-on, a scanning beam while a render runs, an animated harmony gauge and harmony map, a 3D tilt and cursor spotlight on cards, a pulsing glow on a near-miss, a celebration when the last clash is fixed, and sparkles when a look is locked. All motion switches off when the system asks for reduced motion.
 
 ## How YouCam is used
 

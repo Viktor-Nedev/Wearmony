@@ -25,6 +25,7 @@ class FixSuggestionsPanel extends StatefulWidget {
     required this.currency,
     required this.onChanged,
     this.user,
+    this.withUser,
     this.myUserId,
   });
 
@@ -39,6 +40,9 @@ class FixSuggestionsPanel extends StatefulWidget {
 
   /// Ask for the weakest near-miss involving this person instead of the group's.
   final String? user;
+
+  /// With [user]: the near-miss between these two people.
+  final String? withUser;
 
   /// The viewer, who can switch their own look from a card.
   final String? myUserId;
@@ -68,8 +72,9 @@ class _FixSuggestionsPanelState extends State<FixSuggestionsPanel> {
     }
   }
 
-  Future<FixSuggestions> _load() =>
-      AppScope.api(context).suggestions(widget.eventId, user: widget.user);
+  Future<FixSuggestions> _load() => AppScope.api(
+    context,
+  ).suggestions(widget.eventId, user: widget.user, withUser: widget.withUser);
 
   Future<void> _apply(FixSuggestion s) async {
     final l10n = AppLocalizations.of(context);

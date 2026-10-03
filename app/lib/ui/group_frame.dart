@@ -75,6 +75,8 @@ class GroupFrame extends StatelessWidget {
         final pad = unit * (portrait ? 5 : 3.2);
         final titleHeight = unit * (portrait ? 23 : 9);
         final footerHeight = unit * (portrait ? 12 : 6.5);
+        // The stage's valance hangs over the top edge; start below it.
+        final top = pad + (backdrop == FrameBackdrop.stage ? height * 0.09 : 0);
 
         final l10n = AppLocalizations.of(context);
         return Semantics(
@@ -94,7 +96,7 @@ class GroupFrame extends StatelessWidget {
                   Positioned(
                     left: pad,
                     right: pad,
-                    top: pad,
+                    top: top,
                     child: _TitleBlock(
                       board: board,
                       ink: ink,
@@ -105,7 +107,7 @@ class GroupFrame extends StatelessWidget {
                   Positioned(
                     left: pad,
                     right: pad,
-                    top: pad + titleHeight,
+                    top: top + titleHeight,
                     bottom: pad + footerHeight,
                     child: people.isEmpty
                         ? Center(

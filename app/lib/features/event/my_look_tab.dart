@@ -294,6 +294,8 @@ class _MyLookTabState extends State<MyLookTab> {
         BrandButton(
           label: l10n.tryOnButton,
           icon: Icons.auto_fix_high,
+          // A light sweep now and then while a changed look waits for its preview.
+          attention: true,
           onPressed: render.status == 'idle' && !_busy
               ? () => _apply(() => AppScope.api(context).render(_eventId))
               : null,

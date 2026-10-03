@@ -50,7 +50,8 @@ void main() {
       expect(find.text('Try it on together.'), findsOneWidget);
       expect(find.text('Organize an event'), findsOneWidget);
       expect(find.text('Join with a code'), findsOneWidget);
-      expect(find.text('Open the demo event'), findsOneWidget);
+      expect(find.text('Prom demo'), findsOneWidget);
+      expect(find.text('Theatre cast demo'), findsOneWidget);
       expect(find.text('Try-on: simulated (mock mode)'), findsOneWidget);
     },
   );

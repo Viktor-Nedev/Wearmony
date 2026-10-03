@@ -131,13 +131,13 @@ abstract class AppLocalizations {
   /// No description provided for @openDemo.
   ///
   /// In en, this message translates to:
-  /// **'Open the demo event'**
+  /// **'Prom demo'**
   String get openDemo;
 
   /// No description provided for @demoHint.
   ///
   /// In en, this message translates to:
-  /// **'A seeded prom with illustrated people. No photos needed.'**
+  /// **'Ready-made events with illustrated people: a prom and a school play. No photos needed.'**
   String get demoHint;
 
   /// No description provided for @yourEvents.
@@ -2250,6 +2250,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Group photo of {event}: {names}.'**
   String frameSemantics(Object event, Object names);
+
+  /// No description provided for @openTheatreDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Theatre cast demo'**
+  String get openTheatreDemo;
 }
 
 class _AppLocalizationsDelegate

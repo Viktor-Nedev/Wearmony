@@ -25,11 +25,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinWithCode => 'Join with a code';
 
   @override
-  String get openDemo => 'Open the demo event';
+  String get openDemo => 'Prom demo';
 
   @override
   String get demoHint =>
-      'A seeded prom with illustrated people. No photos needed.';
+      'Ready-made events with illustrated people: a prom and a school play. No photos needed.';
 
   @override
   String get yourEvents => 'Your events';
@@ -1279,4 +1279,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String frameSemantics(Object event, Object names) {
     return 'Group photo of $event: $names.';
   }
+
+  @override
+  String get openTheatreDemo => 'Theatre cast demo';
 }

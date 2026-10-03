@@ -220,6 +220,7 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
                       eventId: widget.event.id,
                       target: pairFinding,
                       user: me.userId,
+                      withUser: partner.userId,
                       myUserId: me.userId,
                       currency: data.budget.currency,
                       onChanged: loadBoard,
