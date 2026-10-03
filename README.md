@@ -39,9 +39,9 @@ English and Bulgarian throughout.
 
 ![Group board of the demo prom: everyone side by side, budget, a near-miss warning between two partners and the way into the group photo](docs/screenshots/board.png)
 
-**How to fix it**: a participant in a near-miss with their partner gets swaps from the catalogue, each with what it would change.
+**How to fix it**: in the demo you are Sofia's partner, in a sand tie that nearly matches her champagne dress. The catalogue swaps that fix it are listed with what each would change; the exact match is one tap away.
 
-![Near-miss between two pinks with three suggested swaps, the group score before and after, and the price change](docs/screenshots/fix.png)
+![Near-miss between a sand tie and a champagne dress, with three suggested swaps, the group score before and after, and the price change](docs/screenshots/fix.png)
 
 **Group photo**: everyone's current look in one frame, ready to save or share.
 
@@ -107,8 +107,8 @@ Deterministic and explainable; no model opinions.
 | over 8, hues about opposite | complementary | the colors set each other off |
 | over 8 otherwise | contrast | clearly different, reads as intentional |
 
-3. The **group score is the weakest pair**, not an average, and names who is involved. Every finding comes with one plain sentence ("Maria's pink and Ivan's pink are close but not the same shade (ΔE 3.0)…").
-4. **Fix suggestions** re-run the same engine with each catalogue item swapped in and keep only real fixes, ranked by near-misses left, budget, group score and price.
+3. The **group score is the weakest pair**, not an average, and names who is involved. Every finding comes with one plain sentence ("Sofia's beige and Guest's beige are close but not the same shade (ΔE 7.7)…").
+4. **Fix suggestions** re-run the same engine with each catalogue item swapped in and keep only real fixes, ranked by near-misses left, budget, group score, same kind of garment, the result for the pair, and price.
 
 All thresholds are in one commented file: [`api/harmony/config.ts`](api/harmony/config.ts). An optional Gemini summary can restate the results in plain words; it only sees the computed facts and never affects a score. Harmony is about colors only, never about bodies or skin. Details: [docs/harmony.md](docs/harmony.md).
 

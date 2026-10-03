@@ -52,7 +52,7 @@ For a near-miss, the engine looks for swaps from the event's own catalogue that 
 
 1. Only the people in the comparison whose look is not locked can change. For a pair that means a new garment for either person; for someone's own lip or hair color, a new lip or hair color only (the outfit stays).
 2. Each candidate item is put on that person and the **whole group's harmony is recomputed** with the same engine. A swap counts only if the near-miss becomes a match, a complementary pair or a contrast.
-3. Swaps are ranked by: fewest near-misses left in the group, within the per-person budget, highest group score, smallest price increase. At most two ideas per person, so both partners get options.
+3. Swaps are ranked by: fewest near-misses left in the group, within the per-person budget, highest group score, the same kind of garment (a dress for a dress), the best result for the pair itself (an exact match before a contrast), smallest price change. At most two ideas per person, so both partners get options.
 
 Each suggestion states what it would change: the new relation and ΔE, the group score before and after, and the price difference. A participant can switch to their own suggestion with one tap; the new preview is a separate, explicit step because a live render spends units. Suggestions for someone else can be copied and sent to them.
 

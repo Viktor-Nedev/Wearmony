@@ -337,10 +337,15 @@ describe('demo event', () => {
 
     const board = (await t.call('GET', `/events/${demo.json.id}/board`, OUTSIDER)).json;
     expect(board.participantCount).toBe(6);
-    expect(board.renderedCount).toBe(5);
+    expect(board.renderedCount).toBe(6);
     expect(board.units.mode).toBe('demo');
     expect(board.budget.overBudgetCount).toBe(1);
-    expect(board.harmony.weakest).toMatchObject({ relation: 'near_miss', names: ['Maria', 'Ivan'], partners: true });
+    expect(board.harmony.weakest).toMatchObject({ relation: 'near_miss', names: ['Sofia', 'Guest'], partners: true });
+    expect(board.harmony.counts.near_miss).toBe(1);
+    // The visitor's avatar is an illustration; a real photo still needs their consent.
+    const me = board.participants.find((p: any) => p.isMe);
+    expect(me).toMatchObject({ displayName: 'Guest', hasPhoto: true });
+    expect((await t.call('GET', `/events/${demo.json.id}`, OUTSIDER)).json.me.consentAt).toBeNull();
     expect(board.event.eventDate).toMatch(/^\d{4}-05-23$/);
     expect(board.participants.every((p: any) => p.render.mock)).toBe(true);
   });
@@ -349,17 +354,27 @@ describe('demo event', () => {
     const t = setup();
     const demo = await t.call('POST', '/demo', OUTSIDER);
     const result = (await t.call('GET', `/events/${demo.json.id}/harmony/suggestions`, OUTSIDER)).json;
-    expect(result.target).toMatchObject({ relation: 'near_miss', names: ['Maria', 'Ivan'] });
+    expect(result.target).toMatchObject({ relation: 'near_miss', names: ['Sofia', 'Guest'] });
     expect(result.suggestions.length).toBeGreaterThan(0);
     for (const s of result.suggestions) {
-      expect(['Maria', 'Ivan']).toContain(s.name);
+      expect(['Sofia', 'Guest']).toContain(s.name);
       expect(s.relationAfter).not.toBe('near_miss');
       expect(s.groupScoreAfter).toBeGreaterThan(result.target.score);
       expect(typeof s.imageUrl).toBe('string');
     }
-    expect(result.suggestions).toContainEqual(
-      expect.objectContaining({ name: 'Ivan', itemName: 'Blush tie and pocket square', relationAfter: 'matched' }),
-    );
+    // Every swap lifts the group to the same score here, so the exact match comes first.
+    expect(result.suggestions[0]).toMatchObject({
+      name: 'Guest',
+      itemName: 'Champagne tie and pocket square',
+      relationAfter: 'matched',
+    });
+
+    // The visitor takes the suggestion: the near-miss is gone and the group score rises.
+    const champagneTie = result.suggestions.find((s: any) => s.itemName === 'Champagne tie and pocket square');
+    await t.call('PUT', `/events/${demo.json.id}/look`, OUTSIDER, { garmentId: champagneTie.itemId });
+    const after = (await t.call('GET', `/events/${demo.json.id}/board`, OUTSIDER)).json;
+    expect(after.harmony.counts.near_miss).toBe(0);
+    expect(after.harmony.groupScore).toBe(champagneTie.groupScoreAfter);
 
     // Someone outside the near-miss has nothing to fix.
     const board = (await t.call('GET', `/events/${demo.json.id}/board`, OUTSIDER)).json;

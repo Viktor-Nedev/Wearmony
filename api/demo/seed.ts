@@ -36,6 +36,9 @@ const PROM_ITEMS: DemoItem[] = [
   { key: 'blush', type: 'garment', name: 'Blush satin dress', price: 180, color: '#E8A0B4', category: 'full_body', shape: 'dress' },
   { key: 'roseTie', type: 'garment', name: 'Rose tie and pocket square', price: 35, color: '#E39AB6', category: 'upper_body', shape: 'tie' },
   { key: 'blushTie', type: 'garment', name: 'Blush tie and pocket square', price: 35, color: '#E8A0B4', category: 'upper_body', shape: 'tie' },
+  // Next to the champagne dress the sand tie is a near-miss (ΔE about 7.7 after extraction); the champagne tie matches.
+  { key: 'sandTie', type: 'garment', name: 'Sand tie and pocket square', price: 35, color: '#D7BD90', category: 'upper_body', shape: 'tie' },
+  { key: 'champagneTie', type: 'garment', name: 'Champagne tie and pocket square', price: 35, color: '#E9D8B8', category: 'upper_body', shape: 'tie' },
   { key: 'navy', type: 'garment', name: 'Navy suit', price: 260, color: '#1F2A44', category: 'full_body', shape: 'suit' },
   { key: 'emerald', type: 'garment', name: 'Emerald gown', price: 210, color: '#1E7F5C', category: 'full_body', shape: 'gown' },
   { key: 'champagne', type: 'garment', name: 'Champagne dress', price: 195, color: '#E9D8B8', category: 'full_body', shape: 'dress' },
@@ -56,12 +59,15 @@ interface DemoPerson {
   look: { garment: string; makeup?: string; hair?: string };
 }
 
+/** The person opening the demo. Their avatar is an illustration and they have not consented to anything yet. */
+const VISITOR = 'visitor';
+
 const PROM_PEOPLE: DemoPerson[] = [
   { key: 'maria', name: 'Maria', pose: 'standing', skin: '#E8B998', hair: '#4A3222', partner: 'ivan', look: { garment: 'blush', makeup: 'berry', hair: 'honey' } },
-  { key: 'ivan', name: 'Ivan', pose: 'standing', skin: '#F1CDB0', hair: '#2B211B', partner: 'maria', look: { garment: 'roseTie' } },
+  { key: 'ivan', name: 'Ivan', pose: 'standing', skin: '#F1CDB0', hair: '#2B211B', partner: 'maria', look: { garment: 'blushTie' } },
   { key: 'elena', name: 'Elena', pose: 'seated', skin: '#8D5A3B', hair: '#1E1612', partner: 'georgi', look: { garment: 'emerald', makeup: 'nude' } },
   { key: 'georgi', name: 'Georgi', pose: 'standing', skin: '#C68E6A', hair: '#3A2A20', partner: 'elena', look: { garment: 'navy' } },
-  { key: 'sofia', name: 'Sofia', pose: 'standing', skin: '#B07A55', hair: '#6B4A2E', partner: null, look: { garment: 'champagne', hair: 'burgundyHair' } },
+  { key: 'sofia', name: 'Sofia', pose: 'standing', skin: '#B07A55', hair: '#6B4A2E', partner: VISITOR, look: { garment: 'champagne', hair: 'burgundyHair' } },
 ];
 
 // Romeo's and Mercutio's doublets are two teals that nearly match: on stage that
@@ -87,6 +93,18 @@ const THEATRE_PEOPLE: DemoPerson[] = [
   { key: 'nurse', name: 'Nurse', pose: 'standing', skin: '#B07A55', hair: '#6B6460', partner: null, look: { garment: 'sand' } },
 ];
 
+// The visitor arrives as Sofia's partner in the sand tie, so the near-miss and its
+// one-tap fix are theirs to try right away.
+const PROM_VISITOR: DemoPerson = {
+  key: VISITOR,
+  name: 'Guest',
+  pose: 'standing',
+  skin: '#D9A77F',
+  hair: '#2B211B',
+  partner: 'sofia',
+  look: { garment: 'sandTie' },
+};
+
 export type DemoKind = 'prom' | 'theatre';
 
 interface Scenario {
@@ -102,6 +120,8 @@ interface Scenario {
   locked: string;
   /** Who added the hair items, as shown in the catalogue. */
   hairVendor: string;
+  /** The visitor's illustrated avatar and look; without one they join with no photo. */
+  visitor?: DemoPerson;
 }
 
 const SCENARIOS: Record<DemoKind, Scenario> = {
@@ -116,6 +136,7 @@ const SCENARIOS: Record<DemoKind, Scenario> = {
     people: PROM_PEOPLE,
     locked: 'georgi',
     hairVendor: 'Salon demo',
+    visitor: PROM_VISITOR,
   },
   // World Theatre Day.
   theatre: {
@@ -198,9 +219,11 @@ export async function seedDemoEvent(
   }
   const byId = new Map([...items.values()].map((item) => [item.id, item]));
 
-  const ids = new Map(PEOPLE.map((p) => [p.key, randomUUID()]));
-  for (const person of PEOPLE) {
+  const cast = scenario.visitor ? [...PEOPLE, scenario.visitor] : PEOPLE;
+  const ids = new Map(cast.map((p) => [p.key, p.key === VISITOR ? organizerId : randomUUID()]));
+  for (const person of cast) {
     const userId = ids.get(person.key)!;
+    const isVisitor = person.key === VISITOR;
     const before = await toJpeg(personSvg(person, { clothing: BEFORE_CLOTHING }), 600, 900);
     const photoHash = sha256(before);
     const photoPath = mediaPaths.photo(event.id, userId, photoHash);
@@ -215,7 +238,8 @@ export async function seedDemoEvent(
       photoHash,
       photoQuality: await checkPhotoQuality(before),
       pose: person.pose,
-      consentAt: stamp(),
+      // A real photo needs the visitor's explicit consent first, so it stays unset.
+      consentAt: isVisitor ? null : stamp(),
       joinedAt: stamp(),
     };
     await repo.upsertParticipant(participant);
@@ -277,19 +301,21 @@ export async function seedDemoEvent(
     }
   }
 
-  // The visitor joins too, so they can upload a photo and try the participant flow.
-  await repo.upsertParticipant({
-    eventId: event.id,
-    userId: organizerId,
-    displayName: 'Guest',
-    pairWith: null,
-    photoPath: null,
-    photoHash: null,
-    photoQuality: null,
-    pose: null,
-    consentAt: null,
-    joinedAt: stamp(),
-  });
+  // Without a prepared avatar the visitor joins with no photo, to try the participant flow.
+  if (!scenario.visitor) {
+    await repo.upsertParticipant({
+      eventId: event.id,
+      userId: organizerId,
+      displayName: 'Guest',
+      pairWith: null,
+      photoPath: null,
+      photoHash: null,
+      photoQuality: null,
+      pose: null,
+      consentAt: null,
+      joinedAt: stamp(),
+    });
+  }
   return event;
 }
 

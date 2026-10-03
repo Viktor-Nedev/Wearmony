@@ -170,12 +170,15 @@ export function suggestFixes(input: SuggestInput): FixSuggestion[] {
         warningsAfter,
         withinBudget,
         // Fewest near-misses left, then within budget, then the best group score,
-        // then the same kind of garment (a dress for a dress), then the cheapest.
+        // then the same kind of garment (a dress for a dress, not a tie for a dress),
+        // then the best result for the pair itself (an exact match before a contrast),
+        // then the cheapest.
         rank: [
           warningsAfter,
           withinBudget ? 0 : 1,
           -(after.groupScore ?? 0),
           currentCategory != null && (item.category ?? null) !== currentCategory ? 1 : 0,
+          -fixed.score,
           priceDelta,
         ],
       });
