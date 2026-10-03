@@ -11,7 +11,7 @@ Built for the *YouCam API Skin AI & eCommerce VTO Hackathon*.
 - Web app: see [Deploy](docs/deploy.md) (GitHub Pages)
 - Android: APK on the Releases page
 - Runs fully offline in mock mode: no accounts or API keys needed ([Run locally](#run-locally))
-- Two ready-made demo events with illustrated people: a prom and a school theatre cast
+- Two ready-made demo events with illustrated people, a prom and a school theatre cast, each with a short guided tour
 
 ## Problem
 
@@ -33,6 +33,8 @@ The group board shows everyone side by side ("7 of 8 rendered"), per-person and 
 - **Group photo**: everyone's current look in one frame on a painted backdrop (ballroom, stage, garden or studio), partners side by side, with the harmony score and the group's palette. Saved as a PNG on the web, shared from Android, and it keeps the labels that say what is simulated.
 - **Harmony map**: the group as a ring of outfit colors with one line per pair, colored by relation; the weakest near-miss pulses.
 - **Budget and readiness**: spending split into outfits, lip colors and hair colors, each person against the per-person cap, and who still needs a photo, a look, a preview or a lock, with a reminder to paste into the group chat.
+- **Compare looks**: every look a participant has previewed on their photo stays one tap away; two can be compared with a slider, and an earlier one worn again at no cost because each step is cached.
+- **Recent activity**: who joined, chose or locked a look, and who tried theirs on, as a timeline that updates while the group works.
 - **Event day**: an optional date with a countdown in the event header.
 
 English and Bulgarian throughout.
@@ -50,6 +52,10 @@ English and Bulgarian throughout.
 **Same engine, another event**: the theatre cast demo finds two nearly matching teal doublets, and Mercutio is played from a wheelchair.
 
 ![Group photo of the theatre cast demo on a stage backdrop with red curtains](docs/screenshots/theatre-photo.jpg)
+
+| Guided tour of a demo | Compare two looks |
+| --- | --- |
+| ![Tour panel with five steps: fix your clash, group photo, harmony map, budget, theatre demo](docs/screenshots/tour.png) | ![Two previews of the same person with a slider between them and a button to wear the earlier one again](docs/screenshots/compare.png) |
 
 | My look: before/after slider | Together | Hairdresser link | Bulgarian |
 | --- | --- | --- | --- |
@@ -70,6 +76,8 @@ The interface uses Playfair Display and Manrope (both with Cyrillic), a plum, ro
 ## How YouCam is used
 
 All YouCam paths and payloads live in one module: [`api/youcam/`](api/youcam). Nothing else touches HTTP details.
+
+![The landing page explains the chain: your photo, then AI Clothes, AI Makeup and AI Hair Color, with caching, the unit ledger and honest labels](docs/screenshots/youcam-chain.jpg)
 
 | Step | Endpoint | Used for |
 | --- | --- | --- |

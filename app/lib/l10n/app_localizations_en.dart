@@ -1572,4 +1572,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityPreviewedYou => 'You tried on your look';
+
+  @override
+  String get inclusionMethodTitle => 'How we measure';
+
+  @override
+  String get method1Title => 'Same garments';
+
+  @override
+  String get method1Body =>
+      'Every photo gets the same outfits from one catalogue, so only the pose differs.';
+
+  @override
+  String get method2Title => 'Standing and seated';
+
+  @override
+  String get method2Body =>
+      'Photos of consenting adults, standing and seated, with the same framing rules.';
+
+  @override
+  String get method3Title => 'Four things recorded';
+
+  @override
+  String get method3Body =>
+      'Whether the outfit was applied, silent failures, whether the face changed (human review) and the time taken.';
+
+  @override
+  String get method4Title => 'Published as measured';
+
+  @override
+  String get method4Body =>
+      'No estimates. Mitigations are reported as before and after numbers.';
+
+  @override
+  String get inclusionTableTitle => 'What will be published';
+
+  @override
+  String get inclusionTableNote =>
+      'Every cell stays empty until it is measured.';
+
+  @override
+  String get inclusionBuiltTitle => 'Already built for seated people';
+
+  @override
+  String get built1 =>
+      'Every participant chooses \"standing\" or \"seated\" for their photo.';
+
+  @override
+  String get built2 =>
+      'If a full-length outfit fails on a seated photo, Wearmony retries once with upper-body framing.';
+
+  @override
+  String get built3 =>
+      'Every render is checked for an outfit that was not applied, so a silent failure is labeled, not shown as a result.';
+
+  @override
+  String get built4 =>
+      'The demo prom includes a seated participant, so the flow can be tried without photos.';
+
+  @override
+  String get inclusionDemoCta => 'See the demo group';
 }

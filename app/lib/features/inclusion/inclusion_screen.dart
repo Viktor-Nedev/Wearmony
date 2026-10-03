@@ -11,6 +11,7 @@ import '../../ui/motion.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/session_widgets.dart';
+import 'inclusion_sections.dart';
 
 /// Published, measured try-on results for standing versus seated photos.
 class InclusionScreen extends StatefulWidget {
@@ -288,6 +289,14 @@ class _InclusionScreenState extends State<InclusionScreen> {
                                 ),
                               ),
                             ),
+                          const SizedBox(height: 12),
+                          if (results.groups.isEmpty) ...[
+                            const PendingResultsTable(),
+                            const SizedBox(height: 16),
+                          ],
+                          const InclusionMethod(),
+                          const SizedBox(height: 16),
+                          const SeatedSupport(),
                         ],
                       ),
                     ),

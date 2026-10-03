@@ -17,7 +17,7 @@ Honesty rules for the recording:
 | 0:12 | Landing page | Click **Prom demo**. | "Wearmony is group try-on. This is a demo prom with illustrated people." |
 | 0:18 | Together tab | The demo makes you Sofia's partner, in a sand tie. The near-miss card glows. | "I'm going with Sofia, and I picked a sand tie. Next to her champagne dress it's a near-miss: close, but not the same shade. In photos that reads as a mistake." |
 | 0:32 | Together tab, How to fix it | Point at the cards, then **Switch to this** on the champagne tie. The celebration appears. | "Wearmony tries every item in the event catalogue with the same color math and keeps only real fixes. The champagne tie matches her dress exactly, at the same price, and the group score jumps. One tap, and the clash is gone." |
-| 0:48 | My look tab | **Try it on** on a live event with a real photo. | "The preview is a live YouCam render: AI Clothes for the outfit, Makeup VTO for the lip color, AI Hair Color for the hair. Each step is cached, so the same photo and item never cost twice." |
+| 0:48 | My look tab | **Try it on** on a live event with a real photo. | "The preview is a live YouCam render: AI Clothes for the outfit, AI Makeup for the lip color, AI Hair Color for the hair. Each step is cached, so the same photo and item never cost twice." |
 | 1:05 | Group tab | Scroll past the stats, the budget split and readiness. | "The organizer sees everyone: who has rendered, the weakest color pair, the budget per person and in total, and who still needs a photo or a lock." |
 | 1:20 | Group photo | Open it, switch backdrops, **Save image**. | "And the whole group in one frame, partners together, with the harmony score. The image keeps the label that says what is simulated." |
 | 1:35 | Group tab, Elena's card, then the Inclusion page | Point at the seated badge, then the results table. | "Try-on is usually tested on standing models. Elena is seated. We measure how well it works for seated photos and publish the numbers: *[measured rate, or 'not measured yet']*." |
@@ -28,5 +28,5 @@ Honesty rules for the recording:
 ## Before recording
 
 1. Run the backend with `YOUCAM_MODE=live` for the live shot, or record that shot separately on the deployed app.
-2. Open the demos once before recording, so their images are cached and load instantly.
+2. Open the demos once before recording, so their images are cached and load instantly. The **Tour** button in a demo lists every feature in the order of this plan.
 3. Record the phone shots on an Android phone with the APK, or in Chrome device mode at 412 × 915.

@@ -1584,4 +1584,64 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get activityPreviewedYou => 'Ти пробва визията си';
+
+  @override
+  String get inclusionMethodTitle => 'Как измерваме';
+
+  @override
+  String get method1Title => 'Едни и същи дрехи';
+
+  @override
+  String get method1Body =>
+      'Всяка снимка получава едни и същи тоалети от един каталог, така че се различава само позата.';
+
+  @override
+  String get method2Title => 'Права и седнала поза';
+
+  @override
+  String get method2Body =>
+      'Снимки на пълнолетни, дали съгласие, прави и седнали, с едни и същи правила за кадъра.';
+
+  @override
+  String get method3Title => 'Четири неща се записват';
+
+  @override
+  String get method3Body =>
+      'Дали тоалетът е приложен, тихите неуспехи, дали лицето се е променило (проверка от човек) и колко време е отнело.';
+
+  @override
+  String get method4Title => 'Публикуваме измереното';
+
+  @override
+  String get method4Body =>
+      'Без оценки на око. Подобренията се отчитат с числа преди и след.';
+
+  @override
+  String get inclusionTableTitle => 'Какво ще бъде публикувано';
+
+  @override
+  String get inclusionTableNote =>
+      'Всяка клетка остава празна, докато не бъде измерена.';
+
+  @override
+  String get inclusionBuiltTitle => 'Вече направено за седнали хора';
+
+  @override
+  String get built1 =>
+      'Всеки участник избира „права“ или „седнала“ поза за снимката си.';
+
+  @override
+  String get built2 =>
+      'Ако тоалет в цял ръст не се приложи на седнала снимка, Wearmony опитва още веднъж с рамка за горната част на тялото.';
+
+  @override
+  String get built3 =>
+      'Всеки резултат се проверява дали тоалетът изобщо е приложен, така че тихият неуспех се отбелязва, вместо да се показва като резултат.';
+
+  @override
+  String get built4 =>
+      'Демо балът има седнал участник, така че потокът може да се пробва без снимки.';
+
+  @override
+  String get inclusionDemoCta => 'Виж демо групата';
 }

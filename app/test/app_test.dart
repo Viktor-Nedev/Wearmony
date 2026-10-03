@@ -469,6 +469,36 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('the inclusion page shows the method and no unmeasured numbers', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1300, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/inclusion': (_) => {
+        'measuredAt': null,
+        'engine': 'YouCam AI Clothes V4.0 (cloth-v4)',
+        'groups': [],
+        'notes': [],
+      },
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/inclusion',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('No measurements yet.'), findsOneWidget);
+    expect(find.text('What will be published'), findsOneWidget);
+    expect(find.text('How we measure'), findsOneWidget);
+    expect(find.text('Already built for seated people'), findsOneWidget);
+    // No percentage is shown before anything has been measured.
+    expect(find.textContaining('%'), findsNothing);
+  });
+
   testWidgets('a render that did not apply the outfit is labeled honestly', (
     tester,
   ) async {

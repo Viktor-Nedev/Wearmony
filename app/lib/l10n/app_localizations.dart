@@ -2724,6 +2724,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You tried on your look'**
   String get activityPreviewedYou;
+
+  /// No description provided for @inclusionMethodTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How we measure'**
+  String get inclusionMethodTitle;
+
+  /// No description provided for @method1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Same garments'**
+  String get method1Title;
+
+  /// No description provided for @method1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Every photo gets the same outfits from one catalogue, so only the pose differs.'**
+  String get method1Body;
+
+  /// No description provided for @method2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing and seated'**
+  String get method2Title;
+
+  /// No description provided for @method2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos of consenting adults, standing and seated, with the same framing rules.'**
+  String get method2Body;
+
+  /// No description provided for @method3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Four things recorded'**
+  String get method3Title;
+
+  /// No description provided for @method3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Whether the outfit was applied, silent failures, whether the face changed (human review) and the time taken.'**
+  String get method3Body;
+
+  /// No description provided for @method4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Published as measured'**
+  String get method4Title;
+
+  /// No description provided for @method4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'No estimates. Mitigations are reported as before and after numbers.'**
+  String get method4Body;
+
+  /// No description provided for @inclusionTableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What will be published'**
+  String get inclusionTableTitle;
+
+  /// No description provided for @inclusionTableNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Every cell stays empty until it is measured.'**
+  String get inclusionTableNote;
+
+  /// No description provided for @inclusionBuiltTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Already built for seated people'**
+  String get inclusionBuiltTitle;
+
+  /// No description provided for @built1.
+  ///
+  /// In en, this message translates to:
+  /// **'Every participant chooses \"standing\" or \"seated\" for their photo.'**
+  String get built1;
+
+  /// No description provided for @built2.
+  ///
+  /// In en, this message translates to:
+  /// **'If a full-length outfit fails on a seated photo, Wearmony retries once with upper-body framing.'**
+  String get built2;
+
+  /// No description provided for @built3.
+  ///
+  /// In en, this message translates to:
+  /// **'Every render is checked for an outfit that was not applied, so a silent failure is labeled, not shown as a result.'**
+  String get built3;
+
+  /// No description provided for @built4.
+  ///
+  /// In en, this message translates to:
+  /// **'The demo prom includes a seated participant, so the flow can be tried without photos.'**
+  String get built4;
+
+  /// No description provided for @inclusionDemoCta.
+  ///
+  /// In en, this message translates to:
+  /// **'See the demo group'**
+  String get inclusionDemoCta;
 }
 
 class _AppLocalizationsDelegate
