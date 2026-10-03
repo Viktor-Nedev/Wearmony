@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../../theme.dart';
 import '../../ui/motion.dart';
 import '../../widgets/common.dart';
+import '../../widgets/event_date_field.dart';
 import 'board_loader.dart';
 
 /// Organizer settings: name, budgets, participants, and deleting the event with all media.
@@ -28,6 +29,7 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
   late final _total = TextEditingController(
     text: _format(widget.event.budgetTotal),
   );
+  late DateTime? _date = widget.event.eventDate;
 
   @override
   String get boardEventId => widget.event.id;
@@ -61,6 +63,8 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
         budgetTotal: _amount(_total),
         clearBudgets:
             _perPerson.text.trim().isEmpty || _total.text.trim().isEmpty,
+        eventDate: _date,
+        clearDate: _date == null,
       ),
       success: l10n.saved,
     );
@@ -160,6 +164,11 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
                         decoration: InputDecoration(
                           labelText: l10n.eventNameLabel,
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                      EventDateField(
+                        value: _date,
+                        onChanged: (day) => setState(() => _date = day),
                       ),
                       const SizedBox(height: 12),
                       Row(

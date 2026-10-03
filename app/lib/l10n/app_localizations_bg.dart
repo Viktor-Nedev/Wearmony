@@ -1024,4 +1024,267 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get harmonyMapHint =>
       'Всяка линия сравнява два тоалета. Посочете или докоснете човек, за да видите само неговите двойки. Малките точки са цветовете на косата и червилото.';
+
+  @override
+  String get fixTitle => 'Как да се поправи';
+
+  @override
+  String get fixSubtitle =>
+      'Замени от каталога на събитието, които махат почти еднаквите цветове. Проверени със същата цветова математика, без мнения на модел.';
+
+  @override
+  String get fixNone =>
+      'В каталога още няма вещ, която да поправи това. Добавете една в същия нюанс или в ясно различен цвят.';
+
+  @override
+  String fixWith(Object name, Object relation) {
+    return '$relation с $name';
+  }
+
+  @override
+  String fixWithOutfit(Object relation) {
+    return '$relation с тоалета';
+  }
+
+  @override
+  String get fixScore => 'Хармония на групата';
+
+  @override
+  String get fixSamePrice => 'Същата цена';
+
+  @override
+  String get fixOverBudget => 'Над бюджета на човек';
+
+  @override
+  String get fixApply => 'Смени с това';
+
+  @override
+  String get fixApplied =>
+      'Визията е обновена. Проверката на хармонията вече я отчита.';
+
+  @override
+  String get fixPreview => 'Покажи';
+
+  @override
+  String get fixCopy => 'Копирай предложението';
+
+  @override
+  String get fixCopied => 'Предложението е копирано';
+
+  @override
+  String fixShareText(Object item, Object name, Object other, Object relation) {
+    return '$name, пробвай $item: до $other се получава „$relation“, а не почти еднакви цветове.';
+  }
+
+  @override
+  String fixShareTextSelf(Object item, Object name, Object relation) {
+    return '$name, пробвай $item: с тоалета се получава „$relation“, а не почти еднакви цветове.';
+  }
+
+  @override
+  String get frameOpen => 'Групова снимка';
+
+  @override
+  String get frameOpenHint =>
+      'Вижте текущата визия на всички в един кадър и я запазете като изображение.';
+
+  @override
+  String get frameTitle => 'Групова снимка';
+
+  @override
+  String get frameSubtitle =>
+      'Текущата визия на всички в един кадър. Партньорите стоят заедно.';
+
+  @override
+  String get frameBackdrop => 'Фон';
+
+  @override
+  String get backdropBallroom => 'Бална зала';
+
+  @override
+  String get backdropStage => 'Сцена';
+
+  @override
+  String get backdropGarden => 'Градина';
+
+  @override
+  String get backdropStudio => 'Студио';
+
+  @override
+  String get frameSave => 'Запази изображението';
+
+  @override
+  String get frameShare => 'Сподели изображението';
+
+  @override
+  String get frameSaved => 'Изображението е запазено в изтеглените файлове.';
+
+  @override
+  String get frameSaveFailed =>
+      'Изображението не можа да бъде създадено. Опитайте отново.';
+
+  @override
+  String get frameHint =>
+      'Изображението запазва етикетите, които казват кое е симулирано.';
+
+  @override
+  String get frameEmpty => 'Още никой не се е присъединил.';
+
+  @override
+  String frameHarmony(int score) {
+    return 'Хармония $score/100';
+  }
+
+  @override
+  String framePeople(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count души',
+      one: '1 човек',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get frameHonestDemo => 'Илюстрации, не истински снимки';
+
+  @override
+  String get frameHonestMock => 'Симулирано пробване (mock режим)';
+
+  @override
+  String get frameHonestReal => 'Виртуален преглед, не гаранция за размера';
+
+  @override
+  String frameShareText(Object event) {
+    return 'Нашите визии за $event, направени с Wearmony.';
+  }
+
+  @override
+  String get readinessTitle => 'Подготовка';
+
+  @override
+  String get readinessPhoto => 'Снимка';
+
+  @override
+  String get readinessLook => 'Визия';
+
+  @override
+  String get readinessPreview => 'Преглед';
+
+  @override
+  String get readinessLocked => 'Заключена';
+
+  @override
+  String get nextPhoto => 'Трябва снимка';
+
+  @override
+  String get nextLook => 'Избира визия';
+
+  @override
+  String get nextPreview => 'Още няма преглед';
+
+  @override
+  String get nextLock => 'Може да заключи визията';
+
+  @override
+  String get nextDone => 'Всичко е готово';
+
+  @override
+  String get reminderCopy => 'Копирай напомняне';
+
+  @override
+  String reminderText(Object event, Object link) {
+    return 'Моля, довършете визията си за $event в Wearmony: $link';
+  }
+
+  @override
+  String get reminderCopied =>
+      'Напомнянето е копирано. Поставете го в груповия чат.';
+
+  @override
+  String get eventDateLabel => 'Дата на събитието (по избор)';
+
+  @override
+  String get eventDateNone => 'Още без дата';
+
+  @override
+  String get eventDateClear => 'Изчисти датата';
+
+  @override
+  String get countdownToday => 'Днес';
+
+  @override
+  String countdownDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'след $count дни',
+      one: 'след 1 ден',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countdownPast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'преди $count дни',
+      one: 'преди 1 ден',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get featureFixTitle => 'Поправка с едно докосване';
+
+  @override
+  String get featureFixBody =>
+      'Когато два цвята почти съвпадат, Wearmony намира замени от каталога, които го поправят, и показва какво се променя.';
+
+  @override
+  String get featureFrameTitle => 'Една обща снимка';
+
+  @override
+  String get featureFrameBody =>
+      'Текущата визия на всички в един кадър, партньорите един до друг, готова за споделяне.';
+
+  @override
+  String fixOthersLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Остават още $count сблъсъка в групата',
+      one: 'Остава още един сблъсък в групата',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fixWithYou(Object relation) {
+    return '$relation с вас';
+  }
+
+  @override
+  String fixShareTextMe(Object item, Object name, Object relation) {
+    return '$name, пробвай $item: до мен се получава „$relation“, а не почти еднакви цветове.';
+  }
+
+  @override
+  String harmonyMapSemantics(int people, int nearMisses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      nearMisses,
+      locale: localeName,
+      other: '$nearMisses сблъсъка',
+      one: 'един сблъсък',
+      zero: 'нула сблъсъка',
+    );
+    return 'Карта на хармонията за $people души с $_temp0.';
+  }
+
+  @override
+  String frameSemantics(Object event, Object names) {
+    return 'Групова снимка на $event: $names.';
+  }
 }

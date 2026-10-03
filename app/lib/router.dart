@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import 'features/event/event_shell.dart';
+import 'features/event/group_frame_screen.dart';
 import 'features/inclusion/inclusion_screen.dart';
 import 'features/landing/landing_screen.dart';
 import 'features/misc/not_found_screen.dart';
@@ -56,6 +57,12 @@ GoRouter buildRouter({String initialLocation = '/'}) => GoRouter(
           path: 'photo',
           builder: (context, state) => SessionGate(
             child: PhotoScreen(eventId: state.pathParameters['eventId']!),
+          ),
+        ),
+        GoRoute(
+          path: 'frame',
+          builder: (context, state) => SessionGate(
+            child: GroupFrameScreen(eventId: state.pathParameters['eventId']!),
           ),
         ),
         GoRoute(

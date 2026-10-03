@@ -4,7 +4,7 @@ Everything runs on free plans: Supabase (data, auth, storage), Vercel Hobby (bac
 
 ## 1. Supabase
 
-1. In the Supabase dashboard of the project, open **SQL Editor**, paste [`supabase/migrations/20261001000000_init.sql`](../supabase/migrations/20261001000000_init.sql) and run it. It is safe to run twice.
+1. In the Supabase dashboard of the project, open **SQL Editor**, paste [`supabase/migrations/20261001000000_init.sql`](../supabase/migrations/20261001000000_init.sql) and run it. It is safe to run twice, and running a newer copy again adds any new columns (for example the event date).
 2. **Authentication → Sign In / Providers**: turn on **Allow anonymous sign-ins** (participants join without an account). Email sign-in stays available.
 3. **Storage**: the backend uses a private bucket named `event-media` (10 MB limit, JPEG and PNG). Create it if it does not exist yet.
 4. Note the project URL, the publishable key and a secret key (**Project Settings → API Keys**).

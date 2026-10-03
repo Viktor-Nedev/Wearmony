@@ -17,6 +17,28 @@ String formatDate(BuildContext context, DateTime date) => DateFormat.yMMMd(
   Localizations.localeOf(context).toLanguageTag(),
 ).add_Hm().format(date.toLocal());
 
+/// The day of an event, e.g. "23 May 2027".
+String formatEventDay(BuildContext context, DateTime day) => DateFormat.yMMMd(
+  Localizations.localeOf(context).toLanguageTag(),
+).format(day);
+
+/// Whole calendar days from today until [day]; negative once it has passed.
+int daysUntil(DateTime day, {DateTime? now}) {
+  final today = now ?? DateTime.now();
+  return DateTime.utc(
+    day.year,
+    day.month,
+    day.day,
+  ).difference(DateTime.utc(today.year, today.month, today.day)).inDays;
+}
+
+/// "in 12 days", "Today" or "3 days ago".
+String countdownLabel(AppLocalizations l10n, DateTime day, {DateTime? now}) {
+  final days = daysUntil(day, now: now);
+  if (days == 0) return l10n.countdownToday;
+  return days > 0 ? l10n.countdownDays(days) : l10n.countdownPast(-days);
+}
+
 Color hexColor(String? hex, {Color fallback = const Color(0xFF9E9E9E)}) {
   if (hex == null || !RegExp(r'^#[0-9a-fA-F]{6}$').hasMatch(hex)) {
     return fallback;

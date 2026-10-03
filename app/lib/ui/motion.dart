@@ -270,6 +270,7 @@ class _ScrollAnimatedState extends State<ScrollAnimated>
   ScrollPosition? _position;
   Timer? _timer;
   bool _shown = false;
+  bool _pending = false;
 
   @override
   void didChangeDependencies() {
@@ -280,10 +281,29 @@ class _ScrollAnimatedState extends State<ScrollAnimated>
       _controller.value = 1;
       return;
     }
-    _position?.removeListener(_check);
+    _position?.removeListener(_scheduleCheck);
     _position = Scrollable.maybeOf(context)?.position;
-    _position?.addListener(_check);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _check());
+    _position?.addListener(_scheduleCheck);
+    _scheduleCheck();
+  }
+
+  @override
+  void didUpdateWidget(ScrollAnimated oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Content above may have grown or shrunk without any scrolling.
+    _scheduleCheck();
+  }
+
+  /// Measures after the next frame: when the scroll offset changes, the new
+  /// positions only exist once that frame has been laid out.
+  void _scheduleCheck() {
+    if (_shown || _pending) return;
+    _pending = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pending = false;
+      _check();
+    });
+    WidgetsBinding.instance.scheduleFrame();
   }
 
   void _check() {
@@ -296,7 +316,7 @@ class _ScrollAnimatedState extends State<ScrollAnimated>
     // on screen always starts, e.g. a footer when the page cannot scroll further.
     if (top > screen * 0.92 && top + box.size.height > screen) return;
     _shown = true;
-    _position?.removeListener(_check);
+    _position?.removeListener(_scheduleCheck);
     _timer = Timer(widget.delay, () {
       if (mounted) _controller.forward();
     });
@@ -304,7 +324,7 @@ class _ScrollAnimatedState extends State<ScrollAnimated>
 
   @override
   void dispose() {
-    _position?.removeListener(_check);
+    _position?.removeListener(_scheduleCheck);
     _timer?.cancel();
     _controller.dispose();
     super.dispose();

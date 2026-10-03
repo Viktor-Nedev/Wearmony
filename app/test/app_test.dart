@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wearmony/api/models.dart';
+import 'package:wearmony/features/event/group_insights.dart';
 import 'package:wearmony/app.dart';
 import 'package:wearmony/l10n/app_localizations.dart';
+import 'package:wearmony/ui/group_frame.dart';
 import 'package:wearmony/ui/motion.dart';
+import 'package:wearmony/util/format.dart';
 import 'package:wearmony/util/harmony_text.dart';
 import 'package:wearmony/widgets/render_view.dart';
 
@@ -170,6 +173,162 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('the harmony tab suggests a swap that fixes the near-miss', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 2600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+      'GET /api/events/e1/harmony/suggestions': (_) => suggestionsJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=harmony',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('How to fix it'), findsOneWidget);
+    expect(find.text('Blush tie'), findsOneWidget);
+    expect(find.textContaining('Matched with Maria'), findsOneWidget);
+    expect(find.text('Same price'), findsOneWidget);
+    // Ivan is someone else here, so the suggestion can be copied, not applied.
+    expect(find.text('Copy suggestion'), findsOneWidget);
+    expect(find.text('Switch to this'), findsNothing);
+    await unmount(tester);
+  });
+
+  testWidgets('a person can switch to the suggested item from Together', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    Map<String, Object?> board() {
+      final data = boardJson();
+      final people = (data['participants'] as List)
+          .cast<Map<String, Object?>>();
+      people[1]['isMe'] = true;
+      return data;
+    }
+
+    String? putBody;
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(participant: true),
+      'GET /api/events/e1/board': (_) => board(),
+      'GET /api/events/e1/harmony/suggestions': (_) => suggestionsJson(),
+      'PUT /api/events/e1/look': (request) {
+        putBody = request.body;
+        return {'garmentId': 'g-blush-tie', 'locked': false, 'total': 35};
+      },
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=together',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('How to fix it'), findsOneWidget);
+    await tester.tap(find.text('Switch to this'));
+    await tester.pumpAndSettle();
+    expect(putBody, contains('g-blush-tie'));
+    expect(
+      find.text('Look updated. The harmony check already uses it.'),
+      findsOneWidget,
+    );
+    await unmount(tester);
+  });
+
+  testWidgets('the group photo shows everyone with harmony and honest labels', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 1600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1/frame',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Group photo'), findsOneWidget);
+    expect(find.text('Maria'), findsOneWidget);
+    expect(find.text('Ivan'), findsOneWidget);
+    expect(find.text('Harmony 31/100'), findsOneWidget);
+    expect(
+      find.text('Virtual try-on preview, not a fit guarantee'),
+      findsOneWidget,
+    );
+    // Tests run on the VM, where the image goes to the share sheet.
+    expect(find.text('Share image'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('color bars in the budget and the group photo have height', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1200, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final board = Board.fromJson(boardJson());
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                BudgetBreakdown(board: board),
+                GroupFrame(board: board, backdrop: FrameBackdrop.studio),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(seconds: 2));
+
+    for (final parent in [BudgetBreakdown, GroupFrame]) {
+      final bars = find.descendant(
+        of: find.byType(parent),
+        matching: find.byWidgetPredicate(
+          (w) => w is ColoredBox && w.child == null,
+        ),
+      );
+      expect(bars, findsWidgets, reason: '$parent has color bars');
+      for (final bar in bars.evaluate()) {
+        expect((bar.renderObject! as RenderBox).size.height, greaterThan(0));
+      }
+    }
+    await unmount(tester);
+  });
+
+  test('partners stand next to each other in the group photo', () {
+    final data = boardJson();
+    final people = (data['participants'] as List).cast<Map<String, Object?>>();
+    people.insert(1, {
+      ...people[1],
+      'userId': 'u3',
+      'displayName': 'Elena',
+      'pairWith': null,
+    });
+    final order = GroupFrame.lineup(Board.fromJson(data));
+    expect(order.map((p) => p.displayName), ['Maria', 'Ivan', 'Elena']);
+  });
+
   testWidgets('a render that did not apply the outfit is labeled honestly', (
     tester,
   ) async {
@@ -199,6 +358,23 @@ void main() {
       find.textContaining('The outfit may not have been applied'),
       findsOneWidget,
     );
+  });
+
+  test('countdowns count calendar days in both languages', () async {
+    final en = await AppLocalizations.delegate.load(const Locale('en'));
+    final bg = await AppLocalizations.delegate.load(const Locale('bg'));
+    final now = DateTime(2026, 10, 3, 23, 30);
+    expect(countdownLabel(en, DateTime(2026, 10, 3), now: now), 'Today');
+    expect(countdownLabel(en, DateTime(2026, 10, 4), now: now), 'in 1 day');
+    expect(countdownLabel(en, DateTime(2027, 5, 23), now: now), 'in 232 days');
+    expect(countdownLabel(en, DateTime(2026, 10, 1), now: now), '2 days ago');
+    expect(countdownLabel(bg, DateTime(2026, 10, 13), now: now), 'след 10 дни');
+  });
+
+  test('event days travel as YYYY-MM-DD', () {
+    expect(parseDay('2027-05-23'), DateTime(2027, 5, 23));
+    expect(parseDay('soon'), isNull);
+    expect(formatDay(DateTime(2027, 5, 3)), '2027-05-03');
   });
 
   test('harmony sentences are localized from structured data', () async {

@@ -127,101 +127,110 @@ class _HarmonyMapState extends State<HarmonyMap> with TickerProviderStateMixin {
     final focus = index[_focus];
     final relations = {for (final edge in edges) edge.finding.relation};
     final text = Theme.of(context).textTheme;
+    final nearMisses = edges.where((e) => e.finding.isWarning).length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            final size = Size(
-              width,
-              width < 520 ? width * 0.92 : math.min(width * 0.52, 400),
-            );
-            final positions = _layout(people.length, size);
-            return ScrollAnimated(
-              duration: const Duration(milliseconds: 1700),
-              curve: Curves.linear,
-              builder: (context, t, _) {
-                final lines = const Interval(0.3, 1).transform(t);
-                Widget paint(double pulse) => CustomPaint(
-                  painter: _MapPainter(
-                    edges: edges,
-                    positions: positions,
-                    progress: lines,
-                    pulse: pulse,
-                    focus: focus,
-                    alerts: alerts,
-                  ),
+        // The drawing is described in one sentence; the findings list has the details.
+        Semantics(
+          container: true,
+          label: l10n.harmonyMapSemantics(people.length, nearMisses),
+          child: ExcludeSemantics(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final size = Size(
+                  width,
+                  width < 520 ? width * 0.92 : math.min(width * 0.52, 400),
                 );
-                final weakestEdge = edges
-                    .where((e) => e.weakest && e.finding.isWarning)
-                    .firstOrNull;
-                return SizedBox.fromSize(
-                  size: size,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Positioned.fill(
-                        child: RepaintBoundary(
-                          child: _pulse == null
-                              ? paint(0.25)
-                              : AnimatedBuilder(
-                                  animation: _pulse!,
-                                  builder: (context, _) => paint(_pulse!.value),
-                                ),
-                        ),
+                final positions = _layout(people.length, size);
+                return ScrollAnimated(
+                  duration: const Duration(milliseconds: 1700),
+                  curve: Curves.linear,
+                  builder: (context, t, _) {
+                    final lines = const Interval(0.3, 1).transform(t);
+                    Widget paint(double pulse) => CustomPaint(
+                      painter: _MapPainter(
+                        edges: edges,
+                        positions: positions,
+                        progress: lines,
+                        pulse: pulse,
+                        focus: focus,
+                        alerts: alerts,
                       ),
-                      if (weakestEdge != null)
-                        _DeltaChip(
-                          at: _outward(
-                            Offset.lerp(
-                              positions[weakestEdge.a],
-                              positions[weakestEdge.b],
-                              0.5,
-                            )!,
-                            size.center(Offset.zero),
+                    );
+                    final weakestEdge = edges
+                        .where((e) => e.weakest && e.finding.isWarning)
+                        .firstOrNull;
+                    return SizedBox.fromSize(
+                      size: size,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Positioned.fill(
+                            child: RepaintBoundary(
+                              child: _pulse == null
+                                  ? paint(0.25)
+                                  : AnimatedBuilder(
+                                      animation: _pulse!,
+                                      builder: (context, _) =>
+                                          paint(_pulse!.value),
+                                    ),
+                            ),
                           ),
-                          finding: weakestEdge.finding,
-                          opacity: const Interval(0.85, 1).transform(t),
-                        ),
-                      for (final (i, person) in people.indexed)
-                        Positioned(
-                          left: positions[i].dx - 50,
-                          top: positions[i].dy - 26,
-                          width: 100,
-                          child: _MapNode(
-                            person: person,
-                            youLabel: l10n.you,
-                            progress: Interval(
-                              math.min(0.04 * i, 0.3),
-                              math.min(0.04 * i + 0.3, 1),
-                            ).transform(t),
-                            focused: focus == i,
-                            dimmed:
-                                focus != null &&
-                                focus != i &&
-                                !edges.any(
-                                  (e) =>
-                                      (e.a == focus && e.b == i) ||
-                                      (e.b == focus && e.a == i),
+                          if (weakestEdge != null)
+                            _DeltaChip(
+                              at: _outward(
+                                Offset.lerp(
+                                  positions[weakestEdge.a],
+                                  positions[weakestEdge.b],
+                                  0.5,
+                                )!,
+                                size.center(Offset.zero),
+                              ),
+                              finding: weakestEdge.finding,
+                              opacity: const Interval(0.85, 1).transform(t),
+                            ),
+                          for (final (i, person) in people.indexed)
+                            Positioned(
+                              left: positions[i].dx - 50,
+                              top: positions[i].dy - 26,
+                              width: 100,
+                              child: _MapNode(
+                                person: person,
+                                youLabel: l10n.you,
+                                progress: Interval(
+                                  math.min(0.04 * i, 0.3),
+                                  math.min(0.04 * i + 0.3, 1),
+                                ).transform(t),
+                                focused: focus == i,
+                                dimmed:
+                                    focus != null &&
+                                    focus != i &&
+                                    !edges.any(
+                                      (e) =>
+                                          (e.a == focus && e.b == i) ||
+                                          (e.b == focus && e.a == i),
+                                    ),
+                                onHover: (inside) => setState(
+                                  () => _focus = inside ? person.userId : null,
                                 ),
-                            onHover: (inside) => setState(
-                              () => _focus = inside ? person.userId : null,
+                                onTap: () => setState(
+                                  () => _focus = _focus == person.userId
+                                      ? null
+                                      : person.userId,
+                                ),
+                              ),
                             ),
-                            onTap: () => setState(
-                              () => _focus = _focus == person.userId
-                                  ? null
-                                  : person.userId,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                        ],
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
+            ),
+          ),
         ),
         const SizedBox(height: 12),
         Wrap(

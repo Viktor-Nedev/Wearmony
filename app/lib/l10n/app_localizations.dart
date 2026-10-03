@@ -1866,6 +1866,390 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Each line compares two outfits. Point at or tap a person to see only their pairs. Small dots are hair and lip colors.'**
   String get harmonyMapHint;
+
+  /// No description provided for @fixTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to fix it'**
+  String get fixTitle;
+
+  /// No description provided for @fixSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Swaps from this event\'s catalogue that remove the near-miss, checked with the same color math. No model opinions.'**
+  String get fixSubtitle;
+
+  /// No description provided for @fixNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No item in the catalogue fixes this yet. Add one in the same shade or in a clearly different color.'**
+  String get fixNone;
+
+  /// No description provided for @fixWith.
+  ///
+  /// In en, this message translates to:
+  /// **'{relation} with {name}'**
+  String fixWith(Object name, Object relation);
+
+  /// No description provided for @fixWithOutfit.
+  ///
+  /// In en, this message translates to:
+  /// **'{relation} with the outfit'**
+  String fixWithOutfit(Object relation);
+
+  /// No description provided for @fixScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Group harmony'**
+  String get fixScore;
+
+  /// No description provided for @fixSamePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Same price'**
+  String get fixSamePrice;
+
+  /// No description provided for @fixOverBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Over the per-person budget'**
+  String get fixOverBudget;
+
+  /// No description provided for @fixApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to this'**
+  String get fixApply;
+
+  /// No description provided for @fixApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Look updated. The harmony check already uses it.'**
+  String get fixApplied;
+
+  /// No description provided for @fixPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get fixPreview;
+
+  /// No description provided for @fixCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy suggestion'**
+  String get fixCopy;
+
+  /// No description provided for @fixCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestion copied'**
+  String get fixCopied;
+
+  /// No description provided for @fixShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, try {item} instead: next to {other} it reads as “{relation}”, not a near-miss.'**
+  String fixShareText(Object item, Object name, Object other, Object relation);
+
+  /// No description provided for @fixShareTextSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, try {item} instead: with the outfit it reads as “{relation}”, not a near-miss.'**
+  String fixShareTextSelf(Object item, Object name, Object relation);
+
+  /// No description provided for @frameOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Group photo'**
+  String get frameOpen;
+
+  /// No description provided for @frameOpenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'See everyone\'s current look in one frame and save it as an image.'**
+  String get frameOpenHint;
+
+  /// No description provided for @frameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Group photo'**
+  String get frameTitle;
+
+  /// No description provided for @frameSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone\'s current look in one frame. Partners stand together.'**
+  String get frameSubtitle;
+
+  /// No description provided for @frameBackdrop.
+  ///
+  /// In en, this message translates to:
+  /// **'Backdrop'**
+  String get frameBackdrop;
+
+  /// No description provided for @backdropBallroom.
+  ///
+  /// In en, this message translates to:
+  /// **'Ballroom'**
+  String get backdropBallroom;
+
+  /// No description provided for @backdropStage.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage'**
+  String get backdropStage;
+
+  /// No description provided for @backdropGarden.
+  ///
+  /// In en, this message translates to:
+  /// **'Garden'**
+  String get backdropGarden;
+
+  /// No description provided for @backdropStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio'**
+  String get backdropStudio;
+
+  /// No description provided for @frameSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save image'**
+  String get frameSave;
+
+  /// No description provided for @frameShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get frameShare;
+
+  /// No description provided for @frameSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Image saved to your downloads.'**
+  String get frameSaved;
+
+  /// No description provided for @frameSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The image could not be created. Try again.'**
+  String get frameSaveFailed;
+
+  /// No description provided for @frameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The image keeps the labels that say what is simulated.'**
+  String get frameHint;
+
+  /// No description provided for @frameEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has joined yet.'**
+  String get frameEmpty;
+
+  /// No description provided for @frameHarmony.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony {score}/100'**
+  String frameHarmony(int score);
+
+  /// No description provided for @framePeople.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person} other{{count} people}}'**
+  String framePeople(int count);
+
+  /// No description provided for @frameHonestDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Illustrations, not real photos'**
+  String get frameHonestDemo;
+
+  /// No description provided for @frameHonestMock.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulated try-on (mock mode)'**
+  String get frameHonestMock;
+
+  /// No description provided for @frameHonestReal.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtual try-on preview, not a fit guarantee'**
+  String get frameHonestReal;
+
+  /// No description provided for @frameShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Our looks for {event}, made with Wearmony.'**
+  String frameShareText(Object event);
+
+  /// No description provided for @readinessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting ready'**
+  String get readinessTitle;
+
+  /// No description provided for @readinessPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get readinessPhoto;
+
+  /// No description provided for @readinessLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Look'**
+  String get readinessLook;
+
+  /// No description provided for @readinessPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get readinessPreview;
+
+  /// No description provided for @readinessLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get readinessLocked;
+
+  /// No description provided for @nextPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a photo'**
+  String get nextPhoto;
+
+  /// No description provided for @nextLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Choosing a look'**
+  String get nextLook;
+
+  /// No description provided for @nextPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'No preview yet'**
+  String get nextPreview;
+
+  /// No description provided for @nextLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Can lock the look'**
+  String get nextLock;
+
+  /// No description provided for @nextDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All set'**
+  String get nextDone;
+
+  /// No description provided for @reminderCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy a reminder'**
+  String get reminderCopy;
+
+  /// No description provided for @reminderText.
+  ///
+  /// In en, this message translates to:
+  /// **'Please finish your look for {event} on Wearmony: {link}'**
+  String reminderText(Object event, Object link);
+
+  /// No description provided for @reminderCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder copied. Paste it in your group chat.'**
+  String get reminderCopied;
+
+  /// No description provided for @eventDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Event date (optional)'**
+  String get eventDateLabel;
+
+  /// No description provided for @eventDateNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No date yet'**
+  String get eventDateNone;
+
+  /// No description provided for @eventDateClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear the date'**
+  String get eventDateClear;
+
+  /// No description provided for @countdownToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get countdownToday;
+
+  /// No description provided for @countdownDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{in 1 day} other{in {count} days}}'**
+  String countdownDays(int count);
+
+  /// No description provided for @countdownPast.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
+  String countdownPast(int count);
+
+  /// No description provided for @featureFixTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix it in one tap'**
+  String get featureFixTitle;
+
+  /// No description provided for @featureFixBody.
+  ///
+  /// In en, this message translates to:
+  /// **'When two colors almost match, Wearmony finds catalogue swaps that fix it and shows what changes.'**
+  String get featureFixBody;
+
+  /// No description provided for @featureFrameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One group photo'**
+  String get featureFrameTitle;
+
+  /// No description provided for @featureFrameBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone\'s current look in one frame, partners side by side, ready to share.'**
+  String get featureFrameBody;
+
+  /// No description provided for @fixOthersLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Another near-miss in the group stays} other{{count} other near-misses in the group stay}}'**
+  String fixOthersLeft(int count);
+
+  /// No description provided for @fixWithYou.
+  ///
+  /// In en, this message translates to:
+  /// **'{relation} with you'**
+  String fixWithYou(Object relation);
+
+  /// No description provided for @fixShareTextMe.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, try {item} instead: next to me it reads as “{relation}”, not a near-miss.'**
+  String fixShareTextMe(Object item, Object name, Object relation);
+
+  /// No description provided for @harmonyMapSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony map of {people} people with {nearMisses, plural, =0{no near-misses} =1{one near-miss} other{{nearMisses} near-misses}}.'**
+  String harmonyMapSemantics(int people, int nearMisses);
+
+  /// No description provided for @frameSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Group photo of {event}: {names}.'**
+  String frameSemantics(Object event, Object names);
 }
 
 class _AppLocalizationsDelegate

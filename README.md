@@ -26,7 +26,15 @@ Try-on is also usually tested on standing models. The YouCam AI Clothes document
 | **Participant** (Android or web) | Joins with a code, gives consent, uploads one photo (standing or seated) with a quality check, builds a look (outfit + lip color + hair color) with a running total, tries it on, sees themselves next to their partner, locks the final look, deletes their data at any time. |
 | **Vendor** (no account) | A hairdresser opens a read-only, expiring link with the chosen hair color and the "before" photo. A shop or costume keeper gets a catalogue link to add items. |
 
-The group board shows everyone side by side ("7 of 8 rendered"), per-person and total budget, and the weakest color pair in plain words. English and Bulgarian.
+The group board shows everyone side by side ("7 of 8 rendered"), per-person and total budget, and the weakest color pair in plain words. On top of that:
+
+- **How to fix it**: for a near-miss, the harmony engine tries every catalogue item on the people involved and keeps only the swaps that remove the clash, each with its new relation, the group score before and after, and the price difference. A participant switches with one tap; a suggestion for someone else can be copied and sent to them.
+- **Group photo**: everyone's current look in one frame on a painted backdrop (ballroom, stage, garden or studio), partners side by side, with the harmony score and the group's palette. Saved as a PNG on the web, shared from Android, and it keeps the labels that say what is simulated.
+- **Harmony map**: the group as a ring of outfit colors with one line per pair, colored by relation; the weakest near-miss pulses.
+- **Budget and readiness**: spending split into outfits, lip colors and hair colors, each person against the per-person cap, and who still needs a photo, a look, a preview or a lock, with a reminder to paste into the group chat.
+- **Event day**: an optional date with a countdown in the event header.
+
+English and Bulgarian throughout.
 
 ![Group board of the demo prom: everyone side by side, budget, and a near-miss warning between two partners](docs/screenshots/board.png)
 
@@ -83,6 +91,7 @@ Deterministic and explainable; no model opinions.
 | over 8 otherwise | contrast | clearly different, reads as intentional |
 
 3. The **group score is the weakest pair**, not an average, and names who is involved. Every finding comes with one plain sentence ("Maria's pink and Ivan's pink are close but not the same shade (ΔE 3.0)…").
+4. **Fix suggestions** re-run the same engine with each catalogue item swapped in and keep only real fixes, ranked by near-misses left, budget, group score and price.
 
 All thresholds are in one commented file: [`api/harmony/config.ts`](api/harmony/config.ts). An optional Gemini summary can restate the results in plain words; it only sees the computed facts and never affects a score. Harmony is about colors only, never about bodies or skin. Details: [docs/harmony.md](docs/harmony.md).
 

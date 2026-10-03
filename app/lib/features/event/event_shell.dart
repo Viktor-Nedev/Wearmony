@@ -121,24 +121,37 @@ class _EventShellState extends State<EventShell> {
             children: [
               Text(event.name, maxLines: 1, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 2),
-              Row(
-                children: [
-                  _HeaderChip(
-                    icon: _templateIcon(event.template),
-                    label: templateName(l10n, event.template),
-                  ),
-                  const SizedBox(width: 6),
-                  _HeaderChip(
-                    icon: Icons.tag,
-                    label: event.joinCode,
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: event.joinCode));
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(l10n.linkCopied)));
-                    },
-                  ),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _HeaderChip(
+                      icon: _templateIcon(event.template),
+                      label: templateName(l10n, event.template),
+                    ),
+                    if (event.eventDate != null) ...[
+                      const SizedBox(width: 6),
+                      Tooltip(
+                        message: formatEventDay(context, event.eventDate!),
+                        child: _HeaderChip(
+                          icon: Icons.event_outlined,
+                          label: countdownLabel(l10n, event.eventDate!),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(width: 6),
+                    _HeaderChip(
+                      icon: Icons.tag,
+                      label: event.joinCode,
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: event.joinCode));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.linkCopied)),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

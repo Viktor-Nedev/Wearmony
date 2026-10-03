@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../../ui/effects.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
+import '../../widgets/event_date_field.dart';
 import '../../widgets/form_scaffold.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final _perPerson = TextEditingController();
   final _total = TextEditingController();
   EventTemplate _template = EventTemplate.prom;
+  DateTime? _date;
   bool _busy = false;
 
   @override
@@ -44,6 +46,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         template: _template,
         budgetPerPerson: _amount(_perPerson),
         budgetTotal: _amount(_total),
+        eventDate: _date,
       ),
     );
     if (!mounted) return;
@@ -73,6 +76,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(labelText: l10n.eventNameLabel),
           onChanged: (_) => setState(() {}),
+        ),
+        const SizedBox(height: 12),
+        EventDateField(
+          value: _date,
+          onChanged: (day) => setState(() => _date = day),
         ),
         const SizedBox(height: 22),
         Text(l10n.templateLabel, style: Theme.of(context).textTheme.titleSmall),

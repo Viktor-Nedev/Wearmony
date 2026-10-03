@@ -1019,4 +1019,264 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get harmonyMapHint =>
       'Each line compares two outfits. Point at or tap a person to see only their pairs. Small dots are hair and lip colors.';
+
+  @override
+  String get fixTitle => 'How to fix it';
+
+  @override
+  String get fixSubtitle =>
+      'Swaps from this event\'s catalogue that remove the near-miss, checked with the same color math. No model opinions.';
+
+  @override
+  String get fixNone =>
+      'No item in the catalogue fixes this yet. Add one in the same shade or in a clearly different color.';
+
+  @override
+  String fixWith(Object name, Object relation) {
+    return '$relation with $name';
+  }
+
+  @override
+  String fixWithOutfit(Object relation) {
+    return '$relation with the outfit';
+  }
+
+  @override
+  String get fixScore => 'Group harmony';
+
+  @override
+  String get fixSamePrice => 'Same price';
+
+  @override
+  String get fixOverBudget => 'Over the per-person budget';
+
+  @override
+  String get fixApply => 'Switch to this';
+
+  @override
+  String get fixApplied => 'Look updated. The harmony check already uses it.';
+
+  @override
+  String get fixPreview => 'Preview';
+
+  @override
+  String get fixCopy => 'Copy suggestion';
+
+  @override
+  String get fixCopied => 'Suggestion copied';
+
+  @override
+  String fixShareText(Object item, Object name, Object other, Object relation) {
+    return '$name, try $item instead: next to $other it reads as “$relation”, not a near-miss.';
+  }
+
+  @override
+  String fixShareTextSelf(Object item, Object name, Object relation) {
+    return '$name, try $item instead: with the outfit it reads as “$relation”, not a near-miss.';
+  }
+
+  @override
+  String get frameOpen => 'Group photo';
+
+  @override
+  String get frameOpenHint =>
+      'See everyone\'s current look in one frame and save it as an image.';
+
+  @override
+  String get frameTitle => 'Group photo';
+
+  @override
+  String get frameSubtitle =>
+      'Everyone\'s current look in one frame. Partners stand together.';
+
+  @override
+  String get frameBackdrop => 'Backdrop';
+
+  @override
+  String get backdropBallroom => 'Ballroom';
+
+  @override
+  String get backdropStage => 'Stage';
+
+  @override
+  String get backdropGarden => 'Garden';
+
+  @override
+  String get backdropStudio => 'Studio';
+
+  @override
+  String get frameSave => 'Save image';
+
+  @override
+  String get frameShare => 'Share image';
+
+  @override
+  String get frameSaved => 'Image saved to your downloads.';
+
+  @override
+  String get frameSaveFailed => 'The image could not be created. Try again.';
+
+  @override
+  String get frameHint =>
+      'The image keeps the labels that say what is simulated.';
+
+  @override
+  String get frameEmpty => 'No one has joined yet.';
+
+  @override
+  String frameHarmony(int score) {
+    return 'Harmony $score/100';
+  }
+
+  @override
+  String framePeople(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count people',
+      one: '1 person',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get frameHonestDemo => 'Illustrations, not real photos';
+
+  @override
+  String get frameHonestMock => 'Simulated try-on (mock mode)';
+
+  @override
+  String get frameHonestReal => 'Virtual try-on preview, not a fit guarantee';
+
+  @override
+  String frameShareText(Object event) {
+    return 'Our looks for $event, made with Wearmony.';
+  }
+
+  @override
+  String get readinessTitle => 'Getting ready';
+
+  @override
+  String get readinessPhoto => 'Photo';
+
+  @override
+  String get readinessLook => 'Look';
+
+  @override
+  String get readinessPreview => 'Preview';
+
+  @override
+  String get readinessLocked => 'Locked';
+
+  @override
+  String get nextPhoto => 'Needs a photo';
+
+  @override
+  String get nextLook => 'Choosing a look';
+
+  @override
+  String get nextPreview => 'No preview yet';
+
+  @override
+  String get nextLock => 'Can lock the look';
+
+  @override
+  String get nextDone => 'All set';
+
+  @override
+  String get reminderCopy => 'Copy a reminder';
+
+  @override
+  String reminderText(Object event, Object link) {
+    return 'Please finish your look for $event on Wearmony: $link';
+  }
+
+  @override
+  String get reminderCopied => 'Reminder copied. Paste it in your group chat.';
+
+  @override
+  String get eventDateLabel => 'Event date (optional)';
+
+  @override
+  String get eventDateNone => 'No date yet';
+
+  @override
+  String get eventDateClear => 'Clear the date';
+
+  @override
+  String get countdownToday => 'Today';
+
+  @override
+  String countdownDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count days',
+      one: 'in 1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countdownPast(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get featureFixTitle => 'Fix it in one tap';
+
+  @override
+  String get featureFixBody =>
+      'When two colors almost match, Wearmony finds catalogue swaps that fix it and shows what changes.';
+
+  @override
+  String get featureFrameTitle => 'One group photo';
+
+  @override
+  String get featureFrameBody =>
+      'Everyone\'s current look in one frame, partners side by side, ready to share.';
+
+  @override
+  String fixOthersLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count other near-misses in the group stay',
+      one: 'Another near-miss in the group stays',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fixWithYou(Object relation) {
+    return '$relation with you';
+  }
+
+  @override
+  String fixShareTextMe(Object item, Object name, Object relation) {
+    return '$name, try $item instead: next to me it reads as “$relation”, not a near-miss.';
+  }
+
+  @override
+  String harmonyMapSemantics(int people, int nearMisses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      nearMisses,
+      locale: localeName,
+      other: '$nearMisses near-misses',
+      one: 'one near-miss',
+      zero: 'no near-misses',
+    );
+    return 'Harmony map of $people people with $_temp0.';
+  }
+
+  @override
+  String frameSemantics(Object event, Object names) {
+    return 'Group photo of $event: $names.';
+  }
 }

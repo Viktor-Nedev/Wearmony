@@ -276,6 +276,12 @@ class _Features extends StatelessWidget {
         l10n.featureHarmonyTitle,
         l10n.featureHarmonyBody,
       ),
+      (Icons.auto_fix_high, l10n.featureFixTitle, l10n.featureFixBody),
+      (
+        Icons.photo_camera_front_outlined,
+        l10n.featureFrameTitle,
+        l10n.featureFrameBody,
+      ),
       (Icons.savings_outlined, l10n.featureBudgetTitle, l10n.featureBudgetBody),
       (
         Icons.accessible_forward,
@@ -285,8 +291,8 @@ class _Features extends StatelessWidget {
     ];
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth >= 980
-            ? 4
+        final columns = constraints.maxWidth >= 900
+            ? 3
             : (constraints.maxWidth >= 560 ? 2 : 1);
         final width = (constraints.maxWidth - 16 * (columns - 1)) / columns;
         return Wrap(
@@ -442,6 +448,11 @@ class _YourEvents extends StatelessWidget {
                                       Text(
                                         [
                                           templateName(l10n, event.template),
+                                          if (event.eventDate != null)
+                                            countdownLabel(
+                                              l10n,
+                                              event.eventDate!,
+                                            ),
                                           if (event.isOrganizer)
                                             l10n.organizerRole,
                                           if (event.isParticipant)

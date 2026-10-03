@@ -11,6 +11,7 @@ import '../../util/format.dart';
 import '../../util/harmony_text.dart';
 import '../../widgets/common.dart';
 import '../../widgets/finding_widgets.dart';
+import '../../widgets/fix_suggestions.dart';
 import '../../widgets/render_view.dart';
 import 'board_loader.dart';
 
@@ -213,6 +214,18 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
                       delay: const Duration(milliseconds: 260),
                       child: FindingCard(finding: pairFinding),
                     ),
+                  if (pairFinding != null && pairFinding.isWarning) ...[
+                    const SizedBox(height: 18),
+                    FixSuggestionsPanel(
+                      eventId: widget.event.id,
+                      target: pairFinding,
+                      user: me.userId,
+                      myUserId: me.userId,
+                      currency: data.budget.currency,
+                      onChanged: loadBoard,
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                   const SizedBox(height: 6),
                   Text(
                     l10n.lookTotal(

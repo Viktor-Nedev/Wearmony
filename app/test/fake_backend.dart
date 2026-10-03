@@ -151,3 +151,28 @@ Map<String, Object?> boardJson() {
     },
   };
 }
+
+/// Suggestions for the near-miss in [boardJson]: Ivan (u2) switches to a matching tie.
+Map<String, Object?> suggestionsJson() => {
+  'target': (boardJson()['harmony'] as Map<String, Object?>)['weakest'],
+  'suggestions': [
+    {
+      'userId': 'u2',
+      'name': 'Ivan',
+      'itemId': 'g-blush-tie',
+      'itemName': 'Blush tie',
+      'itemType': 'garment',
+      'colorHex': '#E8A0B4',
+      'imageUrl': null,
+      'price': 35,
+      'priceDelta': 0,
+      'relationAfter': 'matched',
+      'deltaEAfter': 0.4,
+      'otherName': 'Maria',
+      'groupScoreBefore': 31,
+      'groupScoreAfter': 100,
+      'warningsAfter': 0,
+      'withinBudget': true,
+    },
+  ],
+};

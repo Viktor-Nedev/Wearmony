@@ -46,14 +46,24 @@ Every finding has one plain sentence, built from structured fields (names, color
 
 An optional plain-language summary (Gemini) receives only the computed facts, is told to talk about colors only and never about bodies or skin, and is labeled in the app. It never changes a score.
 
-## 6. Render checks
+## 6. Fix suggestions
+
+For a near-miss, the engine looks for swaps from the event's own catalogue that would remove it ([`suggest.ts`](../api/harmony/suggest.ts)):
+
+1. Only the people in the comparison whose look is not locked can change. For a pair that means a new garment for either person; for someone's own lip or hair color, a new lip or hair color only (the outfit stays).
+2. Each candidate item is put on that person and the **whole group's harmony is recomputed** with the same engine. A swap counts only if the near-miss becomes a match, a complementary pair or a contrast.
+3. Swaps are ranked by: fewest near-misses left in the group, within the per-person budget, highest group score, smallest price increase. At most two ideas per person, so both partners get options.
+
+Each suggestion states what it would change: the new relation and ΔE, the group score before and after, and the price difference. A participant can switch to their own suggestion with one tap; the new preview is a separate, explicit step because a live render spends units. Suggestions for someone else can be copied and sent to them.
+
+## 7. Render checks
 
 These never change a score; they only add notes.
 
 - **Garment not applied**: the render and the photo are compared pixel by pixel on a 48×64 grid in CIELAB; a mean change under 3 means the outfit was probably not applied (YouCam can return the photo unchanged, for example when the original clothing is dark or bulky).
 - **Color drift**: the closest color in the render to the catalogue color; farther than ΔE00 14 gives a "check this render" note.
 
-## 7. Photo quality gate
+## 8. Photo quality gate
 
 After upload, before any try-on: minimum size (640 × 480), aspect ratio (≤ 2.4), mean lightness (dark < 28, overexposed > 90), contrast (L* standard deviation < 10), and a warning when the torso area is very dark (dark clothing). Size and ratio block the photo; the rest is advice the participant can act on.
 

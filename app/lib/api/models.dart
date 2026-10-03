@@ -70,6 +70,7 @@ class EventInfo {
     required this.demo,
     required this.isOrganizer,
     required this.isParticipant,
+    this.eventDate,
     this.me,
   });
 
@@ -84,6 +85,7 @@ class EventInfo {
     demo: json['demo'] == true,
     isOrganizer: json['isOrganizer'] == true,
     isParticipant: json['isParticipant'] == true,
+    eventDate: parseDay(json['eventDate']),
     me: json['me'] is Json ? Participant.fromJson(json['me'] as Json) : null,
   );
 
@@ -97,8 +99,23 @@ class EventInfo {
   final bool demo;
   final bool isOrganizer;
   final bool isParticipant;
+
+  /// The day of the event (local midnight), if the organizer set one.
+  final DateTime? eventDate;
   final Participant? me;
 }
+
+/// Parses a YYYY-MM-DD day as a local date, or null.
+DateTime? parseDay(Object? value) {
+  if (value is! String) return null;
+  final parts = value.split('-').map(int.tryParse).toList();
+  if (parts.length != 3 || parts.any((p) => p == null)) return null;
+  return DateTime(parts[0]!, parts[1]!, parts[2]!);
+}
+
+/// Formats a day as YYYY-MM-DD for the API.
+String formatDay(DateTime day) =>
+    '${day.year.toString().padLeft(4, '0')}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
 
 class PhotoQuality {
   const PhotoQuality({required this.issues, required this.warnings});
@@ -590,6 +607,87 @@ class Board {
 
   BoardParticipant? byId(String? userId) =>
       participants.where((p) => p.userId == userId).firstOrNull;
+}
+
+/// A catalogue swap that would remove a near-miss, as computed by the harmony engine.
+class FixSuggestion {
+  const FixSuggestion({
+    required this.userId,
+    required this.name,
+    required this.itemId,
+    required this.itemName,
+    required this.itemType,
+    required this.colorHex,
+    required this.imageUrl,
+    required this.price,
+    required this.priceDelta,
+    required this.relationAfter,
+    required this.deltaEAfter,
+    required this.otherUserId,
+    required this.otherName,
+    required this.groupScoreBefore,
+    required this.groupScoreAfter,
+    required this.warningsAfter,
+    required this.withinBudget,
+  });
+
+  factory FixSuggestion.fromJson(Json json) => FixSuggestion(
+    userId: json['userId'] as String,
+    name: json['name'] as String? ?? '',
+    itemId: json['itemId'] as String,
+    itemName: json['itemName'] as String? ?? '',
+    itemType: ItemType.values.byName(json['itemType'] as String? ?? 'garment'),
+    colorHex: json['colorHex'] as String? ?? '#999999',
+    imageUrl: json['imageUrl'] as String?,
+    price: _toDouble(json['price']) ?? 0,
+    priceDelta: _toDouble(json['priceDelta']) ?? 0,
+    relationAfter: json['relationAfter'] as String? ?? 'contrast',
+    deltaEAfter: _toDouble(json['deltaEAfter']) ?? 0,
+    otherUserId: json['otherUserId'] as String?,
+    otherName: json['otherName'] as String?,
+    groupScoreBefore: (json['groupScoreBefore'] as num?)?.toInt(),
+    groupScoreAfter: (json['groupScoreAfter'] as num?)?.toInt(),
+    warningsAfter: (json['warningsAfter'] as num?)?.toInt() ?? 0,
+    withinBudget: json['withinBudget'] != false,
+  );
+
+  /// The person who would change.
+  final String userId;
+  final String name;
+  final String itemId;
+  final String itemName;
+  final ItemType itemType;
+  final String colorHex;
+  final String? imageUrl;
+  final double price;
+
+  /// New item price minus the price of the item it replaces.
+  final double priceDelta;
+  final String relationAfter;
+  final double deltaEAfter;
+
+  /// For a pair: the other person; null when fixing someone's own colors.
+  final String? otherUserId;
+  final String? otherName;
+  final int? groupScoreBefore;
+  final int? groupScoreAfter;
+  final int warningsAfter;
+  final bool withinBudget;
+}
+
+class FixSuggestions {
+  const FixSuggestions({required this.target, required this.suggestions});
+
+  factory FixSuggestions.fromJson(Json json) => FixSuggestions(
+    target: json['target'] is Json
+        ? HarmonyFinding.fromJson(json['target'] as Json)
+        : null,
+    suggestions: _list(json['suggestions'], FixSuggestion.fromJson),
+  );
+
+  /// The near-miss being fixed, or null if there is none.
+  final HarmonyFinding? target;
+  final List<FixSuggestion> suggestions;
 }
 
 class JoinPreview {

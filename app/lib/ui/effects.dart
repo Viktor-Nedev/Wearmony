@@ -1082,9 +1082,9 @@ class _PulseGlowState extends State<PulseGlow> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(widget.radius),
             boxShadow: [
               BoxShadow(
-                color: widget.color.withValues(alpha: 0.1 + 0.26 * t),
-                blurRadius: 14 + 18 * t,
-                spreadRadius: 1 + 3 * t,
+                color: widget.color.withValues(alpha: 0.06 + 0.16 * t),
+                blurRadius: 12 + 14 * t,
+                spreadRadius: 2 * t,
               ),
             ],
           ),

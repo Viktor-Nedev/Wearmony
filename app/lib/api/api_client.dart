@@ -89,6 +89,7 @@ class ApiClient {
     required EventTemplate template,
     double? budgetPerPerson,
     double? budgetTotal,
+    DateTime? eventDate,
   }) async => EventInfo.fromJson(
     await _send(
       'POST',
@@ -98,6 +99,7 @@ class ApiClient {
         'template': template.name,
         'budgetPerPerson': budgetPerPerson,
         'budgetTotal': budgetTotal,
+        if (eventDate != null) 'eventDate': formatDay(eventDate),
       },
     ),
   );
@@ -114,12 +116,16 @@ class ApiClient {
     double? budgetPerPerson,
     double? budgetTotal,
     bool clearBudgets = false,
+    DateTime? eventDate,
+    bool clearDate = false,
   }) async {
     final body = <String, dynamic>{
       if (name != null) 'name': name,
       if (budgetPerPerson != null || clearBudgets)
         'budgetPerPerson': budgetPerPerson,
       if (budgetTotal != null || clearBudgets) 'budgetTotal': budgetTotal,
+      if (eventDate != null) 'eventDate': formatDay(eventDate),
+      if (clearDate && eventDate == null) 'eventDate': null,
     };
     return EventInfo.fromJson(
       await _send('PATCH', 'events/$eventId', body: body),
@@ -252,6 +258,20 @@ class ApiClient {
 
   Future<Board> board(String eventId) async =>
       Board.fromJson(await _send('GET', 'events/$eventId/board'));
+
+  /// Catalogue swaps that remove the group's weakest near-miss, or with [user]
+  /// the weakest near-miss involving that person.
+  Future<FixSuggestions> suggestions(
+    String eventId, {
+    String? user,
+  }) async => FixSuggestions.fromJson(
+    await _send(
+      'GET',
+      user == null
+          ? 'events/$eventId/harmony/suggestions'
+          : 'events/$eventId/harmony/suggestions?user=${Uri.encodeQueryComponent(user)}',
+    ),
+  );
 
   Future<String> explainHarmony(String eventId, String language) async =>
       ((await _send(

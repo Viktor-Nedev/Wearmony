@@ -10,6 +10,7 @@ import '../../ui/harmony_visuals.dart';
 import '../../ui/motion.dart';
 import '../../widgets/common.dart';
 import '../../widgets/finding_widgets.dart';
+import '../../widgets/fix_suggestions.dart';
 import 'board_loader.dart';
 
 /// The harmony report: group score (weakest pair), warnings, every comparison,
@@ -88,6 +89,16 @@ class _HarmonyTabState extends State<HarmonyTab> with BoardLoader {
                 else ...[
                   Reveal(child: _ScoreCard(report: report)),
                   const SizedBox(height: 16),
+                  if (report.weakest?.isWarning ?? false) ...[
+                    FixSuggestionsPanel(
+                      eventId: widget.event.id,
+                      target: report.weakest!,
+                      myUserId: data.me?.userId,
+                      currency: data.budget.currency,
+                      onChanged: loadBoard,
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                   if (data.participants
                           .where((p) => p.look.garment != null)
                           .length >=

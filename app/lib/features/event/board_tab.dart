@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../api/models.dart';
 import '../../l10n/app_localizations.dart';
@@ -10,6 +11,7 @@ import '../../util/format.dart';
 import '../../util/harmony_text.dart';
 import '../../widgets/common.dart';
 import 'board_loader.dart';
+import 'group_insights.dart';
 
 /// Everyone side by side with their current look, per-person and total budget,
 /// render progress ("7 of 8 rendered") and the weakest color pair.
@@ -61,7 +63,15 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
                       ),
                     ),
                   ],
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
+                  if (data.participants.isNotEmpty)
+                    Reveal(
+                      delay: const Duration(milliseconds: 260),
+                      child: _FrameBanner(
+                        onOpen: () => context.push('/e/${data.event.id}/frame'),
+                      ),
+                    ),
+                  const SizedBox(height: 16),
                   if (data.participants.isEmpty)
                     NoticeBar(
                       l10n.addPeopleHint(data.event.joinCode),
@@ -96,11 +106,110 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
                         );
                       },
                     ),
+                  if (data.participants.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final budget = RevealOnScroll(
+                          child: BudgetBreakdown(board: data),
+                        );
+                        final ready = RevealOnScroll(
+                          delay: const Duration(milliseconds: 120),
+                          child: ReadinessTracker(board: data),
+                        );
+                        if (constraints.maxWidth < 900) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              budget,
+                              const SizedBox(height: 16),
+                              ready,
+                            ],
+                          );
+                        }
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(child: budget),
+                            const SizedBox(width: 16),
+                            Expanded(child: ready),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The way into the group photo.
+class _FrameBanner extends StatelessWidget {
+  const _FrameBanner({required this.onOpen});
+
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    return Hoverable(
+      onTap: onOpen,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(18, 14, 14, 14),
+        decoration: BoxDecoration(
+          gradient: Brand.gradient,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Brand.berry.withValues(alpha: 0.3),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: const Icon(
+                Icons.photo_camera_front_outlined,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.frameOpen,
+                    style: text.titleMedium?.copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.frameOpenHint,
+                    style: text.bodySmall?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.88),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Icon(Icons.arrow_forward_rounded, color: Colors.white),
+          ],
+        ),
       ),
     );
   }
