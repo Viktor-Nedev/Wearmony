@@ -76,6 +76,18 @@ describe('events', () => {
     const renamed = await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { name: 'Prom night', budgetTotal: 500 });
     expect(renamed.json).toMatchObject({ name: 'Prom night', budgetTotal: 500 });
   });
+
+  it('keeps an optional event day and rejects days that do not exist', async () => {
+    const t = await eventWithTwoParticipants();
+    expect((await t.call('GET', `/events/${t.eventId}`, ORGANIZER)).json.eventDate).toBeNull();
+    const dated = await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { eventDate: '2027-05-23' });
+    expect(dated.json.eventDate).toBe('2027-05-23');
+    expect((await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { eventDate: '2027-02-30' })).status).toBe(400);
+    expect((await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { eventDate: '2027-13-45' })).status).toBe(400);
+    expect((await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { eventDate: '23.05.2027' })).status).toBe(400);
+    const cleared = await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { eventDate: null });
+    expect(cleared.json.eventDate).toBeNull();
+  });
 });
 
 describe('photos', () => {
@@ -329,7 +341,31 @@ describe('demo event', () => {
     expect(board.units.mode).toBe('demo');
     expect(board.budget.overBudgetCount).toBe(1);
     expect(board.harmony.weakest).toMatchObject({ relation: 'near_miss', names: ['Maria', 'Ivan'], partners: true });
+    expect(board.event.eventDate).toMatch(/^\d{4}-05-23$/);
     expect(board.participants.every((p: any) => p.render.mock)).toBe(true);
+  });
+
+  it('suggests catalogue swaps that fix the near-miss, with prices and images', async () => {
+    const t = setup();
+    const demo = await t.call('POST', '/demo', OUTSIDER);
+    const result = (await t.call('GET', `/events/${demo.json.id}/harmony/suggestions`, OUTSIDER)).json;
+    expect(result.target).toMatchObject({ relation: 'near_miss', names: ['Maria', 'Ivan'] });
+    expect(result.suggestions.length).toBeGreaterThan(0);
+    for (const s of result.suggestions) {
+      expect(['Maria', 'Ivan']).toContain(s.name);
+      expect(s.relationAfter).not.toBe('near_miss');
+      expect(s.groupScoreAfter).toBeGreaterThan(result.target.score);
+      expect(typeof s.imageUrl).toBe('string');
+    }
+    expect(result.suggestions).toContainEqual(
+      expect.objectContaining({ name: 'Ivan', itemName: 'Blush tie and pocket square', relationAfter: 'matched' }),
+    );
+
+    // Someone outside the near-miss has nothing to fix.
+    const board = (await t.call('GET', `/events/${demo.json.id}/board`, OUTSIDER)).json;
+    const elena = board.participants.find((p: any) => p.displayName === 'Elena');
+    const none = (await t.call('GET', `/events/${demo.json.id}/harmony/suggestions?user=${elena.userId}`, OUTSIDER)).json;
+    expect(none).toEqual({ target: null, suggestions: [] });
   });
 
   it('gives each visitor one demo event', async () => {

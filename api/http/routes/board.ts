@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { withRenderCache } from '../../data/render-cache.js';
 import type { EventRecord, ItemRecord, LookRecord, ParticipantRecord } from '../../domain/types.js';
 import { computeHarmony, type HarmonyPersonInput } from '../../harmony/engine.js';
+import { pickTarget, suggestFixes } from '../../harmony/suggest.js';
 import { summarizeUnits } from '../../ledger/ledger.js';
 import { advanceLook } from '../../render/pipeline.js';
 import type { Services } from '../../services.js';
@@ -120,6 +121,47 @@ board.get('/events/:eventId/harmony', requireUser, async (c) => {
   const { event } = await loadEvent(c, c.req.param('eventId'));
   const { participants, looks, items } = await loadGroup(c.var.services, event);
   return c.json(computeHarmony(harmonyInputs(participants, looks, items)));
+});
+
+/**
+ * Catalogue swaps that would remove a near-miss: the group's weakest one, or with
+ * ?user=<id> the weakest one involving that person. Same engine, no model opinions.
+ */
+board.get('/events/:eventId/harmony/suggestions', requireUser, async (c) => {
+  const { event } = await loadEvent(c, c.req.param('eventId'));
+  const { participants, looks, items } = await loadGroup(c.var.services, event);
+  const people = harmonyInputs(participants, looks, items);
+  const target = pickTarget(computeHarmony(people).findings, c.req.query('user') || undefined);
+  if (!target) return c.json({ target: null, suggestions: [] });
+
+  const suggestions = suggestFixes({
+    people,
+    looks: new Map(
+      [...looks.values()].map((l) => [
+        l.userId,
+        { garmentId: l.garmentId, makeupId: l.makeupId, hairId: l.hairId, locked: l.locked },
+      ]),
+    ),
+    items: [...items.values()].map((item) => ({
+      id: item.id,
+      type: item.type,
+      name: item.name,
+      price: item.price,
+      category: item.category,
+      dominantColors: item.dominantColors,
+      colorHex: item.colorHex,
+    })),
+    perPersonCap: event.budgetPerPerson,
+    target,
+  });
+  const urls = await signAll(
+    c.var.services.storage,
+    suggestions.map((s) => items.get(s.itemId)?.imagePath ?? null),
+  );
+  return c.json({
+    target,
+    suggestions: suggestions.map((s, i) => ({ ...s, imageUrl: urls[i] ?? null })),
+  });
 });
 
 board.post('/events/:eventId/harmony/explain', requireUser, async (c) => {

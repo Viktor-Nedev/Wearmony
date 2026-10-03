@@ -26,6 +26,17 @@ export const events = new Hono<AppEnv>();
 const JOIN_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const money = z.number().nonnegative().max(1_000_000).nullable().optional();
 const displayName = z.string().trim().min(1).max(40);
+/** A calendar day, YYYY-MM-DD, that exists. */
+const eventDate = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .refine((day) => {
+    // Date rolls 30 February over to March, so a real day must survive the round trip.
+    const parsed = new Date(`${day}T00:00:00Z`);
+    return !Number.isNaN(parsed.getTime()) && parsed.toISOString().startsWith(day);
+  }, 'Not a real date.')
+  .nullable()
+  .optional();
 
 const CreateEvent = z.object({
   name: z.string().trim().min(1).max(80),
@@ -33,12 +44,14 @@ const CreateEvent = z.object({
   budgetPerPerson: money,
   budgetTotal: money,
   currency: z.string().regex(/^[A-Z]{3}$/).default('EUR'),
+  eventDate,
 });
 
 const UpdateEvent = z.object({
   name: z.string().trim().min(1).max(80).optional(),
   budgetPerPerson: money,
   budgetTotal: money,
+  eventDate,
 });
 
 const Join = z.object({ code: z.string().min(4).max(12), displayName });
@@ -73,6 +86,7 @@ events.post('/events', requireUser, async (c) => {
     budgetPerPerson: body.budgetPerPerson ?? null,
     budgetTotal: body.budgetTotal ?? null,
     currency: body.currency,
+    eventDate: body.eventDate ?? null,
     demo: false,
     createdAt: iso(now()),
   };

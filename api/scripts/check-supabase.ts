@@ -47,10 +47,13 @@ await step('create and read an event', async () => {
     budgetPerPerson: 100,
     budgetTotal: null,
     currency: 'EUR',
+    eventDate: '2027-05-23',
     demo: false,
     createdAt: now,
   });
-  return (await repo.getEventByCode(code))?.id === eventId;
+  const stored = await repo.getEventByCode(code);
+  // A missing event_date column (an old schema) shows up here as null.
+  return stored?.id === eventId && stored.eventDate === '2027-05-23';
 });
 
 await step('participant, item and look', async () => {

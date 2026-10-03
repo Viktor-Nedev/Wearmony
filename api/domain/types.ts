@@ -31,6 +31,8 @@ export interface EventRecord {
   /** Optional cap for the whole group, in `currency`. */
   budgetTotal: number | null;
   currency: string;
+  /** Day of the event (YYYY-MM-DD) for the countdown, if the organizer set it. */
+  eventDate: string | null;
   /** Seeded demo event: participants and renders are illustrations. */
   demo: boolean;
   createdAt: string;

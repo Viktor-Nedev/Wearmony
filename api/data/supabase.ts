@@ -24,6 +24,7 @@ const eventToRow = (e: EventRecord): Row => ({
   budget_per_person: e.budgetPerPerson,
   budget_total: e.budgetTotal,
   currency: e.currency,
+  event_date: e.eventDate,
   demo: e.demo,
   created_at: e.createdAt,
 });
@@ -36,6 +37,8 @@ const rowToEvent = (r: Row): EventRecord => ({
   budgetPerPerson: toNumberOrNull(r.budget_per_person),
   budgetTotal: toNumberOrNull(r.budget_total),
   currency: r.currency as string,
+  // Postgres returns a date column as YYYY-MM-DD.
+  eventDate: (r.event_date as string | null) ?? null,
   demo: r.demo as boolean,
   createdAt: r.created_at as string,
 });
@@ -218,6 +221,7 @@ export function createSupabaseRepository(url: string, secretKey: string): Reposi
       if (patch.name !== undefined) row.name = patch.name;
       if (patch.budgetPerPerson !== undefined) row.budget_per_person = patch.budgetPerPerson;
       if (patch.budgetTotal !== undefined) row.budget_total = patch.budgetTotal;
+      if (patch.eventDate !== undefined) row.event_date = patch.eventDate;
       if (Object.keys(row).length) unwrap(await db.from('events').update(row).eq('id', id), 'updateEvent');
     },
     async deleteEvent(id) {

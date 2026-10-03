@@ -56,6 +56,14 @@ const PEOPLE: DemoPerson[] = [
 
 const BEFORE_CLOTHING = '#9FB3C8';
 
+/** Bulgarian proms are in late May: the next 23 May from today. */
+export function nextPromDay(now: number): string {
+  const today = new Date(now);
+  let year = today.getUTCFullYear();
+  if (Date.UTC(year, 4, 23) < Date.UTC(year, today.getUTCMonth(), today.getUTCDate())) year++;
+  return `${year}-05-23`;
+}
+
 export async function seedDemoEvent(services: Services, organizerId: string): Promise<EventRecord> {
   const { repo, storage } = services;
   let clock = services.now();
@@ -63,13 +71,14 @@ export async function seedDemoEvent(services: Services, organizerId: string): Pr
 
   const event: EventRecord = {
     id: randomUUID(),
-    name: 'Class of 2026 prom (demo)',
+    name: 'Class of 2027 prom (demo)',
     template: 'prom',
     organizerId,
     joinCode: `D${randomUUID().replace(/-/g, '').slice(0, 5).toUpperCase()}`,
     budgetPerPerson: 260,
     budgetTotal: 1200,
     currency: 'EUR',
+    eventDate: nextPromDay(services.now()),
     demo: true,
     createdAt: stamp(),
   };

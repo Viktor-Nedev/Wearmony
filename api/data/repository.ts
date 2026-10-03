@@ -14,7 +14,10 @@ export interface Repository {
   getEventByCode(joinCode: string): Promise<EventRecord | null>;
   /** Events the user organizes or participates in, newest first. */
   listEventsForUser(userId: string): Promise<EventRecord[]>;
-  updateEvent(id: string, patch: Partial<Pick<EventRecord, 'name' | 'budgetPerPerson' | 'budgetTotal'>>): Promise<void>;
+  updateEvent(
+    id: string,
+    patch: Partial<Pick<EventRecord, 'name' | 'budgetPerPerson' | 'budgetTotal' | 'eventDate'>>,
+  ): Promise<void>;
   /** Deletes the event and every row that belongs to it. */
   deleteEvent(id: string): Promise<void>;
 

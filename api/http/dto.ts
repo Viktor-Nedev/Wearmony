@@ -23,6 +23,7 @@ export function eventDto(event: EventRecord, access: { isOrganizer: boolean; isP
     budgetPerPerson: event.budgetPerPerson,
     budgetTotal: event.budgetTotal,
     currency: event.currency,
+    eventDate: event.eventDate,
     demo: event.demo,
     createdAt: event.createdAt,
     isOrganizer: access.isOrganizer,
