@@ -52,6 +52,37 @@ void main() {
     },
   );
 
+  testWidgets('landing explains the three steps', (tester) async {
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/me/events': (_) => [],
+    });
+    await pumpApp(tester, backend, locale: const Locale('en'));
+
+    expect(find.text('How it works'), findsOneWidget);
+    expect(find.text('Invite the group'), findsOneWidget);
+    expect(find.text('Everyone tries on'), findsOneWidget);
+    expect(find.text('See the group in harmony'), findsOneWidget);
+  });
+
+  testWidgets('an unknown link shows a way back home', (tester) async {
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/me/events': (_) => [],
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/no/such/page',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('This page does not exist'), findsOneWidget);
+    await tester.tap(find.text('Back to Wearmony'));
+    await tester.pumpAndSettle();
+    expect(find.text('Organize an event'), findsOneWidget);
+  });
+
   testWidgets('landing is translated to Bulgarian', (tester) async {
     final backend = FakeBackend({
       'GET /api/config': (_) => config(),
@@ -116,6 +147,28 @@ void main() {
       await unmount(tester);
     },
   );
+
+  testWidgets('the harmony map links the near-miss pair', (tester) async {
+    tester.view.physicalSize = const Size(1400, 2200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=harmony',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Harmony map'), findsOneWidget);
+    expect(find.text('ΔE 4.6'), findsOneWidget);
+    expect(find.text('Near-miss'), findsWidgets);
+    await unmount(tester);
+  });
 
   testWidgets('a render that did not apply the outfit is labeled honestly', (
     tester,

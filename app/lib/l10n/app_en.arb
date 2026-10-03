@@ -134,7 +134,7 @@
   "boardRendered": "{rendered} of {total} rendered",
   "boardLocked": "{locked} locked",
   "budgetTitle": "Budget",
-  "budgetTotalOf": "{total} of {cap}",
+  "budgetOfCap": "of {cap}",
   "budgetPerPersonCap": "Up to {amount} per person",
   "overBudget": "Over budget",
   "overBudgetCount": "{count} over the per-person budget",
@@ -278,5 +278,18 @@
   "selected": "Selected",
   "stepsTitle": "Try-on steps",
   "badgeIllustration": "Illustration",
-  "badgeSimulated": "Simulated"
+  "badgeSimulated": "Simulated",
+  "notFoundTitle": "This page does not exist",
+  "notFoundBody": "The link may be old or mistyped.",
+  "goHome": "Back to Wearmony",
+  "howItWorks": "How it works",
+  "step1Title": "Invite the group",
+  "step1Body": "Create the event and share a code, a link or a QR code.",
+  "step2Title": "Everyone tries on",
+  "step2Body": "Each person adds one photo and tries outfits, lip colors and hair colors.",
+  "step3Title": "See the group in harmony",
+  "step3Body": "Spot almost-matching colors and stay within the shared budget, before anyone buys.",
+  "clashFixed": "Clash fixed: the group’s colors work together now.",
+  "harmonyMapTitle": "Harmony map",
+  "harmonyMapHint": "Each line compares two outfits. Point at or tap a person to see only their pairs. Small dots are hair and lip colors."
 }

@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../theme.dart';
 import 'motion.dart';
@@ -145,34 +147,55 @@ class GlassCard extends StatelessWidget {
 
 /// The logo: two overlapping circles (two people in harmony) and the wordmark.
 class BrandMark extends StatelessWidget {
-  const BrandMark({super.key, this.size = 28, this.showName = true});
+  const BrandMark({
+    super.key,
+    this.size = 28,
+    this.showName = true,
+    this.animated = false,
+  });
 
   final double size;
   final bool showName;
 
+  /// The two discs start apart and settle into their overlap.
+  final bool animated;
+
   @override
   Widget build(BuildContext context) {
-    final mark = SizedBox(
-      width: size * 1.55,
-      height: size,
-      child: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            child: _Disc(size: size, colors: const [Brand.plum, Brand.berry]),
-          ),
-          Positioned(
-            left: size * 0.55,
-            child: Opacity(
-              opacity: 0.88,
-              child: _Disc(
-                size: size,
-                colors: const [Color(0xFFE38FA8), Brand.champagne],
+    final play = animated && !Motion.reduced(context);
+    final mark = TweenAnimationBuilder<double>(
+      tween: Tween(begin: play ? 0 : 1, end: 1),
+      duration: const Duration(milliseconds: 1100),
+      curve: Curves.elasticOut,
+      builder: (context, t, _) {
+        final apart = (1 - t) * size * 0.45;
+        return SizedBox(
+          width: size * 1.55,
+          height: size,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                left: -apart,
+                child: _Disc(
+                  size: size,
+                  colors: const [Brand.plum, Brand.berry],
+                ),
               ),
-            ),
+              Positioned(
+                left: size * 0.55 + apart,
+                child: Opacity(
+                  opacity: 0.88,
+                  child: _Disc(
+                    size: size,
+                    colors: const [Color(0xFFE38FA8), Brand.champagne],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
     if (!showName) return mark;
     return Row(
@@ -215,17 +238,29 @@ class _Disc extends StatelessWidget {
   );
 }
 
-/// Text painted with the brand gradient.
+/// Text painted with the brand gradient. With [animated], the colors flow
+/// slowly through the text (for the one headline that should catch the eye).
 class GradientText extends StatelessWidget {
-  const GradientText(this.text, {super.key, this.style, this.textAlign});
+  const GradientText(
+    this.text, {
+    super.key,
+    this.style,
+    this.textAlign,
+    this.animated = false,
+  });
 
   final String text;
   final TextStyle? style;
   final TextAlign? textAlign;
+  final bool animated;
 
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final label = Text(text, style: style, textAlign: textAlign);
+    if (animated && !Motion.reduced(context)) {
+      return _FlowingGradient(dark: dark, child: label);
+    }
     return ShaderMask(
       blendMode: BlendMode.srcIn,
       shaderCallback: (bounds) =>
@@ -235,9 +270,258 @@ class GradientText extends StatelessWidget {
                     )
                   : Brand.gradient)
               .createShader(bounds),
-      child: Text(text, style: style, textAlign: textAlign),
+      child: label,
     );
   }
+}
+
+class _FlowingGradient extends StatefulWidget {
+  const _FlowingGradient({required this.dark, required this.child});
+
+  final bool dark;
+  final Widget child;
+
+  @override
+  State<_FlowingGradient> createState() => _FlowingGradientState();
+}
+
+class _FlowingGradientState extends State<_FlowingGradient>
+    with TickerProviderStateMixin, LoopingAnimation {
+  @override
+  Duration get loopDuration => const Duration(seconds: 9);
+
+  @override
+  Widget build(BuildContext context) {
+    // One full color cycle per text width; sliding it by a whole width loops seamlessly.
+    final colors = widget.dark
+        ? const [
+            Color(0xFFF6C7DB),
+            Brand.rose,
+            Brand.champagne,
+            Brand.rose,
+            Color(0xFFF6C7DB),
+          ]
+        : const [
+            Brand.plum,
+            Brand.berry,
+            Color(0xFFE38FA8),
+            Brand.berry,
+            Brand.plum,
+          ];
+    return AnimatedBuilder(
+      animation: loop!,
+      child: widget.child,
+      builder: (context, child) => ShaderMask(
+        blendMode: BlendMode.srcIn,
+        shaderCallback: (bounds) => LinearGradient(
+          colors: colors,
+          tileMode: TileMode.repeated,
+          transform: _SlideGradient(loop!.value),
+        ).createShader(bounds),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _SlideGradient extends GradientTransform {
+  const _SlideGradient(this.t);
+
+  final double t;
+
+  @override
+  Matrix4 transform(Rect bounds, {TextDirection? textDirection}) =>
+      Matrix4.translationValues(bounds.width * t, 0, 0);
+}
+
+/// Tilts its child in 3D toward the mouse, with a soft glare that follows it.
+/// Desktop web only in practice; touch and reduced motion get the plain child.
+class TiltOnHover extends StatefulWidget {
+  const TiltOnHover({
+    super.key,
+    required this.child,
+    this.maxAngle = 0.09,
+    this.radius = 28,
+  });
+
+  final Widget child;
+
+  /// Largest rotation in radians at the card's edge.
+  final double maxAngle;
+
+  /// Corner radius of the child, so the glare stays inside it.
+  final double radius;
+
+  @override
+  State<TiltOnHover> createState() => _TiltOnHoverState();
+}
+
+class _TiltOnHoverState extends State<TiltOnHover> {
+  Offset _pointer = Offset.zero;
+  bool _hover = false;
+
+  void _track(PointerEvent event) {
+    final box = context.findRenderObject();
+    if (box is! RenderBox || !box.hasSize) return;
+    final size = box.size;
+    setState(() {
+      _hover = true;
+      _pointer = Offset(
+        (event.localPosition.dx / size.width * 2 - 1).clamp(-1.0, 1.0),
+        (event.localPosition.dy / size.height * 2 - 1).clamp(-1.0, 1.0),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (Motion.reduced(context)) return widget.child;
+    return MouseRegion(
+      onHover: _track,
+      onExit: (_) => setState(() => _hover = false),
+      child: TweenAnimationBuilder<Offset>(
+        tween: Tween(begin: Offset.zero, end: _hover ? _pointer : Offset.zero),
+        duration: const Duration(milliseconds: 420),
+        curve: Motion.curve,
+        child: widget.child,
+        builder: (context, p, child) {
+          final matrix = Matrix4.identity()
+            ..setEntry(3, 2, 0.0011)
+            ..rotateX(-p.dy * widget.maxAngle)
+            ..rotateY(p.dx * widget.maxAngle);
+          return Transform(
+            alignment: Alignment.center,
+            transform: matrix,
+            child: Stack(
+              children: [
+                child!,
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: AnimatedOpacity(
+                      opacity: _hover ? 1 : 0,
+                      duration: Motion.medium,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(widget.radius),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              center: Alignment(p.dx, p.dy),
+                              radius: 1.1,
+                              colors: [
+                                Colors.white.withValues(alpha: 0.2),
+                                Colors.white.withValues(alpha: 0),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// A soft light under the mouse and a glowing edge near it, for cards on hover.
+class HoverSpotlight extends StatefulWidget {
+  const HoverSpotlight({super.key, required this.child, this.radius = 20});
+
+  final Widget child;
+  final double radius;
+
+  @override
+  State<HoverSpotlight> createState() => _HoverSpotlightState();
+}
+
+class _HoverSpotlightState extends State<HoverSpotlight> {
+  Offset? _at;
+  bool _hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (Motion.reduced(context)) return widget.child;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return MouseRegion(
+      onHover: (event) => setState(() {
+        _hover = true;
+        _at = event.localPosition;
+      }),
+      onExit: (_) => setState(() => _hover = false),
+      child: Stack(
+        children: [
+          widget.child,
+          Positioned.fill(
+            child: IgnorePointer(
+              child: AnimatedOpacity(
+                opacity: _hover ? 1 : 0,
+                duration: Motion.medium,
+                child: CustomPaint(
+                  painter: _SpotlightPainter(
+                    at: _at,
+                    radius: widget.radius,
+                    dark: dark,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SpotlightPainter extends CustomPainter {
+  _SpotlightPainter({
+    required this.at,
+    required this.radius,
+    required this.dark,
+  });
+
+  final Offset? at;
+  final double radius;
+  final bool dark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = at;
+    if (center == null) return;
+    final reach = math.max(size.width, size.height) * 0.62;
+    final shape = RRect.fromRectAndRadius(
+      (Offset.zero & size).deflate(0.75),
+      Radius.circular(radius),
+    );
+    canvas.save();
+    canvas.clipRRect(shape);
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..shader = ui.Gradient.radial(center, reach, [
+          Brand.rose.withValues(alpha: dark ? 0.2 : 0.38),
+          Brand.rose.withValues(alpha: 0),
+        ]),
+    );
+    canvas.restore();
+    canvas.drawRRect(
+      shape,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..shader = ui.Gradient.radial(center, reach * 0.75, [
+          Brand.berry.withValues(alpha: dark ? 0.9 : 0.85),
+          Brand.berry.withValues(alpha: 0),
+        ]),
+    );
+  }
+
+  @override
+  bool shouldRepaint(_SpotlightPainter old) =>
+      old.at != at || old.dark != dark || old.radius != radius;
 }
 
 /// Primary call to action: gradient pill with a light sweep on hover.
@@ -248,12 +532,16 @@ class BrandButton extends StatefulWidget {
     required this.onPressed,
     this.icon,
     this.expand = true,
+    this.attention = false,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
   final bool expand;
+
+  /// Repeats the light sweep every few seconds, for the page's main action.
+  final bool attention;
 
   @override
   State<BrandButton> createState() => _BrandButtonState();
@@ -266,9 +554,21 @@ class _BrandButtonState extends State<BrandButton>
     duration: const Duration(milliseconds: 900),
   );
   bool _pressed = false;
+  Timer? _idle;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (widget.attention && _idle == null && !Motion.reduced(context)) {
+      _idle = Timer.periodic(const Duration(milliseconds: 4200), (_) {
+        if (mounted && widget.onPressed != null) _sweep.forward(from: 0);
+      });
+    }
+  }
 
   @override
   void dispose() {
+    _idle?.cancel();
     _sweep.dispose();
     super.dispose();
   }
@@ -298,7 +598,12 @@ class _BrandButtonState extends State<BrandButton>
           onTapDown: enabled ? (_) => setState(() => _pressed = true) : null,
           onTapCancel: () => setState(() => _pressed = false),
           onTapUp: enabled ? (_) => setState(() => _pressed = false) : null,
-          onTap: widget.onPressed,
+          onTap: widget.onPressed == null
+              ? null
+              : () {
+                  HapticFeedback.lightImpact();
+                  widget.onPressed!();
+                },
           child: AnimatedScale(
             scale: _pressed && !reduced ? 0.97 : 1,
             duration: Motion.fast,
@@ -625,6 +930,167 @@ class AnimatedBar extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         ),
       ),
+    );
+  }
+}
+
+/// A short celebratory notice with sparkles, played when [visible] turns true.
+class CelebrationBanner extends StatefulWidget {
+  const CelebrationBanner({
+    super.key,
+    required this.visible,
+    required this.text,
+  });
+
+  final bool visible;
+  final String text;
+
+  @override
+  State<CelebrationBanner> createState() => _CelebrationBannerState();
+}
+
+class _CelebrationBannerState extends State<CelebrationBanner> {
+  final _sparkles = GlobalKey<SparkleBurstState>();
+
+  @override
+  void didUpdateWidget(CelebrationBanner old) {
+    super.didUpdateWidget(old);
+    if (widget.visible && !old.visible) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _sparkles.currentState?.burst(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return AnimatedSize(
+      duration: Motion.medium,
+      curve: Motion.curve,
+      child: !widget.visible
+          ? const SizedBox(width: double.infinity)
+          : Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: SparkleBurst(
+                key: _sparkles,
+                child: Reveal(
+                  scale: 0.92,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Brand.success.withValues(alpha: dark ? 0.2 : 0.1),
+                      border: Border.all(
+                        color: Brand.success.withValues(alpha: 0.4),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.celebration_outlined,
+                          color: Brand.success,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            widget.text,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: dark
+                                  ? const Color(0xFFBFE6D3)
+                                  : const Color(0xFF235C45),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+/// A soft glow that breathes around its child, to draw the eye to one thing
+/// (for example a near-miss that needs fixing). Still under reduced motion.
+class PulseGlow extends StatefulWidget {
+  const PulseGlow({
+    super.key,
+    required this.child,
+    required this.color,
+    this.radius = 24,
+    this.active = true,
+  });
+
+  final Widget child;
+  final Color color;
+  final double radius;
+  final bool active;
+
+  @override
+  State<PulseGlow> createState() => _PulseGlowState();
+}
+
+class _PulseGlowState extends State<PulseGlow> with TickerProviderStateMixin {
+  AnimationController? _controller;
+
+  void _sync() {
+    final wanted = widget.active && !Motion.reduced(context);
+    if (wanted && _controller == null) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 1500),
+      )..repeat(reverse: true);
+    } else if (!wanted && _controller != null) {
+      _controller!.dispose();
+      _controller = null;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(PulseGlow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _sync();
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = _controller;
+    if (controller == null) return widget.child;
+    return AnimatedBuilder(
+      animation: controller,
+      child: widget.child,
+      builder: (context, child) {
+        final t = Curves.easeInOut.transform(controller.value);
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.radius),
+            boxShadow: [
+              BoxShadow(
+                color: widget.color.withValues(alpha: 0.1 + 0.26 * t),
+                blurRadius: 14 + 18 * t,
+                spreadRadius: 1 + 3 * t,
+              ),
+            ],
+          ),
+          child: child,
+        );
+      },
     );
   }
 }

@@ -902,11 +902,11 @@ abstract class AppLocalizations {
   /// **'Budget'**
   String get budgetTitle;
 
-  /// No description provided for @budgetTotalOf.
+  /// No description provided for @budgetOfCap.
   ///
   /// In en, this message translates to:
-  /// **'{total} of {cap}'**
-  String budgetTotalOf(Object cap, Object total);
+  /// **'of {cap}'**
+  String budgetOfCap(Object cap);
 
   /// No description provided for @budgetPerPersonCap.
   ///
@@ -1788,6 +1788,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Simulated'**
   String get badgeSimulated;
+
+  /// No description provided for @notFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This page does not exist'**
+  String get notFoundTitle;
+
+  /// No description provided for @notFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The link may be old or mistyped.'**
+  String get notFoundBody;
+
+  /// No description provided for @goHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Wearmony'**
+  String get goHome;
+
+  /// No description provided for @howItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get howItWorks;
+
+  /// No description provided for @step1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite the group'**
+  String get step1Title;
+
+  /// No description provided for @step1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the event and share a code, a link or a QR code.'**
+  String get step1Body;
+
+  /// No description provided for @step2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone tries on'**
+  String get step2Title;
+
+  /// No description provided for @step2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Each person adds one photo and tries outfits, lip colors and hair colors.'**
+  String get step2Body;
+
+  /// No description provided for @step3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'See the group in harmony'**
+  String get step3Title;
+
+  /// No description provided for @step3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot almost-matching colors and stay within the shared budget, before anyone buys.'**
+  String get step3Body;
+
+  /// No description provided for @clashFixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Clash fixed: the group’s colors work together now.'**
+  String get clashFixed;
+
+  /// No description provided for @harmonyMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony map'**
+  String get harmonyMapTitle;
+
+  /// No description provided for @harmonyMapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each line compares two outfits. Point at or tap a person to see only their pairs. Small dots are hair and lip colors.'**
+  String get harmonyMapHint;
 }
 
 class _AppLocalizationsDelegate

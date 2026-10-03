@@ -29,7 +29,7 @@ class SessionGate extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  BrandMark(size: 40),
+                  BrandMark(size: 40, animated: true),
                   SizedBox(height: 24),
                   SizedBox(width: 120, child: LinearProgressIndicator()),
                 ],

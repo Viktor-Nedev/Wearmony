@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Motion rules: short, eased, and off when the user asks for reduced motion.
 class Motion {
@@ -154,7 +155,13 @@ class _HoverableState extends State<Hoverable> {
         onTapUp: widget.onTap == null
             ? null
             : (_) => setState(() => _pressed = false),
-        onTap: widget.onTap,
+        onTap: widget.onTap == null
+            ? null
+            : () {
+                // A light tick on Android; nothing on the web.
+                HapticFeedback.selectionClick();
+                widget.onTap!();
+              },
         child: AnimatedScale(
           scale: scale,
           duration: Motion.fast,
@@ -226,5 +233,115 @@ mixin LoopingAnimation<T extends StatefulWidget>
   void dispose() {
     loop?.dispose();
     super.dispose();
+  }
+}
+
+/// Runs a one-shot animation the first time its child scrolls into view,
+/// and passes the eased progress (0..1) to [builder].
+class ScrollAnimated extends StatefulWidget {
+  const ScrollAnimated({
+    super.key,
+    required this.builder,
+    this.delay = Duration.zero,
+    this.duration = const Duration(milliseconds: 650),
+    this.curve = Motion.emphasized,
+    this.child,
+  });
+
+  final Widget Function(BuildContext context, double t, Widget? child) builder;
+  final Duration delay;
+  final Duration duration;
+
+  /// Pass [Curves.linear] to sequence several parts with [Interval]s.
+  final Curve curve;
+  final Widget? child;
+
+  @override
+  State<ScrollAnimated> createState() => _ScrollAnimatedState();
+}
+
+class _ScrollAnimatedState extends State<ScrollAnimated>
+    with SingleTickerProviderStateMixin {
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: widget.duration,
+  );
+  late final _curve = CurvedAnimation(parent: _controller, curve: widget.curve);
+  ScrollPosition? _position;
+  Timer? _timer;
+  bool _shown = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_shown) return;
+    if (Motion.reduced(context)) {
+      _shown = true;
+      _controller.value = 1;
+      return;
+    }
+    _position?.removeListener(_check);
+    _position = Scrollable.maybeOf(context)?.position;
+    _position?.addListener(_check);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _check());
+  }
+
+  void _check() {
+    if (_shown || !mounted) return;
+    final box = context.findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return;
+    final top = box.localToGlobal(Offset.zero).dy;
+    final screen = MediaQuery.sizeOf(context).height;
+    // Starts just before the content is in view. Content that is already fully
+    // on screen always starts, e.g. a footer when the page cannot scroll further.
+    if (top > screen * 0.92 && top + box.size.height > screen) return;
+    _shown = true;
+    _position?.removeListener(_check);
+    _timer = Timer(widget.delay, () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _position?.removeListener(_check);
+    _timer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _curve,
+      child: widget.child,
+      builder: (context, child) => widget.builder(context, _curve.value, child),
+    );
+  }
+}
+
+/// [Reveal] that waits until the content scrolls into view.
+class RevealOnScroll extends StatelessWidget {
+  const RevealOnScroll({
+    super.key,
+    required this.child,
+    this.delay = Duration.zero,
+    this.offset = const Offset(0, 28),
+  });
+
+  final Widget child;
+  final Duration delay;
+  final Offset offset;
+
+  @override
+  Widget build(BuildContext context) {
+    return ScrollAnimated(
+      delay: delay,
+      child: child,
+      builder: (context, t, child) => Opacity(
+        opacity: t.clamp(0.0, 1.0),
+        child: Transform.translate(offset: offset * (1 - t), child: child),
+      ),
+    );
   }
 }

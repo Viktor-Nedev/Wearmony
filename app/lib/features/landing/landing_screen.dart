@@ -11,6 +11,7 @@ import '../../ui/motion.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/session_widgets.dart';
+import 'how_it_works.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -45,7 +46,7 @@ class _LandingScreenState extends State<LandingScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const BrandMark(size: 24),
+        title: const BrandMark(size: 24, animated: true),
         actions: const [LanguageMenu(), SizedBox(width: 8)],
       ),
       body: AuroraBackground(
@@ -61,7 +62,7 @@ class _LandingScreenState extends State<LandingScreen> {
               const showcase = Reveal(
                 delay: Duration(milliseconds: 280),
                 scale: 0.94,
-                child: HarmonyShowcase(),
+                child: TiltOnHover(child: HarmonyShowcase()),
               );
               return SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
@@ -86,12 +87,13 @@ class _LandingScreenState extends State<LandingScreen> {
                           const SizedBox(height: 32),
                           showcase,
                         ],
-                        SizedBox(height: wide ? 72 : 40),
+                        _YourEvents(events: _events),
+                        SizedBox(height: wide ? 88 : 56),
+                        HowItWorks(wide: wide),
+                        SizedBox(height: wide ? 80 : 52),
                         _Features(wide: wide),
                         const SizedBox(height: 40),
-                        _YourEvents(events: _events),
-                        const SizedBox(height: 32),
-                        const _Footer(),
+                        const RevealOnScroll(child: _Footer()),
                       ],
                     ),
                   ),
@@ -131,6 +133,7 @@ class _Hero extends StatelessWidget {
         icon: Icons.event_outlined,
         onPressed: () => context.push('/create'),
         expand: !wide,
+        attention: true,
       ),
       OutlinedButton.icon(
         onPressed: () => context.push('/join'),
@@ -168,6 +171,7 @@ class _Hero extends StatelessWidget {
           delay: const Duration(milliseconds: 80),
           child: GradientText(
             l10n.slogan,
+            animated: true,
             textAlign: textAlign,
             style: (wide ? text.displayLarge : text.displayMedium)?.copyWith(
               height: 1.05,
@@ -292,10 +296,13 @@ class _Features extends StatelessWidget {
             for (final (index, (icon, title, body)) in features.indexed)
               SizedBox(
                 width: width,
-                child: Reveal(
+                child: RevealOnScroll(
                   delay: Motion.stagger(index, stepMs: 90),
                   child: Hoverable(
-                    child: _FeatureCard(icon: icon, title: title, body: body),
+                    child: HoverSpotlight(
+                      radius: 22,
+                      child: _FeatureCard(icon: icon, title: title, body: body),
+                    ),
                   ),
                 ),
               ),
@@ -371,79 +378,91 @@ class _YourEvents extends StatelessWidget {
       builder: (context, snapshot) {
         final list = snapshot.data ?? const <EventInfo>[];
         if (list.isEmpty) return const SizedBox.shrink();
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n.yourEvents, style: text.headlineSmall),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 14,
-              runSpacing: 14,
-              children: [
-                for (final (index, event) in list.indexed)
-                  Reveal(
-                    delay: Motion.stagger(index),
-                    child: SizedBox(
-                      width: 360,
-                      child: Hoverable(
-                        onTap: () => context.push('/e/${event.id}'),
-                        child: GlassCard(
-                          padding: const EdgeInsets.all(18),
-                          radius: 22,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  gradient: event.demo ? null : Brand.gradient,
-                                  color: event.demo
-                                      ? Brand.champagne.withValues(alpha: 0.35)
-                                      : null,
-                                  borderRadius: BorderRadius.circular(16),
+        return Padding(
+          padding: const EdgeInsets.only(top: 48),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RevealOnScroll(
+                child: Text(l10n.yourEvents, style: text.headlineSmall),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 14,
+                runSpacing: 14,
+                children: [
+                  for (final (index, event) in list.indexed)
+                    RevealOnScroll(
+                      delay: Motion.stagger(index),
+                      child: SizedBox(
+                        width: 360,
+                        child: Hoverable(
+                          onTap: () => context.push('/e/${event.id}'),
+                          child: GlassCard(
+                            padding: const EdgeInsets.all(18),
+                            radius: 22,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    gradient: event.demo
+                                        ? null
+                                        : Brand.gradient,
+                                    color: event.demo
+                                        ? Brand.champagne.withValues(
+                                            alpha: 0.35,
+                                          )
+                                        : null,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Icon(
+                                    event.demo
+                                        ? Icons.auto_awesome
+                                        : _icon(event.template),
+                                    color: event.demo
+                                        ? Brand.plum
+                                        : Colors.white,
+                                  ),
                                 ),
-                                child: Icon(
-                                  event.demo
-                                      ? Icons.auto_awesome
-                                      : _icon(event.template),
-                                  color: event.demo ? Brand.plum : Colors.white,
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        event.name,
+                                        style: text.titleMedium,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        [
+                                          templateName(l10n, event.template),
+                                          if (event.isOrganizer)
+                                            l10n.organizerRole,
+                                          if (event.isParticipant)
+                                            l10n.participantRole,
+                                        ].join(' · '),
+                                        style: text.bodySmall,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      event.name,
-                                      style: text.titleMedium,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      [
-                                        templateName(l10n, event.template),
-                                        if (event.isOrganizer)
-                                          l10n.organizerRole,
-                                        if (event.isParticipant)
-                                          l10n.participantRole,
-                                      ].join(' · '),
-                                      style: text.bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Icon(Icons.arrow_forward_rounded),
-                            ],
+                                const Icon(Icons.arrow_forward_rounded),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

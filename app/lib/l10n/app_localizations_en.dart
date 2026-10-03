@@ -453,8 +453,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get budgetTitle => 'Budget';
 
   @override
-  String budgetTotalOf(Object cap, Object total) {
-    return '$total of $cap';
+  String budgetOfCap(Object cap) {
+    return 'of $cap';
   }
 
   @override
@@ -976,4 +976,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get badgeSimulated => 'Simulated';
+
+  @override
+  String get notFoundTitle => 'This page does not exist';
+
+  @override
+  String get notFoundBody => 'The link may be old or mistyped.';
+
+  @override
+  String get goHome => 'Back to Wearmony';
+
+  @override
+  String get howItWorks => 'How it works';
+
+  @override
+  String get step1Title => 'Invite the group';
+
+  @override
+  String get step1Body =>
+      'Create the event and share a code, a link or a QR code.';
+
+  @override
+  String get step2Title => 'Everyone tries on';
+
+  @override
+  String get step2Body =>
+      'Each person adds one photo and tries outfits, lip colors and hair colors.';
+
+  @override
+  String get step3Title => 'See the group in harmony';
+
+  @override
+  String get step3Body =>
+      'Spot almost-matching colors and stay within the shared budget, before anyone buys.';
+
+  @override
+  String get clashFixed => 'Clash fixed: the group’s colors work together now.';
+
+  @override
+  String get harmonyMapTitle => 'Harmony map';
+
+  @override
+  String get harmonyMapHint =>
+      'Each line compares two outfits. Point at or tap a person to see only their pairs. Small dots are hair and lip colors.';
 }

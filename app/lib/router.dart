@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'features/event/event_shell.dart';
 import 'features/inclusion/inclusion_screen.dart';
 import 'features/landing/landing_screen.dart';
+import 'features/misc/not_found_screen.dart';
 import 'features/organizer/create_event_screen.dart';
 import 'features/participant/consent_screen.dart';
 import 'features/participant/join_screen.dart';
@@ -13,6 +14,7 @@ import 'widgets/session_widgets.dart';
 
 GoRouter buildRouter({String initialLocation = '/'}) => GoRouter(
   initialLocation: initialLocation,
+  errorBuilder: (context, state) => const NotFoundScreen(),
   routes: [
     GoRoute(
       path: '/',

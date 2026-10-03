@@ -48,12 +48,17 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  CelebrationBanner(visible: clashFixed, text: l10n.clashFixed),
                   _StatsRow(board: data),
                   if (weakest != null && weakest.isWarning) ...[
                     const SizedBox(height: 16),
                     Reveal(
                       delay: const Duration(milliseconds: 200),
-                      child: _WarningBanner(finding: weakest),
+                      child: PulseGlow(
+                        color: const Color(0xFFC0392B),
+                        radius: 20,
+                        child: _WarningBanner(finding: weakest),
+                      ),
                     ),
                   ],
                   const SizedBox(height: 20),
@@ -153,17 +158,30 @@ class _StatsRow extends StatelessWidget {
       _StatTile(
         icon: Icons.savings_outlined,
         label: l10n.statBudget,
-        value: CountUp(
-          value: budget.total,
-          format: (v) => budget.totalCap == null
-              ? formatMoney(context, v, budget.currency)
-              : l10n.budgetTotalOf(
-                  formatMoney(context, budget.totalCap!, budget.currency),
-                  formatMoney(context, v, budget.currency),
+        value: Wrap(
+          spacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.end,
+          children: [
+            CountUp(
+              value: budget.total,
+              format: (v) => formatMoney(context, v, budget.currency),
+              style: _valueStyle(
+                context,
+              )?.copyWith(color: budget.overTotal ? scheme.error : null),
+            ),
+            if (budget.totalCap != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  l10n.budgetOfCap(
+                    formatMoney(context, budget.totalCap!, budget.currency),
+                  ),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
                 ),
-          style: _valueStyle(
-            context,
-          )?.copyWith(color: budget.overTotal ? scheme.error : null),
+              ),
+          ],
         ),
         footer: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,19 +224,30 @@ class _StatsRow extends StatelessWidget {
         final columns = constraints.maxWidth >= 1000
             ? tiles.length
             : (constraints.maxWidth >= 560 ? 2 : 1);
-        final width = (constraints.maxWidth - 14 * (columns - 1)) / columns;
-        return Wrap(
-          spacing: 14,
-          runSpacing: 14,
+        // Rows of equal-height tiles, so the cards line up.
+        return Column(
           children: [
-            for (final (index, tile) in tiles.indexed)
-              SizedBox(
-                width: width,
-                child: Reveal(
-                  delay: Motion.stagger(index, stepMs: 80),
-                  child: tile,
+            for (var start = 0; start < tiles.length; start += columns) ...[
+              if (start > 0) const SizedBox(height: 14),
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (var i = start; i < start + columns; i++) ...[
+                      if (i > start) const SizedBox(width: 14),
+                      Expanded(
+                        child: i < tiles.length
+                            ? Reveal(
+                                delay: Motion.stagger(i, stepMs: 80),
+                                child: tiles[i],
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                    ],
+                  ],
                 ),
               ),
+            ],
           ],
         );
       },
@@ -474,33 +503,48 @@ class _PersonCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (look.garment == null &&
-                      look.makeup == null &&
-                      look.hair == null)
-                    Text(
-                      person.hasPhoto ? l10n.noLookYet : l10n.noPhotoYet,
-                      style: text.bodySmall,
-                    )
-                  else
-                    for (final item in [look.garment, look.makeup, look.hair])
-                      if (item != null)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 3),
-                          child: Row(
-                            children: [
-                              ColorDot(item.colorHex, size: 12),
-                              const SizedBox(width: 7),
-                              Expanded(
-                                child: Text(
-                                  item.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: text.bodySmall,
+                  // Room for all three items, so the cards in a row line up.
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.textScalerOf(context).scale(57),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (look.garment == null &&
+                            look.makeup == null &&
+                            look.hair == null)
+                          Text(
+                            person.hasPhoto ? l10n.noLookYet : l10n.noPhotoYet,
+                            style: text.bodySmall,
+                          )
+                        else
+                          for (final item in [
+                            look.garment,
+                            look.makeup,
+                            look.hair,
+                          ])
+                            if (item != null)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 3),
+                                child: Row(
+                                  children: [
+                                    ColorDot(item.colorHex, size: 12),
+                                    const SizedBox(width: 7),
+                                    Expanded(
+                                      child: Text(
+                                        item.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: text.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   Row(
                     children: [

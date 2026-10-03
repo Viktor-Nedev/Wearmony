@@ -456,8 +456,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get budgetTitle => 'Бюджет';
 
   @override
-  String budgetTotalOf(Object cap, Object total) {
-    return '$total от $cap';
+  String budgetOfCap(Object cap) {
+    return 'от $cap';
   }
 
   @override
@@ -980,4 +980,48 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get badgeSimulated => 'Симулация';
+
+  @override
+  String get notFoundTitle => 'Тази страница не съществува';
+
+  @override
+  String get notFoundBody => 'Връзката може да е стара или сгрешена.';
+
+  @override
+  String get goHome => 'Към Wearmony';
+
+  @override
+  String get howItWorks => 'Как работи';
+
+  @override
+  String get step1Title => 'Поканете групата';
+
+  @override
+  String get step1Body =>
+      'Създайте събитието и споделете код, линк или QR код.';
+
+  @override
+  String get step2Title => 'Всеки пробва';
+
+  @override
+  String get step2Body =>
+      'Всеки добавя една снимка и пробва тоалети, червила и цветове на косата.';
+
+  @override
+  String get step3Title => 'Вижте групата в хармония';
+
+  @override
+  String get step3Body =>
+      'Открийте почти еднаквите цветове и останете в общия бюджет, преди някой да купи.';
+
+  @override
+  String get clashFixed =>
+      'Сблъсъкът е оправен: цветовете на групата вече си пасват.';
+
+  @override
+  String get harmonyMapTitle => 'Карта на хармонията';
+
+  @override
+  String get harmonyMapHint =>
+      'Всяка линия сравнява два тоалета. Посочете или докоснете човек, за да видите само неговите двойки. Малките точки са цветовете на косата и червилото.';
 }

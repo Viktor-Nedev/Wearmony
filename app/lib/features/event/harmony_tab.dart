@@ -5,6 +5,7 @@ import '../../app_scope.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme.dart';
 import '../../ui/effects.dart';
+import '../../ui/harmony_map.dart';
 import '../../ui/harmony_visuals.dart';
 import '../../ui/motion.dart';
 import '../../widgets/common.dart';
@@ -76,6 +77,7 @@ class _HarmonyTabState extends State<HarmonyTab> with BoardLoader {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                CelebrationBanner(visible: clashFixed, text: l10n.clashFixed),
                 if (report.findings.isEmpty)
                   Reveal(
                     child: NoticeBar(
@@ -86,6 +88,31 @@ class _HarmonyTabState extends State<HarmonyTab> with BoardLoader {
                 else ...[
                   Reveal(child: _ScoreCard(report: report)),
                   const SizedBox(height: 16),
+                  if (data.participants
+                          .where((p) => p.look.garment != null)
+                          .length >=
+                      2) ...[
+                    Card(
+                      margin: EdgeInsets.zero,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            RevealOnScroll(
+                              child: Text(
+                                l10n.harmonyMapTitle,
+                                style: text.titleLarge,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            HarmonyMap(board: data),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   if (report.warnings.isEmpty)
                     Reveal(
                       delay: const Duration(milliseconds: 120),

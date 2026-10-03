@@ -123,6 +123,7 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                CelebrationBanner(visible: clashFixed, text: l10n.clashFixed),
                 Reveal(child: selector),
                 const SizedBox(height: 20),
                 if (partner == null)
@@ -146,6 +147,9 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
                     builder: (context, constraints) {
                       final narrow = constraints.maxWidth < 520;
                       final link = _HarmonyLink(
+                        key: ValueKey(
+                          '${partner.userId}-${pairFinding?.relation}',
+                        ),
                         finding: pairFinding,
                         horizontal: narrow,
                       );
@@ -165,6 +169,7 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Reveal(
+                                    key: ValueKey(partner.userId),
                                     delay: const Duration(milliseconds: 200),
                                     child: person(partner),
                                   ),
@@ -192,6 +197,7 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
                           ),
                           Expanded(
                             child: Reveal(
+                              key: ValueKey(partner.userId),
                               delay: const Duration(milliseconds: 200),
                               offset: const Offset(24, 0),
                               child: person(partner),
@@ -236,7 +242,11 @@ class _TogetherTabState extends State<TogetherTab> with BoardLoader {
 
 /// The color relation between two people, drawn between their pictures.
 class _HarmonyLink extends StatelessWidget {
-  const _HarmonyLink({required this.finding, this.horizontal = false});
+  const _HarmonyLink({
+    super.key,
+    required this.finding,
+    this.horizontal = false,
+  });
 
   final HarmonyFinding? finding;
 
@@ -265,47 +275,53 @@ class _HarmonyLink extends StatelessWidget {
       style: Theme.of(context).textTheme.labelMedium,
     );
 
+    final radius = horizontal ? 40.0 : 24.0;
     return Reveal(
       delay: const Duration(milliseconds: 320),
       scale: 0.8,
-      child: Container(
-        width: horizontal ? null : 132,
-        padding: horizontal
-            ? const EdgeInsets.symmetric(vertical: 12, horizontal: 18)
-            : const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(horizontal ? 40 : 24),
-          border: Border.all(color: color.withValues(alpha: 0.35)),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.18),
-              blurRadius: 24,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: horizontal
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  pair,
-                  const SizedBox(width: 12),
-                  pill,
-                  const SizedBox(width: 10),
-                  delta,
-                ],
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  pair,
-                  const SizedBox(height: 10),
-                  FittedBox(fit: BoxFit.scaleDown, child: pill),
-                  const SizedBox(height: 6),
-                  delta,
-                ],
+      child: PulseGlow(
+        color: color,
+        radius: radius,
+        active: f.isWarning,
+        child: Container(
+          width: horizontal ? null : 132,
+          padding: horizontal
+              ? const EdgeInsets.symmetric(vertical: 12, horizontal: 18)
+              : const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(radius),
+            border: Border.all(color: color.withValues(alpha: 0.35)),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.18),
+                blurRadius: 24,
+                offset: const Offset(0, 10),
               ),
+            ],
+          ),
+          child: horizontal
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    pair,
+                    const SizedBox(width: 12),
+                    pill,
+                    const SizedBox(width: 10),
+                    delta,
+                  ],
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    pair,
+                    const SizedBox(height: 10),
+                    FittedBox(fit: BoxFit.scaleDown, child: pill),
+                    const SizedBox(height: 6),
+                    delta,
+                  ],
+                ),
+        ),
       ),
     );
   }

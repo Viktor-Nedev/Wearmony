@@ -252,12 +252,7 @@ class _GarmentTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      item.name,
-                      style: text.titleSmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    _TwoLines(item.name, style: text.titleSmall),
                     const SizedBox(height: 4),
                     Text(
                       [
@@ -287,6 +282,34 @@ class _GarmentTile extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// A name that always takes two lines of height, so cards in a row line up.
+class _TwoLines extends StatelessWidget {
+  const _TwoLines(this.text, {this.style});
+
+  final String text;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    final painter = TextPainter(
+      text: TextSpan(text: 'A\nA', style: style),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    final height = painter.height;
+    painter.dispose();
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: height),
+      child: Text(
+        text,
+        style: style,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
