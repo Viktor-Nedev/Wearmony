@@ -170,5 +170,7 @@ describe('pickTarget', () => {
     const findings = computeHarmony(people).findings;
     expect(pickTarget(findings, 'Elena')).toBeNull();
     expect(pickTarget(findings, 'Ivan')?.names).toEqual(['Maria', 'Ivan']);
+    expect(pickTarget(findings, 'Ivan', 'Maria')?.names).toEqual(['Maria', 'Ivan']);
+    expect(pickTarget(findings, 'Ivan', 'Elena')).toBeNull();
   });
 });

@@ -368,6 +368,26 @@ describe('demo event', () => {
     expect(none).toEqual({ target: null, suggestions: [] });
   });
 
+  it('seeds a theatre cast where two costumes nearly match', async () => {
+    const t = setup();
+    const demo = await t.call('POST', '/demo?template=theatre', OUTSIDER);
+    expect(demo.json).toMatchObject({ demo: true, template: 'theatre' });
+    const board = (await t.call('GET', `/events/${demo.json.id}/board`, OUTSIDER)).json;
+    expect(board.participantCount).toBe(6);
+    expect(board.event.eventDate).toMatch(/-03-27$/);
+    expect(board.harmony.weakest).toMatchObject({ relation: 'near_miss', names: ['Romeo', 'Mercutio'] });
+    expect(board.participants.find((p: any) => p.displayName === 'Mercutio').pose).toBe('seated');
+
+    const fixes = (await t.call('GET', `/events/${demo.json.id}/harmony/suggestions`, OUTSIDER)).json;
+    expect(fixes.suggestions.length).toBeGreaterThan(0);
+    expect(fixes.suggestions.every((s: any) => s.relationAfter !== 'near_miss')).toBe(true);
+
+    // The prom demo is a separate event; each opens again as the same event.
+    const prom = await t.call('POST', '/demo', OUTSIDER);
+    expect(prom.json.id).not.toBe(demo.json.id);
+    expect((await t.call('POST', '/demo?template=theatre', OUTSIDER)).json.id).toBe(demo.json.id);
+  });
+
   it('gives each visitor one demo event', async () => {
     const t = setup();
     const first = await t.call('POST', '/demo', OUTSIDER);

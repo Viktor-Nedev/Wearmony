@@ -1,14 +1,24 @@
 import { createHash, randomUUID } from 'node:crypto';
 import sharp from 'sharp';
-import type { EventRecord, GarmentCategory, ItemRecord, LookRecord, ParticipantRecord, Pose, RenderRecord } from '../domain/types.js';
+import type {
+  EventRecord,
+  GarmentCategory,
+  ItemRecord,
+  LookRecord,
+  ParticipantRecord,
+  Pose,
+  RenderRecord,
+  Template,
+} from '../domain/types.js';
 import { checkPhotoQuality } from '../harmony/checks.js';
 import { extractDominantColors } from '../harmony/extract.js';
 import { apparelCategories, planSteps, stepHash } from '../render/pipeline.js';
 import type { Services } from '../services.js';
 import { mediaPaths } from '../storage/storage.js';
 
-// A seeded prom with fictional, illustrated participants. Every image is a
-// drawing, and the app labels the event and its renders as demo data.
+// Seeded events with fictional, illustrated participants: a prom, and a school
+// theatre cast to show the same engine on another kind of event. Every image is
+// a drawing, and the app labels the event and its renders as demo data.
 
 type Shape = 'dress' | 'gown' | 'suit' | 'tie' | 'blazer';
 
@@ -22,7 +32,7 @@ interface DemoItem {
   shape?: Shape;
 }
 
-const ITEMS: DemoItem[] = [
+const PROM_ITEMS: DemoItem[] = [
   { key: 'blush', type: 'garment', name: 'Blush satin dress', price: 180, color: '#E8A0B4', category: 'full_body', shape: 'dress' },
   { key: 'roseTie', type: 'garment', name: 'Rose tie and pocket square', price: 35, color: '#E39AB6', category: 'upper_body', shape: 'tie' },
   { key: 'blushTie', type: 'garment', name: 'Blush tie and pocket square', price: 35, color: '#E8A0B4', category: 'upper_body', shape: 'tie' },
@@ -46,7 +56,7 @@ interface DemoPerson {
   look: { garment: string; makeup?: string; hair?: string };
 }
 
-const PEOPLE: DemoPerson[] = [
+const PROM_PEOPLE: DemoPerson[] = [
   { key: 'maria', name: 'Maria', pose: 'standing', skin: '#E8B998', hair: '#4A3222', partner: 'ivan', look: { garment: 'blush', makeup: 'berry', hair: 'honey' } },
   { key: 'ivan', name: 'Ivan', pose: 'standing', skin: '#F1CDB0', hair: '#2B211B', partner: 'maria', look: { garment: 'roseTie' } },
   { key: 'elena', name: 'Elena', pose: 'seated', skin: '#8D5A3B', hair: '#1E1612', partner: 'georgi', look: { garment: 'emerald', makeup: 'nude' } },
@@ -54,31 +64,105 @@ const PEOPLE: DemoPerson[] = [
   { key: 'sofia', name: 'Sofia', pose: 'standing', skin: '#B07A55', hair: '#6B4A2E', partner: null, look: { garment: 'champagne', hair: 'burgundyHair' } },
 ];
 
-const BEFORE_CLOTHING = '#9FB3C8';
+// Romeo's and Mercutio's doublets are two teals that nearly match: on stage that
+// reads as a costume mistake. Mercutio is played from a wheelchair.
+const THEATRE_ITEMS: DemoItem[] = [
+  { key: 'ivoryGown', type: 'garment', name: "Juliet's ivory gown", price: 95, color: '#EFE6D2', category: 'full_body', shape: 'gown' },
+  { key: 'romeoTeal', type: 'garment', name: "Romeo's teal doublet", price: 70, color: '#1F6F78', category: 'outer', shape: 'blazer' },
+  { key: 'mercutioTeal', type: 'garment', name: "Mercutio's teal doublet", price: 70, color: '#2A7F86', category: 'outer', shape: 'blazer' },
+  { key: 'mustard', type: 'garment', name: 'Mustard doublet', price: 65, color: '#C99A2E', category: 'outer', shape: 'blazer' },
+  { key: 'crimson', type: 'garment', name: "Tybalt's crimson doublet", price: 75, color: '#8E1B2A', category: 'outer', shape: 'blazer' },
+  { key: 'sand', type: 'garment', name: "Nurse's sand dress", price: 60, color: '#C9B08A', category: 'full_body', shape: 'dress' },
+  { key: 'robe', type: 'garment', name: "Friar's brown robe", price: 55, color: '#6B4E31', category: 'full_body', shape: 'gown' },
+  { key: 'stageRed', type: 'makeup', name: 'Stage red lipstick', price: 12, color: '#A3243B' },
+  { key: 'auburn', type: 'hair', name: 'Auburn wig', price: 45, color: '#8B3A1E' },
+  { key: 'raven', type: 'hair', name: 'Raven wig', price: 45, color: '#1B1B1F' },
+];
 
-/** Bulgarian proms are in late May: the next 23 May from today. */
-export function nextPromDay(now: number): string {
-  const today = new Date(now);
-  let year = today.getUTCFullYear();
-  if (Date.UTC(year, 4, 23) < Date.UTC(year, today.getUTCMonth(), today.getUTCDate())) year++;
-  return `${year}-05-23`;
+const THEATRE_PEOPLE: DemoPerson[] = [
+  { key: 'juliet', name: 'Juliet', pose: 'standing', skin: '#F0C9A8', hair: '#5A3A22', partner: 'romeo', look: { garment: 'ivoryGown', makeup: 'stageRed', hair: 'auburn' } },
+  { key: 'romeo', name: 'Romeo', pose: 'standing', skin: '#C68E6A', hair: '#2B211B', partner: 'juliet', look: { garment: 'romeoTeal' } },
+  { key: 'mercutio', name: 'Mercutio', pose: 'seated', skin: '#8D5A3B', hair: '#1E1612', partner: null, look: { garment: 'mercutioTeal' } },
+  { key: 'tybalt', name: 'Tybalt', pose: 'standing', skin: '#E8B998', hair: '#3A2A20', partner: null, look: { garment: 'crimson', hair: 'raven' } },
+  { key: 'nurse', name: 'Nurse', pose: 'standing', skin: '#B07A55', hair: '#6B6460', partner: null, look: { garment: 'sand' } },
+];
+
+export type DemoKind = 'prom' | 'theatre';
+
+interface Scenario {
+  name: string;
+  template: Template;
+  budgetPerPerson: number;
+  budgetTotal: number;
+  /** Month (1-12) and day of the event: the next one from today. */
+  day: [number, number];
+  items: DemoItem[];
+  people: DemoPerson[];
+  /** Whose look is already locked, to show a finished look. */
+  locked: string;
+  /** Who added the hair items, as shown in the catalogue. */
+  hairVendor: string;
 }
 
-export async function seedDemoEvent(services: Services, organizerId: string): Promise<EventRecord> {
+const SCENARIOS: Record<DemoKind, Scenario> = {
+  // Bulgarian proms are in late May.
+  prom: {
+    name: 'Class of 2027 prom (demo)',
+    template: 'prom',
+    budgetPerPerson: 260,
+    budgetTotal: 1200,
+    day: [5, 23],
+    items: PROM_ITEMS,
+    people: PROM_PEOPLE,
+    locked: 'georgi',
+    hairVendor: 'Salon demo',
+  },
+  // World Theatre Day.
+  theatre: {
+    name: 'Romeo and Juliet: school cast (demo)',
+    template: 'theatre',
+    budgetPerPerson: 120,
+    budgetTotal: 600,
+    day: [3, 27],
+    items: THEATRE_ITEMS,
+    people: THEATRE_PEOPLE,
+    locked: 'nurse',
+    hairVendor: 'Wig room demo',
+  },
+};
+
+const BEFORE_CLOTHING = '#9FB3C8';
+
+/** The next given month (1-12) and day from today, as YYYY-MM-DD. */
+export function nextDay(now: number, month: number, day: number): string {
+  const today = new Date(now);
+  let year = today.getUTCFullYear();
+  if (Date.UTC(year, month - 1, day) < Date.UTC(year, today.getUTCMonth(), today.getUTCDate())) year++;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+export async function seedDemoEvent(
+  services: Services,
+  organizerId: string,
+  kind: DemoKind = 'prom',
+): Promise<EventRecord> {
   const { repo, storage } = services;
+  const scenario = SCENARIOS[kind];
+  const ITEMS = scenario.items;
+  const PEOPLE = scenario.people;
   let clock = services.now();
   const stamp = () => new Date(clock++).toISOString();
 
   const event: EventRecord = {
     id: randomUUID(),
-    name: 'Class of 2027 prom (demo)',
-    template: 'prom',
+    name: scenario.name,
+    template: scenario.template,
     organizerId,
     joinCode: `D${randomUUID().replace(/-/g, '').slice(0, 5).toUpperCase()}`,
-    budgetPerPerson: 260,
-    budgetTotal: 1200,
+    budgetPerPerson: scenario.budgetPerPerson,
+    budgetTotal: scenario.budgetTotal,
     currency: 'EUR',
-    eventDate: nextPromDay(services.now()),
+    eventDate: nextDay(services.now(), ...scenario.day),
     demo: true,
     createdAt: stamp(),
   };
@@ -98,7 +182,7 @@ export async function seedDemoEvent(services: Services, organizerId: string): Pr
       colorHex: spec.type === 'garment' ? null : spec.color,
       dominantColors: null,
       addedBy: organizerId,
-      vendorName: spec.type === 'hair' ? 'Salon demo' : null,
+      vendorName: spec.type === 'hair' ? scenario.hairVendor : null,
       createdAt: stamp(),
     };
     if (spec.shape) {
@@ -142,7 +226,7 @@ export async function seedDemoEvent(services: Services, organizerId: string): Pr
       garmentId: items.get(person.look.garment)!.id,
       makeupId: person.look.makeup ? items.get(person.look.makeup)!.id : null,
       hairId: person.look.hair ? items.get(person.look.hair)!.id : null,
-      locked: person.key === 'georgi',
+      locked: person.key === scenario.locked,
       renderRequested: true,
       updatedAt: stamp(),
     };

@@ -2,7 +2,7 @@ import { createHash, randomInt, randomUUID } from 'node:crypto';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import type { Repository } from '../../data/repository.js';
-import { seedDemoEvent } from '../../demo/seed.js';
+import { seedDemoEvent, type DemoKind } from '../../demo/seed.js';
 import type { EventRecord, ParticipantRecord } from '../../domain/types.js';
 import { checkPhotoQuality } from '../../harmony/checks.js';
 import { readImageInfo } from '../../lib/image-size.js';
@@ -94,17 +94,21 @@ events.post('/events', requireUser, async (c) => {
   return c.json(eventDto(event, { isOrganizer: true, isParticipant: false }), 201);
 });
 
-/** One demo event per visitor: opening the demo again returns the existing one. */
+/**
+ * One demo event of each kind per visitor: opening it again returns the existing
+ * one. ?template=theatre opens the school theatre cast instead of the prom.
+ */
 events.post('/demo', requireUser, async (c) => {
   const { repo } = c.var.services;
+  const kind: DemoKind = c.req.query('template') === 'theatre' ? 'theatre' : 'prom';
   const existing = (await repo.listEventsForUser(c.var.userId)).find(
-    (event) => event.demo && event.organizerId === c.var.userId,
+    (event) => event.demo && event.organizerId === c.var.userId && event.template === kind,
   );
   if (existing) {
     const participant = await repo.getParticipant(existing.id, c.var.userId);
     return c.json(eventDto(existing, { isOrganizer: true, isParticipant: Boolean(participant) }), 200);
   }
-  const event = await seedDemoEvent(c.var.services, c.var.userId);
+  const event = await seedDemoEvent(c.var.services, c.var.userId, kind);
   return c.json(eventDto(event, { isOrganizer: true, isParticipant: true }), 201);
 });
 

@@ -75,10 +75,15 @@ const SLOT: Record<SuggestionItemType, keyof Omit<SuggestionLook, 'locked'>> = {
 /** Which item type changes which compared subject. */
 const TYPE_FOR_SUBJECT: Record<Subject, SuggestionItemType> = { outfit: 'garment', lips: 'makeup', hair: 'hair' };
 
-/** The weakest near-miss overall, or the weakest one involving `userId`. */
-export function pickTarget(findings: HarmonyFinding[], userId?: string): HarmonyFinding | null {
+/** The weakest near-miss overall, or the weakest one involving `userId` (and `otherId`, for one pair). */
+export function pickTarget(findings: HarmonyFinding[], userId?: string, otherId?: string): HarmonyFinding | null {
   return (
-    findings.find((f) => f.relation === 'near_miss' && (userId === undefined || f.people.includes(userId))) ?? null
+    findings.find(
+      (f) =>
+        f.relation === 'near_miss' &&
+        (userId === undefined || f.people.includes(userId)) &&
+        (otherId === undefined || f.people.includes(otherId)),
+    ) ?? null
   );
 }
 

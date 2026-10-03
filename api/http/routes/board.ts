@@ -124,14 +124,19 @@ board.get('/events/:eventId/harmony', requireUser, async (c) => {
 });
 
 /**
- * Catalogue swaps that would remove a near-miss: the group's weakest one, or with
- * ?user=<id> the weakest one involving that person. Same engine, no model opinions.
+ * Catalogue swaps that would remove a near-miss: the group's weakest one, with
+ * ?user=<id> the weakest one involving that person, and with ?user=<id>&with=<id>
+ * the near-miss between those two. Same engine, no model opinions.
  */
 board.get('/events/:eventId/harmony/suggestions', requireUser, async (c) => {
   const { event } = await loadEvent(c, c.req.param('eventId'));
   const { participants, looks, items } = await loadGroup(c.var.services, event);
   const people = harmonyInputs(participants, looks, items);
-  const target = pickTarget(computeHarmony(people).findings, c.req.query('user') || undefined);
+  const target = pickTarget(
+    computeHarmony(people).findings,
+    c.req.query('user') || undefined,
+    c.req.query('with') || undefined,
+  );
   if (!target) return c.json({ target: null, suggestions: [] });
 
   const suggestions = suggestFixes({

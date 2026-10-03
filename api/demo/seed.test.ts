@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { nextPromDay } from './seed.js';
+import { nextDay } from './seed.js';
 
-describe('nextPromDay', () => {
-  it('is this year before late May and next year after it', () => {
-    expect(nextPromDay(Date.UTC(2026, 9, 3))).toBe('2027-05-23');
-    expect(nextPromDay(Date.UTC(2027, 0, 10))).toBe('2027-05-23');
-    expect(nextPromDay(Date.UTC(2027, 4, 23))).toBe('2027-05-23');
-    expect(nextPromDay(Date.UTC(2027, 4, 24))).toBe('2028-05-23');
+describe('nextDay', () => {
+  it('is this year until the day and next year after it', () => {
+    expect(nextDay(Date.UTC(2026, 9, 3), 5, 23)).toBe('2027-05-23');
+    expect(nextDay(Date.UTC(2027, 0, 10), 5, 23)).toBe('2027-05-23');
+    expect(nextDay(Date.UTC(2027, 4, 23), 5, 23)).toBe('2027-05-23');
+    expect(nextDay(Date.UTC(2027, 4, 24), 5, 23)).toBe('2028-05-23');
+    expect(nextDay(Date.UTC(2026, 9, 3), 3, 27)).toBe('2027-03-27');
   });
 });
