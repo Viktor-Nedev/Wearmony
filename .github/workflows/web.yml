@@ -36,6 +36,9 @@ jobs:
           flutter build web --release
           --base-href "/${{ github.event.repository.name }}/"
           --dart-define=API_BASE_URL=${{ vars.API_BASE_URL }}
+      # Link previews need an absolute image URL.
+      - run: >
+          sed -i "s#content=\"icons/social-card.png\"#content=\"https://$(echo ${{ github.repository_owner }} | tr A-Z a-z).github.io/${{ github.event.repository.name }}/icons/social-card.png\"#" build/web/index.html
       # Deep links (/join/CODE, /v/TOKEN) load the app through the 404 page.
       - run: cp build/web/index.html build/web/404.html
       - uses: actions/configure-pages@v5

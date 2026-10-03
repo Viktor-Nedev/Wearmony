@@ -1,38 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
+    The base href is replaced by the value of `flutter build --base-href`.
+    It must start and end with a slash.
   -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Wearmony: group virtual try-on. Try it on together.">
+  <meta name="description" content="Wearmony: group virtual try-on for events. Everyone tries outfits, lip and hair colors on their own photo, then the group sees itself together with a color-harmony check and a shared budget.">
+  <meta name="theme-color" content="#6E2A4F">
 
-  <!-- iOS meta tags & icons -->
+  <!-- Link previews for shared invite links. The deploy workflow makes the image URL absolute. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Wearmony">
+  <meta property="og:title" content="Wearmony · Try it on together.">
+  <meta property="og:description" content="See how your group looks together before anyone buys an outfit: try-on, color harmony and a shared budget in one place.">
+  <meta property="og:image" content="icons/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Wearmony">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>Wearmony</title>
+  <title>Wearmony · Try it on together.</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    @font-face {
+      font-family: 'WearmonyDisplay';
+      src: url('assets/assets/fonts/PlayfairDisplay-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-display: swap;
+    }
+    html, body { margin: 0; height: 100%; background: #FBF7F4; }
+    /* Shown at once, while the app downloads; removed after Flutter's first frame. */
+    #splash {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(178, 76, 122, .26), transparent 55%),
+        radial-gradient(circle at 86% 20%, rgba(232, 160, 180, .34), transparent 50%),
+        radial-gradient(circle at 70% 92%, rgba(217, 183, 126, .34), transparent 55%),
+        #FBF7F4;
+      transition: opacity .5s ease, visibility .5s;
+    }
+    #splash.done { opacity: 0; visibility: hidden; }
+    #splash .mark { position: relative; width: 94px; height: 60px; }
+    #splash .mark span { position: absolute; top: 0; width: 60px; height: 60px; border-radius: 50%; }
+    #splash .a { left: 0; background: linear-gradient(135deg, #6E2A4F, #B24C7A); animation: wm-a 1.6s ease-in-out infinite; }
+    #splash .b { right: 0; background: linear-gradient(135deg, #E38FA8, #D9B77E); opacity: .9; animation: wm-b 1.6s ease-in-out infinite; }
+    @keyframes wm-a { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(4px); } }
+    @keyframes wm-b { 0%, 100% { transform: translateX(10px); } 50% { transform: translateX(-4px); } }
+    #splash .name {
+      font-family: 'WearmonyDisplay', Georgia, serif; font-size: 34px; font-weight: 700;
+      color: #3D1530; letter-spacing: -.3px;
+    }
+    #splash .bar { width: 120px; height: 3px; border-radius: 3px; background: rgba(110, 42, 79, .15); overflow: hidden; }
+    #splash .bar::after {
+      content: ''; display: block; width: 40%; height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, #6E2A4F, #E38FA8);
+      animation: wm-bar 1.2s ease-in-out infinite;
+    }
+    @keyframes wm-bar { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+    @media (prefers-color-scheme: dark) {
+      html, body, #splash { background-color: #150F14; }
+      #splash .name { color: #F6DCE6; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #splash .mark span, #splash .bar::after { animation: none; }
+    }
+  </style>
 </head>
 <body>
+  <div id="splash" role="progressbar" aria-label="Wearmony is loading">
+    <div class="mark"><span class="a"></span><span class="b"></span></div>
+    <div class="name">Wearmony</div>
+    <div class="bar"></div>
+  </div>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
