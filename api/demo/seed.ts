@@ -171,8 +171,11 @@ export async function seedDemoEvent(
   const scenario = SCENARIOS[kind];
   const ITEMS = scenario.items;
   const PEOPLE = scenario.people;
-  let clock = services.now();
-  const stamp = () => new Date(clock++).toISOString();
+  // The demo's history is spread over the past day and a half, so recent
+  // activity reads like a group that has been busy, not one created this second.
+  const HOUR = 3_600_000;
+  let clock = services.now() - 40 * HOUR;
+  const stamp = () => new Date((clock += 0.6 * HOUR)).toISOString();
 
   const event: EventRecord = {
     id: randomUUID(),

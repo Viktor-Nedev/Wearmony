@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import type { EventRecord, ItemRecord, ItemType, LookRecord, ParticipantRecord } from '../../domain/types.js';
 import { advanceLook, resetFailedStep } from '../../render/pipeline.js';
+import { previewLooks } from '../../render/previews.js';
 import type { Services } from '../../services.js';
 import { HttpError, loadParticipantEvent, parseJson, requireUser, type AppEnv } from '../context.js';
 import { iso, lookTotal, renderDto, signAll } from '../dto.js';
@@ -90,6 +91,43 @@ looks.post('/events/:eventId/look/render', requireUser, async (c) => {
   if (body.retry) await resetFailedStep(services.pipeline, event, participant, look, await itemMap(services, event.id));
   await services.repo.upsertLook({ ...look, renderRequested: true });
   return c.json(await lookResponse(services, event, participant));
+});
+
+/**
+ * The looks this participant has already seen on their current photo, newest
+ * first. Every step is cached, so wearing one again previews at no cost.
+ */
+looks.get('/events/:eventId/me/previews', requireUser, async (c) => {
+  const { event, participant } = await loadParticipantEvent(c, c.req.param('eventId'));
+  if (!participant.photoPath) return c.json([]);
+  const services = c.var.services;
+  const [renders, items, current] = await Promise.all([
+    services.repo.listRenders(event.id),
+    itemMap(services, event.id),
+    services.repo.getLook(event.id, participant.userId),
+  ]);
+  const found = previewLooks(renders, participant.userId, participant.photoPath);
+  const urls = await signAll(services.storage, found.map((look) => look.resultPath));
+  const summary = (id: string | null) => {
+    const item = id ? items.get(id) : undefined;
+    return item
+      ? { id: item.id, name: item.name, price: item.price, colorHex: item.colorHex ?? item.dominantColors?.[0]?.hex ?? null }
+      : null;
+  };
+  return c.json(
+    found.map((look, i) => ({
+      garment: summary(look.garmentId),
+      makeup: summary(look.makeupId),
+      hair: summary(look.hairId),
+      imageUrl: urls[i] ?? null,
+      at: look.at,
+      current:
+        current !== null &&
+        current.garmentId === look.garmentId &&
+        current.makeupId === look.makeupId &&
+        current.hairId === look.hairId,
+    })),
+  );
 });
 
 looks.post('/events/:eventId/look/lock', requireUser, async (c) => {

@@ -199,6 +199,33 @@ describe('looks and try-on', () => {
     expect(await t.services.repo.listRenders(t.eventId)).toHaveLength(2);
   });
 
+  it('lists earlier previews and wears one again without a new render', async () => {
+    const t = await eventWithTwoParticipants();
+    await withPhoto(t, t.eventId, ANA);
+    const red = await addGarment(t, t.eventId, 'Red dress', '#B0304A', 100);
+    const navy = await addGarment(t, t.eventId, 'Navy suit', '#1F2A44', 120);
+    const render = async (garmentId: string) => {
+      await t.call('PUT', `/events/${t.eventId}/look`, ANA, { garmentId });
+      await t.call('POST', `/events/${t.eventId}/look/render`, ANA, {});
+      t.advance(5000);
+      return (await t.call('GET', `/events/${t.eventId}/look`, ANA)).json;
+    };
+    expect((await t.call('GET', `/events/${t.eventId}/me/previews`, ANA)).json).toEqual([]);
+
+    expect((await render(red.id)).render.status).toBe('success');
+    expect((await render(navy.id)).render.status).toBe('success');
+    const previews = (await t.call('GET', `/events/${t.eventId}/me/previews`, ANA)).json;
+    expect(previews).toHaveLength(2);
+    expect(previews[0]).toMatchObject({ garment: { id: navy.id, name: 'Navy suit' }, current: true });
+    expect(previews[1]).toMatchObject({ garment: { id: red.id }, current: false });
+    expect(typeof previews[1].imageUrl).toBe('string');
+
+    // Wearing the first look again reuses its cached render at once.
+    await t.call('PUT', `/events/${t.eventId}/look`, ANA, { garmentId: red.id });
+    const again = await t.call('POST', `/events/${t.eventId}/look/render`, ANA, {});
+    expect(again.json.render).toMatchObject({ status: 'success', resultUrl: previews[1].imageUrl });
+  });
+
   it('locks a look against changes', async () => {
     const t = await eventWithTwoParticipants();
     const dress = await addGarment(t, t.eventId, 'Red dress', '#B0304A');
@@ -347,6 +374,12 @@ describe('demo event', () => {
     expect(me).toMatchObject({ displayName: 'Guest', hasPhoto: true });
     expect((await t.call('GET', `/events/${demo.json.id}`, OUTSIDER)).json.me.consentAt).toBeNull();
     expect(board.event.eventDate).toMatch(/^\d{4}-05-23$/);
+    // Recent activity, newest first, all in the past.
+    expect(board.activity.length).toBeGreaterThan(0);
+    const times = board.activity.map((a: any) => Date.parse(a.at));
+    expect([...times].sort((a, b) => b - a)).toEqual(times);
+    expect(Math.max(...times)).toBeLessThanOrEqual(Date.now());
+    expect(board.activity.map((a: any) => a.kind)).toEqual(expect.arrayContaining(['previewed', 'look']));
     expect(board.participants.every((p: any) => p.render.mock)).toBe(true);
   });
 
