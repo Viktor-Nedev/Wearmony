@@ -32,6 +32,15 @@ int daysUntil(DateTime day, {DateTime? now}) {
   ).difference(DateTime.utc(today.year, today.month, today.day)).inDays;
 }
 
+/// "just now", "5 min ago", "3 h ago", "yesterday", "4 days ago".
+String timeAgo(AppLocalizations l10n, DateTime at, {DateTime? now}) {
+  final elapsed = (now ?? DateTime.now()).difference(at);
+  if (elapsed.inMinutes < 1) return l10n.timeJustNow;
+  if (elapsed.inHours < 1) return l10n.timeMinutes(elapsed.inMinutes);
+  if (elapsed.inDays < 1) return l10n.timeHours(elapsed.inHours);
+  return l10n.timeDays(elapsed.inDays);
+}
+
 /// "in 12 days", "Today" or "3 days ago".
 String countdownLabel(AppLocalizations l10n, DateTime day, {DateTime? now}) {
   final days = daysUntil(day, now: now);

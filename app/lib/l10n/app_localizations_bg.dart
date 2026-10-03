@@ -1294,4 +1294,294 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get notPreviewed => 'Нова визия, още без преглед';
+
+  @override
+  String get poweredByEyebrow => 'С YouCam API';
+
+  @override
+  String get poweredByTitle => 'Една снимка, три стъпки на пробване';
+
+  @override
+  String get poweredByBody =>
+      'Всяка визия се изгражда като верига върху собствената снимка на участника: първо тоалетът, после червилото върху този резултат, след това цветът на косата. Всяка стъпка може да се провери отделно.';
+
+  @override
+  String get chainPhotoTitle => 'Твоята снимка';
+
+  @override
+  String get chainPhotoBody =>
+      'Проверява се за размер и светлина преди всяко пробване, права или седнала поза.';
+
+  @override
+  String get chainClothesBody =>
+      'Облича тоалета от каталога на събитието върху снимката.';
+
+  @override
+  String get chainMakeupBody => 'Добавя точния цвят на червилото от каталога.';
+
+  @override
+  String get chainHairBody => 'Прилага избрания цвят на косата.';
+
+  @override
+  String get factCache =>
+      'Всяка стъпка се пази: една и съща снимка и вещ никога не струват два пъти.';
+
+  @override
+  String get factLedger =>
+      'Отчет на единиците ограничава разхода за събитие и за човек.';
+
+  @override
+  String get factLabels =>
+      'Симулираните и демо резултатите винаги са отбелязани.';
+
+  @override
+  String get privacyTitle => 'Поверителност по подразбиране';
+
+  @override
+  String get privacySubtitle =>
+      'Снимките са лични. Wearmony се отнася към тях така.';
+
+  @override
+  String get privacyPrivateTitle => 'Само за събитието';
+
+  @override
+  String get privacyPrivateBody =>
+      'Само хората в събитието виждат снимката и прегледите ти.';
+
+  @override
+  String get privacyDeleteTitle => 'Изтриване по всяко време';
+
+  @override
+  String get privacyDeleteBody =>
+      'Сам изтриваш снимката и данните си; организаторът може да изтрие цялото събитие.';
+
+  @override
+  String get privacyLinksTitle => 'Връзки с изтичащ срок';
+
+  @override
+  String get privacyLinksBody =>
+      'Връзките за доставчици са само за четене и спират да работят след срока си.';
+
+  @override
+  String get privacyConsentTitle => 'Пълнолетни, със съгласие';
+
+  @override
+  String get privacyConsentBody =>
+      'Ясен екран за съгласие се показва преди всяко качване на снимка.';
+
+  @override
+  String get faqTitle => 'Въпроси';
+
+  @override
+  String get faqSeatedQ => 'Работи ли, ако съм в инвалидна количка?';
+
+  @override
+  String get faqSeatedA =>
+      'Да. Изберете „седнала поза“, когато добавяте снимката. Двигателите за пробване обикновено се тестват с изправени хора, затова Wearmony измерва колко добре работят седналите снимки и публикува резултатите.';
+
+  @override
+  String get faqNearMissQ => 'Какво е „почти еднакви“?';
+
+  @override
+  String get faqNearMissA =>
+      'Два цвята, които са близки, но не еднакви, например два леко различни розови. Един до друг изглеждат като грешка, затова Wearmony предупреждава и предлага замени, които я поправят.';
+
+  @override
+  String get faqExactQ => 'Точен ли е прегледът?';
+
+  @override
+  String get faqExactA =>
+      'Това е визуален преглед, не гаранция за размера. Платът, светлината и камерите променят как изглеждат цветовете на самата вечер.';
+
+  @override
+  String get faqPhotoQ => 'Кой вижда снимката ми?';
+
+  @override
+  String get faqPhotoA =>
+      'Само хората в твоето събитие. Фризьор, когото поканиш, вижда само цвета на косата и снимката преди, чрез връзка с изтичащ срок. Можеш да изтриеш снимката си по всяко време.';
+
+  @override
+  String get faqAccountQ => 'Нужен ли е акаунт?';
+
+  @override
+  String get faqAccountA =>
+      'Не. Влизаш с код. Влизането с имейл е по избор, за да ползваш събитията си на друго устройство.';
+
+  @override
+  String get faqUnitsQ => 'Струва ли нещо прегледът?';
+
+  @override
+  String get faqUnitsA =>
+      'Планирането, цветовете и бюджетите не използват единици от API. Всяка стъпка на пробване използва единици от YouCam API от бюджета на събитието, с ограничения за събитие и за човек, а една и съща снимка и вещ никога не се плащат два пъти.';
+
+  @override
+  String get footerStart => 'Начало';
+
+  @override
+  String get footerDemos => 'Демо';
+
+  @override
+  String get footerLearn => 'Научи повече';
+
+  @override
+  String get footerTagline =>
+      'Групово виртуално пробване за балове, пиеси, сватби и общи снимки.';
+
+  @override
+  String get footerHackathon =>
+      'Създадено за YouCam API Skin AI & eCommerce VTO Hackathon. Хората в демо събитията са илюстрации.';
+
+  @override
+  String get tourButton => 'Обиколка';
+
+  @override
+  String get tourTitle => 'Разгледайте демото';
+
+  @override
+  String get tourSubtitle => 'Няколко неща, които да пробвате тук.';
+
+  @override
+  String get tourFixTitle => 'Поправете сблъсъка';
+
+  @override
+  String get tourFixBody =>
+      'Вие и София почти съвпадате. Поправете го с едно докосване.';
+
+  @override
+  String get tourPhotoTitle => 'Всички в един кадър';
+
+  @override
+  String get tourPhotoBody => 'Груповата снимка, готова за запазване.';
+
+  @override
+  String get tourMapTitle => 'Картата на хармонията';
+
+  @override
+  String get tourMapBody =>
+      'Всяка двойка тоалети като една линия, оцветена според това как си пасват.';
+
+  @override
+  String get tourBudgetTitle => 'Проверете бюджета';
+
+  @override
+  String get tourBudgetBody =>
+      'Кой е над лимита и на кого още му трябва снимка или заключване.';
+
+  @override
+  String get tourTheatreTitle => 'Същият двигател, друго събитие';
+
+  @override
+  String get tourTheatreBody => 'Отворете училищната пиеса.';
+
+  @override
+  String get tourCostumesTitle => 'Открийте сблъсъка на костюмите';
+
+  @override
+  String get tourCostumesBody =>
+      'Тюркоазите на Ромео и Меркуцио почти съвпадат.';
+
+  @override
+  String get tourStageTitle => 'Трупата на сцената';
+
+  @override
+  String get tourStageBody => 'Груповата снимка на фон сцена.';
+
+  @override
+  String get tourPromTitle => 'Обратно към бала';
+
+  @override
+  String get tourPromBody => 'Отворете демото на бала.';
+
+  @override
+  String get activityTitle => 'Последна активност';
+
+  @override
+  String get activityEmpty =>
+      'Още нищо. Тук ще се появява активността, когато хората се присъединяват и пробват визии.';
+
+  @override
+  String activityJoined(Object name) {
+    return '$name се присъедини';
+  }
+
+  @override
+  String activityLook(Object item, Object name) {
+    return '$name избра $item';
+  }
+
+  @override
+  String activityLocked(Object name) {
+    return '$name заключи визията си';
+  }
+
+  @override
+  String activityPreviewed(Object name) {
+    return '$name пробва визията си';
+  }
+
+  @override
+  String get timeJustNow => 'току-що';
+
+  @override
+  String timeMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'преди $count мин',
+      one: 'преди 1 мин',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'преди $count ч',
+      one: 'преди 1 ч',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'преди $count дни',
+      one: 'вчера',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get previewsTitle => 'Твоите прегледи';
+
+  @override
+  String get previewsHint => 'Докосни един, за да го сравниш с текущата визия.';
+
+  @override
+  String get previewsNow => 'Сега';
+
+  @override
+  String get lookUnnamed => 'Визия';
+
+  @override
+  String get compareTitle => 'Сравни визиите';
+
+  @override
+  String compareWear(Object name) {
+    return 'Облечи пак $name';
+  }
+
+  @override
+  String get compareNote =>
+      'И двата прегледа вече са готови, затова връщането не струва нищо.';
+
+  @override
+  String get activityLockedYou => 'Ти заключи визията си';
+
+  @override
+  String get activityPreviewedYou => 'Ти пробва визията си';
 }

@@ -11,6 +11,7 @@ import '../../widgets/common.dart';
 import '../../widgets/session_widgets.dart';
 import 'board_tab.dart';
 import 'catalogue_tab.dart';
+import 'demo_tour.dart';
 import 'harmony_tab.dart';
 import 'invite_tab.dart';
 import 'my_look_tab.dart';
@@ -156,6 +157,7 @@ class _EventShellState extends State<EventShell> {
             ],
           ),
           actions: [
+            if (event.demo) DemoTourButton(event: event, tabs: tabs),
             if (event.isParticipant)
               IconButton(
                 tooltip: l10n.myData,

@@ -444,3 +444,131 @@ class ReadinessTracker extends StatelessWidget {
     );
   }
 }
+
+/// What happened lately, newest first, as a small timeline. New entries slide
+/// in at the top when the board refreshes.
+class ActivityFeed extends StatelessWidget {
+  const ActivityFeed({super.key, required this.board});
+
+  final Board board;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final me = board.me?.userId;
+
+    String sentence(ActivityEntry entry) {
+      final mine = entry.userId == me;
+      final name = mine ? l10n.you : entry.name;
+      return switch (entry.kind) {
+        'look' => l10n.activityLook(entry.item ?? '', name),
+        'locked' => mine ? l10n.activityLockedYou : l10n.activityLocked(name),
+        'previewed' =>
+          mine ? l10n.activityPreviewedYou : l10n.activityPreviewed(name),
+        _ => l10n.activityJoined(name),
+      };
+    }
+
+    IconData icon(String kind) => switch (kind) {
+      'look' => Icons.checkroom,
+      'locked' => Icons.lock_outline_rounded,
+      'previewed' => Icons.auto_fix_high,
+      _ => Icons.person_add_alt_1_outlined,
+    };
+
+    final entries = board.activity;
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _Heading(icon: Icons.history_rounded, title: l10n.activityTitle),
+            const SizedBox(height: 14),
+            if (entries.isEmpty)
+              Text(l10n.activityEmpty, style: text.bodySmall)
+            else
+              for (final (index, entry) in entries.indexed)
+                Reveal(
+                  key: ValueKey(
+                    '${entry.kind}-${entry.userId}-${entry.at.toIso8601String()}',
+                  ),
+                  offset: const Offset(0, -10),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          width: 30,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: hexColor(
+                                    board
+                                        .byId(entry.userId)
+                                        ?.look
+                                        .garment
+                                        ?.colorHex,
+                                    fallback: scheme.primary,
+                                  ).withValues(alpha: 0.18),
+                                ),
+                                child: Icon(
+                                  icon(entry.kind),
+                                  size: 16,
+                                  color: scheme.primary,
+                                ),
+                              ),
+                              if (index < entries.length - 1)
+                                Expanded(
+                                  child: Container(
+                                    width: 2,
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                    ),
+                                    color: scheme.outlineVariant.withValues(
+                                      alpha: 0.7,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 5,
+                              bottom: index < entries.length - 1 ? 12 : 0,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(sentence(entry), style: text.bodyMedium),
+                                const SizedBox(height: 2),
+                                Text(
+                                  timeAgo(l10n, entry.at.toLocal()),
+                                  style: text.bodySmall?.copyWith(
+                                    color: scheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+          ],
+        ),
+      ),
+    );
+  }
+}

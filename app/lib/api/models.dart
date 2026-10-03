@@ -571,6 +571,68 @@ class HarmonyReport {
       findings.where((f) => f.isWarning).toList();
 }
 
+/// A look the participant has already previewed on their current photo.
+class PreviewLook {
+  const PreviewLook({
+    required this.garment,
+    required this.makeup,
+    required this.hair,
+    required this.imageUrl,
+    required this.at,
+    required this.current,
+  });
+
+  factory PreviewLook.fromJson(Json json) => PreviewLook(
+    garment: json['garment'] is Json
+        ? ItemSummary.fromJson(json['garment'] as Json)
+        : null,
+    makeup: json['makeup'] is Json
+        ? ItemSummary.fromJson(json['makeup'] as Json)
+        : null,
+    hair: json['hair'] is Json
+        ? ItemSummary.fromJson(json['hair'] as Json)
+        : null,
+    imageUrl: json['imageUrl'] as String?,
+    at: DateTime.tryParse(json['at'] as String? ?? '') ?? DateTime(2000),
+    current: json['current'] == true,
+  );
+
+  final ItemSummary? garment;
+  final ItemSummary? makeup;
+  final ItemSummary? hair;
+  final String? imageUrl;
+  final DateTime at;
+
+  /// The participant's look right now is this one.
+  final bool current;
+}
+
+/// Something that happened in the event: a join, a chosen or locked look, a preview.
+class ActivityEntry {
+  const ActivityEntry({
+    required this.kind,
+    required this.userId,
+    required this.name,
+    required this.item,
+    required this.at,
+  });
+
+  factory ActivityEntry.fromJson(Json json) => ActivityEntry(
+    kind: json['kind'] as String? ?? 'joined',
+    userId: json['userId'] as String? ?? '',
+    name: json['name'] as String? ?? '',
+    item: json['item'] as String?,
+    at: DateTime.tryParse(json['at'] as String? ?? '') ?? DateTime(2000),
+  );
+
+  /// joined, look, locked or previewed
+  final String kind;
+  final String userId;
+  final String name;
+  final String? item;
+  final DateTime at;
+}
+
 class Board {
   const Board({
     required this.event,
@@ -581,6 +643,7 @@ class Board {
     required this.budget,
     required this.units,
     required this.harmony,
+    this.activity = const [],
   });
 
   factory Board.fromJson(Json json) => Board(
@@ -592,6 +655,7 @@ class Board {
     budget: BudgetInfo.fromJson((json['budget'] as Json?) ?? const {}),
     units: UnitsInfo.fromJson((json['units'] as Json?) ?? const {}),
     harmony: HarmonyReport.fromJson((json['harmony'] as Json?) ?? const {}),
+    activity: _list(json['activity'], ActivityEntry.fromJson),
   );
 
   final EventInfo event;
@@ -602,6 +666,9 @@ class Board {
   final BudgetInfo budget;
   final UnitsInfo units;
   final HarmonyReport harmony;
+
+  /// Newest first.
+  final List<ActivityEntry> activity;
 
   BoardParticipant? get me => participants.where((p) => p.isMe).firstOrNull;
 

@@ -149,6 +149,28 @@ Map<String, Object?> boardJson() {
       },
       'withoutOutfit': [],
     },
+    'activity': [
+      {
+        'kind': 'look',
+        'userId': 'u2',
+        'name': 'Ivan',
+        'item': 'Dress Ivan',
+        'at': DateTime.now()
+            .toUtc()
+            .subtract(const Duration(hours: 2))
+            .toIso8601String(),
+      },
+      {
+        'kind': 'joined',
+        'userId': 'u1',
+        'name': 'Maria',
+        'item': null,
+        'at': DateTime.now()
+            .toUtc()
+            .subtract(const Duration(days: 3))
+            .toIso8601String(),
+      },
+    ],
   };
 }
 

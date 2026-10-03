@@ -2262,6 +2262,468 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New look, not previewed yet'**
   String get notPreviewed;
+
+  /// No description provided for @poweredByEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Powered by YouCam APIs'**
+  String get poweredByEyebrow;
+
+  /// No description provided for @poweredByTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One photo, three try-on steps'**
+  String get poweredByTitle;
+
+  /// No description provided for @poweredByBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each look is built as a chain on the participant\'s own photo: the outfit first, then the lip color on that result, then the hair color. Every step can be checked on its own.'**
+  String get poweredByBody;
+
+  /// No description provided for @chainPhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your photo'**
+  String get chainPhotoTitle;
+
+  /// No description provided for @chainPhotoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked for size and light before any try-on, standing or seated.'**
+  String get chainPhotoBody;
+
+  /// No description provided for @chainClothesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Puts the outfit from the event catalogue on the photo.'**
+  String get chainClothesBody;
+
+  /// No description provided for @chainMakeupBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Adds the exact lip color from the catalogue.'**
+  String get chainMakeupBody;
+
+  /// No description provided for @chainHairBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Applies the chosen hair color.'**
+  String get chainHairBody;
+
+  /// No description provided for @factCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Each step is cached: the same photo and item never cost twice.'**
+  String get factCache;
+
+  /// No description provided for @factLedger.
+  ///
+  /// In en, this message translates to:
+  /// **'A unit ledger caps spending per event and per person.'**
+  String get factLedger;
+
+  /// No description provided for @factLabels.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulated and demo results are always labeled.'**
+  String get factLabels;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Private by design'**
+  String get privacyTitle;
+
+  /// No description provided for @privacySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos are personal. Wearmony treats them that way.'**
+  String get privacySubtitle;
+
+  /// No description provided for @privacyPrivateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Private to the event'**
+  String get privacyPrivateTitle;
+
+  /// No description provided for @privacyPrivateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Only people in your event see your photo and previews.'**
+  String get privacyPrivateBody;
+
+  /// No description provided for @privacyDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete at any time'**
+  String get privacyDeleteTitle;
+
+  /// No description provided for @privacyDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove your photo and data yourself; organizers can delete the whole event.'**
+  String get privacyDeleteBody;
+
+  /// No description provided for @privacyLinksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Links that expire'**
+  String get privacyLinksTitle;
+
+  /// No description provided for @privacyLinksBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor links are read-only and stop working after their date.'**
+  String get privacyLinksBody;
+
+  /// No description provided for @privacyConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Adults, with consent'**
+  String get privacyConsentTitle;
+
+  /// No description provided for @privacyConsentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A clear consent screen comes before any photo upload.'**
+  String get privacyConsentBody;
+
+  /// No description provided for @faqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions'**
+  String get faqTitle;
+
+  /// No description provided for @faqSeatedQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Does it work if I use a wheelchair?'**
+  String get faqSeatedQ;
+
+  /// No description provided for @faqSeatedA.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes. Choose \"seated\" when you add your photo. Try-on engines are usually tested on standing people, so Wearmony measures how well seated photos work and publishes the results.'**
+  String get faqSeatedA;
+
+  /// No description provided for @faqNearMissQ.
+  ///
+  /// In en, this message translates to:
+  /// **'What is a near-miss?'**
+  String get faqNearMissQ;
+
+  /// No description provided for @faqNearMissA.
+  ///
+  /// In en, this message translates to:
+  /// **'Two colors that are close but not the same, like two slightly different pinks. Side by side they read as a mistake, so Wearmony warns you and suggests swaps that fix it.'**
+  String get faqNearMissA;
+
+  /// No description provided for @faqExactQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Is the preview exact?'**
+  String get faqExactQ;
+
+  /// No description provided for @faqExactA.
+  ///
+  /// In en, this message translates to:
+  /// **'It is a visual preview, not a fit guarantee. Fabric, light and cameras change how colors look on the night.'**
+  String get faqExactA;
+
+  /// No description provided for @faqPhotoQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can see my photo?'**
+  String get faqPhotoQ;
+
+  /// No description provided for @faqPhotoA.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the people in your event. A hairdresser you invite sees only the hair color and your before photo, through a link that expires. You can delete your photo at any time.'**
+  String get faqPhotoA;
+
+  /// No description provided for @faqAccountQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Do I need an account?'**
+  String get faqAccountQ;
+
+  /// No description provided for @faqAccountA.
+  ///
+  /// In en, this message translates to:
+  /// **'No. You join with a code. Signing in with email is optional, to use your events on another device.'**
+  String get faqAccountA;
+
+  /// No description provided for @faqUnitsQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Does a preview cost anything?'**
+  String get faqUnitsQ;
+
+  /// No description provided for @faqUnitsA.
+  ///
+  /// In en, this message translates to:
+  /// **'Planning, colors and budgets use no API units. Each try-on step uses YouCam API units from the event budget, with caps per event and per person, and the same photo and item are never paid for twice.'**
+  String get faqUnitsA;
+
+  /// No description provided for @footerStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get footerStart;
+
+  /// No description provided for @footerDemos.
+  ///
+  /// In en, this message translates to:
+  /// **'Demos'**
+  String get footerDemos;
+
+  /// No description provided for @footerLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get footerLearn;
+
+  /// No description provided for @footerTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Group virtual try-on for proms, plays, weddings and group photos.'**
+  String get footerTagline;
+
+  /// No description provided for @footerHackathon.
+  ///
+  /// In en, this message translates to:
+  /// **'Built for the YouCam API Skin AI & eCommerce VTO Hackathon. People in the demos are illustrations.'**
+  String get footerHackathon;
+
+  /// No description provided for @tourButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Tour'**
+  String get tourButton;
+
+  /// No description provided for @tourTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the tour'**
+  String get tourTitle;
+
+  /// No description provided for @tourSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few things to try in this demo.'**
+  String get tourSubtitle;
+
+  /// No description provided for @tourFixTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix your clash'**
+  String get tourFixTitle;
+
+  /// No description provided for @tourFixBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You and Sofia nearly match. Fix it with one tap.'**
+  String get tourFixBody;
+
+  /// No description provided for @tourPhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'See everyone in one frame'**
+  String get tourPhotoTitle;
+
+  /// No description provided for @tourPhotoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The group photo, ready to save.'**
+  String get tourPhotoBody;
+
+  /// No description provided for @tourMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the harmony map'**
+  String get tourMapTitle;
+
+  /// No description provided for @tourMapBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Every pair of outfits as one line, colored by how they work together.'**
+  String get tourMapBody;
+
+  /// No description provided for @tourBudgetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the budget'**
+  String get tourBudgetTitle;
+
+  /// No description provided for @tourBudgetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is over the cap, and who still needs a photo or a lock.'**
+  String get tourBudgetBody;
+
+  /// No description provided for @tourTheatreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Same engine, another event'**
+  String get tourTheatreTitle;
+
+  /// No description provided for @tourTheatreBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the school theatre cast.'**
+  String get tourTheatreBody;
+
+  /// No description provided for @tourCostumesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot the costume clash'**
+  String get tourCostumesTitle;
+
+  /// No description provided for @tourCostumesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Romeo\'s and Mercutio\'s teals nearly match.'**
+  String get tourCostumesBody;
+
+  /// No description provided for @tourStageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The cast on stage'**
+  String get tourStageTitle;
+
+  /// No description provided for @tourStageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The group photo on a stage backdrop.'**
+  String get tourStageBody;
+
+  /// No description provided for @tourPromTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the prom'**
+  String get tourPromTitle;
+
+  /// No description provided for @tourPromBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the prom demo.'**
+  String get tourPromBody;
+
+  /// No description provided for @activityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get activityTitle;
+
+  /// No description provided for @activityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing yet. Activity appears here as people join and try on looks.'**
+  String get activityEmpty;
+
+  /// No description provided for @activityJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} joined'**
+  String activityJoined(Object name);
+
+  /// No description provided for @activityLook.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} chose {item}'**
+  String activityLook(Object item, Object name);
+
+  /// No description provided for @activityLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} locked their look'**
+  String activityLocked(Object name);
+
+  /// No description provided for @activityPreviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} tried on their look'**
+  String activityPreviewed(Object name);
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 min ago} other{{count} min ago}}'**
+  String timeMinutes(int count);
+
+  /// No description provided for @timeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 h ago} other{{count} h ago}}'**
+  String timeHours(int count);
+
+  /// No description provided for @timeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{yesterday} other{{count} days ago}}'**
+  String timeDays(int count);
+
+  /// No description provided for @previewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your previews'**
+  String get previewsTitle;
+
+  /// No description provided for @previewsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap one to compare it with your current look.'**
+  String get previewsHint;
+
+  /// No description provided for @previewsNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get previewsNow;
+
+  /// No description provided for @lookUnnamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Look'**
+  String get lookUnnamed;
+
+  /// No description provided for @compareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare looks'**
+  String get compareTitle;
+
+  /// No description provided for @compareWear.
+  ///
+  /// In en, this message translates to:
+  /// **'Wear {name} again'**
+  String compareWear(Object name);
+
+  /// No description provided for @compareNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Both previews are already made, so going back costs nothing.'**
+  String get compareNote;
+
+  /// No description provided for @activityLockedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You locked your look'**
+  String get activityLockedYou;
+
+  /// No description provided for @activityPreviewedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You tried on your look'**
+  String get activityPreviewedYou;
 }
 
 class _AppLocalizationsDelegate

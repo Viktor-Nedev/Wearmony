@@ -12,6 +12,7 @@ import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/session_widgets.dart';
 import 'how_it_works.dart';
+import 'landing_sections.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -92,8 +93,16 @@ class _LandingScreenState extends State<LandingScreen> {
                         HowItWorks(wide: wide),
                         SizedBox(height: wide ? 80 : 52),
                         _Features(wide: wide),
-                        const SizedBox(height: 40),
-                        const RevealOnScroll(child: _Footer()),
+                        SizedBox(height: wide ? 88 : 56),
+                        PoweredByYouCam(wide: wide),
+                        SizedBox(height: wide ? 88 : 56),
+                        PrivacySection(wide: wide),
+                        SizedBox(height: wide ? 88 : 56),
+                        const FaqSection(),
+                        SizedBox(height: wide ? 72 : 48),
+                        RevealOnScroll(
+                          child: SiteFooter(onOpenDemo: _openDemo),
+                        ),
                       ],
                     ),
                   ),
@@ -497,29 +506,6 @@ class _YourEvents extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _Footer extends StatelessWidget {
-  const _Footer();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 12,
-      runSpacing: 8,
-      children: [
-        const ApiStatusChip(),
-        TextButton.icon(
-          onPressed: () => context.push('/inclusion'),
-          icon: const Icon(Icons.accessible_forward),
-          label: Text(l10n.inclusionLink),
-        ),
-      ],
     );
   }
 }

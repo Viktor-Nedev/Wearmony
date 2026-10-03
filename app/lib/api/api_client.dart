@@ -229,6 +229,13 @@ class ApiClient {
   Future<Look> look(String eventId) async =>
       Look.fromJson(await _send('GET', 'events/$eventId/look'));
 
+  /// Looks already previewed on the current photo, newest first.
+  Future<List<PreviewLook>> previews(String eventId) async =>
+      ((await _send('GET', 'events/$eventId/me/previews')) as List)
+          .whereType<Json>()
+          .map(PreviewLook.fromJson)
+          .toList();
+
   /// Pass only the slots to change; `null` in [clear] removes that item.
   Future<Look> setLook(
     String eventId, {

@@ -117,6 +117,10 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
                           delay: const Duration(milliseconds: 120),
                           child: ReadinessTracker(board: data),
                         );
+                        final activity = RevealOnScroll(
+                          delay: const Duration(milliseconds: 240),
+                          child: ActivityFeed(board: data),
+                        );
                         if (constraints.maxWidth < 900) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,15 +128,36 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
                               budget,
                               const SizedBox(height: 16),
                               ready,
+                              const SizedBox(height: 16),
+                              activity,
                             ],
                           );
                         }
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        if (constraints.maxWidth >= 1180) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(flex: 4, child: budget),
+                              const SizedBox(width: 16),
+                              Expanded(flex: 4, child: ready),
+                              const SizedBox(width: 16),
+                              Expanded(flex: 3, child: activity),
+                            ],
+                          );
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Expanded(child: budget),
-                            const SizedBox(width: 16),
-                            Expanded(child: ready),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(child: budget),
+                                const SizedBox(width: 16),
+                                Expanded(child: ready),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            activity,
                           ],
                         );
                       },

@@ -1285,4 +1285,291 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notPreviewed => 'New look, not previewed yet';
+
+  @override
+  String get poweredByEyebrow => 'Powered by YouCam APIs';
+
+  @override
+  String get poweredByTitle => 'One photo, three try-on steps';
+
+  @override
+  String get poweredByBody =>
+      'Each look is built as a chain on the participant\'s own photo: the outfit first, then the lip color on that result, then the hair color. Every step can be checked on its own.';
+
+  @override
+  String get chainPhotoTitle => 'Your photo';
+
+  @override
+  String get chainPhotoBody =>
+      'Checked for size and light before any try-on, standing or seated.';
+
+  @override
+  String get chainClothesBody =>
+      'Puts the outfit from the event catalogue on the photo.';
+
+  @override
+  String get chainMakeupBody => 'Adds the exact lip color from the catalogue.';
+
+  @override
+  String get chainHairBody => 'Applies the chosen hair color.';
+
+  @override
+  String get factCache =>
+      'Each step is cached: the same photo and item never cost twice.';
+
+  @override
+  String get factLedger =>
+      'A unit ledger caps spending per event and per person.';
+
+  @override
+  String get factLabels => 'Simulated and demo results are always labeled.';
+
+  @override
+  String get privacyTitle => 'Private by design';
+
+  @override
+  String get privacySubtitle =>
+      'Photos are personal. Wearmony treats them that way.';
+
+  @override
+  String get privacyPrivateTitle => 'Private to the event';
+
+  @override
+  String get privacyPrivateBody =>
+      'Only people in your event see your photo and previews.';
+
+  @override
+  String get privacyDeleteTitle => 'Delete at any time';
+
+  @override
+  String get privacyDeleteBody =>
+      'Remove your photo and data yourself; organizers can delete the whole event.';
+
+  @override
+  String get privacyLinksTitle => 'Links that expire';
+
+  @override
+  String get privacyLinksBody =>
+      'Vendor links are read-only and stop working after their date.';
+
+  @override
+  String get privacyConsentTitle => 'Adults, with consent';
+
+  @override
+  String get privacyConsentBody =>
+      'A clear consent screen comes before any photo upload.';
+
+  @override
+  String get faqTitle => 'Questions';
+
+  @override
+  String get faqSeatedQ => 'Does it work if I use a wheelchair?';
+
+  @override
+  String get faqSeatedA =>
+      'Yes. Choose \"seated\" when you add your photo. Try-on engines are usually tested on standing people, so Wearmony measures how well seated photos work and publishes the results.';
+
+  @override
+  String get faqNearMissQ => 'What is a near-miss?';
+
+  @override
+  String get faqNearMissA =>
+      'Two colors that are close but not the same, like two slightly different pinks. Side by side they read as a mistake, so Wearmony warns you and suggests swaps that fix it.';
+
+  @override
+  String get faqExactQ => 'Is the preview exact?';
+
+  @override
+  String get faqExactA =>
+      'It is a visual preview, not a fit guarantee. Fabric, light and cameras change how colors look on the night.';
+
+  @override
+  String get faqPhotoQ => 'Who can see my photo?';
+
+  @override
+  String get faqPhotoA =>
+      'Only the people in your event. A hairdresser you invite sees only the hair color and your before photo, through a link that expires. You can delete your photo at any time.';
+
+  @override
+  String get faqAccountQ => 'Do I need an account?';
+
+  @override
+  String get faqAccountA =>
+      'No. You join with a code. Signing in with email is optional, to use your events on another device.';
+
+  @override
+  String get faqUnitsQ => 'Does a preview cost anything?';
+
+  @override
+  String get faqUnitsA =>
+      'Planning, colors and budgets use no API units. Each try-on step uses YouCam API units from the event budget, with caps per event and per person, and the same photo and item are never paid for twice.';
+
+  @override
+  String get footerStart => 'Start';
+
+  @override
+  String get footerDemos => 'Demos';
+
+  @override
+  String get footerLearn => 'Learn';
+
+  @override
+  String get footerTagline =>
+      'Group virtual try-on for proms, plays, weddings and group photos.';
+
+  @override
+  String get footerHackathon =>
+      'Built for the YouCam API Skin AI & eCommerce VTO Hackathon. People in the demos are illustrations.';
+
+  @override
+  String get tourButton => 'Tour';
+
+  @override
+  String get tourTitle => 'Take the tour';
+
+  @override
+  String get tourSubtitle => 'A few things to try in this demo.';
+
+  @override
+  String get tourFixTitle => 'Fix your clash';
+
+  @override
+  String get tourFixBody => 'You and Sofia nearly match. Fix it with one tap.';
+
+  @override
+  String get tourPhotoTitle => 'See everyone in one frame';
+
+  @override
+  String get tourPhotoBody => 'The group photo, ready to save.';
+
+  @override
+  String get tourMapTitle => 'Explore the harmony map';
+
+  @override
+  String get tourMapBody =>
+      'Every pair of outfits as one line, colored by how they work together.';
+
+  @override
+  String get tourBudgetTitle => 'Check the budget';
+
+  @override
+  String get tourBudgetBody =>
+      'Who is over the cap, and who still needs a photo or a lock.';
+
+  @override
+  String get tourTheatreTitle => 'Same engine, another event';
+
+  @override
+  String get tourTheatreBody => 'Open the school theatre cast.';
+
+  @override
+  String get tourCostumesTitle => 'Spot the costume clash';
+
+  @override
+  String get tourCostumesBody => 'Romeo\'s and Mercutio\'s teals nearly match.';
+
+  @override
+  String get tourStageTitle => 'The cast on stage';
+
+  @override
+  String get tourStageBody => 'The group photo on a stage backdrop.';
+
+  @override
+  String get tourPromTitle => 'Back to the prom';
+
+  @override
+  String get tourPromBody => 'Open the prom demo.';
+
+  @override
+  String get activityTitle => 'Recent activity';
+
+  @override
+  String get activityEmpty =>
+      'Nothing yet. Activity appears here as people join and try on looks.';
+
+  @override
+  String activityJoined(Object name) {
+    return '$name joined';
+  }
+
+  @override
+  String activityLook(Object item, Object name) {
+    return '$name chose $item';
+  }
+
+  @override
+  String activityLocked(Object name) {
+    return '$name locked their look';
+  }
+
+  @override
+  String activityPreviewed(Object name) {
+    return '$name tried on their look';
+  }
+
+  @override
+  String get timeJustNow => 'just now';
+
+  @override
+  String timeMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count min ago',
+      one: '1 min ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count h ago',
+      one: '1 h ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: 'yesterday',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get previewsTitle => 'Your previews';
+
+  @override
+  String get previewsHint => 'Tap one to compare it with your current look.';
+
+  @override
+  String get previewsNow => 'Now';
+
+  @override
+  String get lookUnnamed => 'Look';
+
+  @override
+  String get compareTitle => 'Compare looks';
+
+  @override
+  String compareWear(Object name) {
+    return 'Wear $name again';
+  }
+
+  @override
+  String get compareNote =>
+      'Both previews are already made, so going back costs nothing.';
+
+  @override
+  String get activityLockedYou => 'You locked your look';
+
+  @override
+  String get activityPreviewedYou => 'You tried on your look';
 }

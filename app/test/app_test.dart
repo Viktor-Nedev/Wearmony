@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wearmony/api/models.dart';
 import 'package:wearmony/features/event/group_insights.dart';
+import 'package:wearmony/features/event/look_previews.dart';
 import 'package:wearmony/app.dart';
 import 'package:wearmony/l10n/app_localizations.dart';
 import 'package:wearmony/ui/group_frame.dart';
@@ -47,11 +48,11 @@ void main() {
       });
       await pumpApp(tester, backend, locale: const Locale('en'));
 
-      expect(find.text('Try it on together.'), findsOneWidget);
-      expect(find.text('Organize an event'), findsOneWidget);
-      expect(find.text('Join with a code'), findsOneWidget);
-      expect(find.text('Prom demo'), findsOneWidget);
-      expect(find.text('Theatre cast demo'), findsOneWidget);
+      expect(find.text('Try it on together.'), findsWidgets);
+      expect(find.text('Organize an event'), findsWidgets);
+      expect(find.text('Join with a code'), findsWidgets);
+      expect(find.text('Prom demo'), findsWidgets);
+      expect(find.text('Theatre cast demo'), findsWidgets);
       expect(find.text('Try-on: simulated (mock mode)'), findsOneWidget);
     },
   );
@@ -69,6 +70,31 @@ void main() {
     expect(find.text('See the group in harmony'), findsOneWidget);
   });
 
+  testWidgets('landing names the YouCam APIs and answers questions', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1300, 9000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/me/events': (_) => [],
+    });
+    await pumpApp(tester, backend, locale: const Locale('en'));
+
+    expect(find.text('AI Clothes'), findsOneWidget);
+    expect(find.text('AI Makeup'), findsOneWidget);
+    expect(find.text('AI Hair Color'), findsOneWidget);
+    expect(find.text('Private by design'), findsOneWidget);
+
+    const answer =
+        'It is a visual preview, not a fit guarantee. Fabric, light and cameras change how colors look on the night.';
+    expect(find.text(answer), findsNothing);
+    await tester.tap(find.text('Is the preview exact?'));
+    await tester.pumpAndSettle();
+    expect(find.text(answer), findsOneWidget);
+  });
+
   testWidgets('an unknown link shows a way back home', (tester) async {
     final backend = FakeBackend({
       'GET /api/config': (_) => config(),
@@ -84,7 +110,7 @@ void main() {
     expect(find.text('This page does not exist'), findsOneWidget);
     await tester.tap(find.text('Back to Wearmony'));
     await tester.pumpAndSettle();
-    expect(find.text('Organize an event'), findsOneWidget);
+    expect(find.text('Organize an event'), findsWidgets);
   });
 
   testWidgets('landing is translated to Bulgarian', (tester) async {
@@ -94,8 +120,8 @@ void main() {
     });
     await pumpApp(tester, backend, locale: const Locale('bg'));
 
-    expect(find.text('Организирай събитие'), findsOneWidget);
-    expect(find.text('Влез с код'), findsOneWidget);
+    expect(find.text('Организирай събитие'), findsWidgets);
+    expect(find.text('Влез с код'), findsWidgets);
   });
 
   testWidgets('an invite link fills in the code and names the event', (
@@ -148,6 +174,10 @@ void main() {
       );
       expect(find.text('with Ivan'), findsOneWidget);
       expect(find.byTooltip('Seated'), findsOneWidget);
+      expect(find.text('Recent activity'), findsOneWidget);
+      expect(find.text('Ivan chose Dress Ivan'), findsOneWidget);
+      expect(find.text('2 h ago'), findsOneWidget);
+      expect(find.text('3 days ago'), findsOneWidget);
       await unmount(tester);
     },
   );
@@ -330,6 +360,115 @@ void main() {
     expect(order.map((p) => p.displayName), ['Maria', 'Ivan', 'Elena']);
   });
 
+  testWidgets('a demo event offers a tour that jumps to each feature', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => {...eventJson(), 'demo': true},
+      'GET /api/events/e1/board': (_) => boardJson(),
+      'GET /api/events/e1/harmony/suggestions': (_) => suggestionsJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=board',
+      locale: const Locale('en'),
+    );
+
+    await tester.tap(find.text('Tour'));
+    await tester.pumpAndSettle();
+    expect(find.text('Take the tour'), findsOneWidget);
+    expect(find.text('See everyone in one frame'), findsOneWidget);
+
+    await tester.tap(find.text('Explore the harmony map'));
+    await tester.pumpAndSettle();
+    expect(find.text('Take the tour'), findsNothing);
+    expect(find.text('Harmony map'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('earlier previews can be compared and worn again', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    Map<String, Object?> preview(String id, String name, bool current) => {
+      'garment': {'id': id, 'name': name, 'price': 100, 'colorHex': '#E8A0B4'},
+      'makeup': null,
+      'hair': null,
+      'imageUrl': null,
+      'at': '2026-10-03T10:00:00Z',
+      'current': current,
+    };
+    final looks = <String?>[];
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => {
+        ...eventJson(participant: true),
+        'me': {
+          'userId': 'u1',
+          'displayName': 'Maria',
+          'consentAt': '2026-10-01T10:00:00Z',
+          'hasPhoto': true,
+          'photoUrl': null,
+        },
+      },
+      'GET /api/events/e1/look': (_) => {
+        'garmentId': 'g2',
+        'total': 100,
+        'render': {'status': 'success', 'steps': [], 'progress': 1},
+      },
+      'GET /api/events/e1/items': (_) => [
+        {'id': 'g1', 'type': 'garment', 'name': 'Blush dress', 'price': 100},
+        {'id': 'g2', 'type': 'garment', 'name': 'Navy suit', 'price': 100},
+      ],
+      'GET /api/events/e1/me/previews': (_) => [
+        preview('g2', 'Navy suit', true),
+        preview('g1', 'Blush dress', false),
+      ],
+      'PUT /api/events/e1/look': (request) {
+        looks.add(request.body);
+        return {
+          'garmentId': 'g1',
+          'total': 100,
+          'render': {'status': 'idle'},
+        };
+      },
+      'POST /api/events/e1/look/render': (_) => {
+        'garmentId': 'g1',
+        'total': 100,
+        'render': {'status': 'success', 'steps': [], 'progress': 1},
+      },
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=myLook',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Your previews'), findsOneWidget);
+    await tester.tap(
+      find.descendant(
+        of: find.byType(PreviewStrip),
+        matching: find.text('Blush dress'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Compare looks'), findsOneWidget);
+
+    await tester.tap(find.text('Wear Blush dress again'));
+    await tester.pumpAndSettle();
+    expect(looks.single, contains('"garmentId":"g1"'));
+    expect(backend.requests, contains('POST /api/events/e1/look/render'));
+    await unmount(tester);
+  });
+
   testWidgets('a render that did not apply the outfit is labeled honestly', (
     tester,
   ) async {
@@ -370,6 +509,21 @@ void main() {
     expect(countdownLabel(en, DateTime(2027, 5, 23), now: now), 'in 232 days');
     expect(countdownLabel(en, DateTime(2026, 10, 1), now: now), '2 days ago');
     expect(countdownLabel(bg, DateTime(2026, 10, 13), now: now), 'след 10 дни');
+  });
+
+  test('activity times read naturally in both languages', () async {
+    final en = await AppLocalizations.delegate.load(const Locale('en'));
+    final bg = await AppLocalizations.delegate.load(const Locale('bg'));
+    final now = DateTime(2026, 10, 3, 12);
+    String ago(Duration d, [AppLocalizations? l10n]) =>
+        timeAgo(l10n ?? en, now.subtract(d), now: now);
+    expect(ago(const Duration(seconds: 20)), 'just now');
+    expect(ago(const Duration(minutes: 1)), '1 min ago');
+    expect(ago(const Duration(minutes: 45)), '45 min ago');
+    expect(ago(const Duration(hours: 5)), '5 h ago');
+    expect(ago(const Duration(hours: 30)), 'yesterday');
+    expect(ago(const Duration(days: 4)), '4 days ago');
+    expect(ago(const Duration(hours: 3), bg), 'преди 3 ч');
   });
 
   test('event days travel as YYYY-MM-DD', () {

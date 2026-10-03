@@ -15,6 +15,7 @@ import '../../ui/motion.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/render_view.dart';
+import 'look_previews.dart';
 
 /// Look builder for one participant: catalogue browser, try-on, total price, lock and share.
 class MyLookTab extends StatefulWidget {
@@ -35,6 +36,7 @@ class _MyLookTabState extends State<MyLookTab> {
   final _sparkles = GlobalKey<SparkleBurstState>();
   Look? _look;
   List<CatalogItem> _items = const [];
+  List<PreviewLook> _previews = const [];
   Object? _error;
   bool _busy = false;
   Timer? _poll;
@@ -67,9 +69,50 @@ class _MyLookTabState extends State<MyLookTab> {
         _error = null;
       });
       _schedulePoll();
+      unawaited(_loadPreviews());
     } catch (error) {
       if (mounted) setState(() => _error = error);
     }
+  }
+
+  /// Previews are a nice extra; if they fail to load the strip just stays hidden.
+  Future<void> _loadPreviews() async {
+    try {
+      final previews = await AppScope.api(context).previews(_eventId);
+      if (mounted) setState(() => _previews = previews);
+    } catch (_) {}
+  }
+
+  Future<void> _compare(PreviewLook earlier) async {
+    final look = _look;
+    if (look == null) return;
+    final current =
+        _previews.where((p) => p.current).firstOrNull ??
+        _previews.firstWhere((p) => p != earlier, orElse: () => earlier);
+    final wear = await showCompareLooks(
+      context,
+      earlier: earlier,
+      current: current,
+      currency: look.currency,
+      canSwitch: !look.locked,
+    );
+    if (!wear || !mounted) return;
+    final api = AppScope.api(context);
+    // Every step of that look is cached, so its preview comes back at once and costs nothing.
+    await _apply(() async {
+      await api.setLook(
+        _eventId,
+        garmentId: earlier.garment?.id,
+        makeupId: earlier.makeup?.id,
+        hairId: earlier.hair?.id,
+        clear: {
+          if (earlier.garment == null) ItemType.garment,
+          if (earlier.makeup == null) ItemType.makeup,
+          if (earlier.hair == null) ItemType.hair,
+        },
+      );
+      return api.render(_eventId);
+    });
   }
 
   void _schedulePoll() {
@@ -83,8 +126,11 @@ class _MyLookTabState extends State<MyLookTab> {
     try {
       final look = await AppScope.api(context).look(_eventId);
       if (!mounted) return;
+      final finished =
+          _look?.render.status != 'success' && look.render.status == 'success';
       setState(() => _look = look);
       _schedulePoll();
+      if (finished) unawaited(_loadPreviews());
     } catch (_) {
       if (mounted) _poll = Timer(const Duration(seconds: 5), _refresh);
     }
@@ -99,6 +145,8 @@ class _MyLookTabState extends State<MyLookTab> {
       if (look != null) _look = look;
     });
     _schedulePoll();
+    // The current preview moves when the look changes or a render finishes.
+    if (look != null) unawaited(_loadPreviews());
   }
 
   void _select(ItemType type, String? id) {
@@ -306,6 +354,10 @@ class _MyLookTabState extends State<MyLookTab> {
           icon: const Icon(Icons.photo_camera_outlined),
           label: Text(l10n.replacePhoto),
         ),
+        if (_previews.length >= 2) ...[
+          const SizedBox(height: 18),
+          PreviewStrip(previews: _previews, onCompare: _compare),
+        ],
       ],
     );
   }
