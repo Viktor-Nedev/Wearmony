@@ -342,6 +342,7 @@ class _Details extends StatelessWidget {
                       child: Text(
                         otherSide(f),
                         style: text.bodyMedium,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
