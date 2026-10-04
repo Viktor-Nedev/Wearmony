@@ -71,6 +71,7 @@ class EventInfo {
     required this.isOrganizer,
     required this.isParticipant,
     this.eventDate,
+    this.dressCode = const [],
     this.me,
   });
 
@@ -86,6 +87,7 @@ class EventInfo {
     isOrganizer: json['isOrganizer'] == true,
     isParticipant: json['isParticipant'] == true,
     eventDate: parseDay(json['eventDate']),
+    dressCode: _strings(json['dressCode']),
     me: json['me'] is Json ? Participant.fromJson(json['me'] as Json) : null,
   );
 
@@ -102,6 +104,9 @@ class EventInfo {
 
   /// The day of the event (local midnight), if the organizer set one.
   final DateTime? eventDate;
+
+  /// Up to four #RRGGBB colors the group is asked to wear.
+  final List<String> dressCode;
   final Participant? me;
 }
 
@@ -571,6 +576,62 @@ class HarmonyReport {
       findings.where((f) => f.isWarning).toList();
 }
 
+enum DressCodeFit { on, close, off }
+
+class DressCodePerson {
+  const DressCodePerson({
+    required this.userId,
+    required this.name,
+    required this.fit,
+    required this.deltaE,
+    required this.nearest,
+    required this.outfit,
+  });
+
+  factory DressCodePerson.fromJson(Json json) => DressCodePerson(
+    userId: json['userId'] as String? ?? '',
+    name: json['name'] as String? ?? '',
+    fit: DressCodeFit.values.byName(json['fit'] as String? ?? 'off'),
+    deltaE: _toDouble(json['deltaE']) ?? 0,
+    nearest: json['nearest'] as String? ?? '#999999',
+    outfit: json['outfit'] as String? ?? '#999999',
+  );
+
+  final String userId;
+  final String name;
+  final DressCodeFit fit;
+
+  /// ΔE00 to the nearest dress-code color.
+  final double deltaE;
+  final String nearest;
+  final String outfit;
+}
+
+/// Each outfit against the event's dress code colors.
+class DressCodeReport {
+  const DressCodeReport({
+    required this.palette,
+    required this.people,
+    required this.onCount,
+    required this.total,
+  });
+
+  factory DressCodeReport.fromJson(Json json) => DressCodeReport(
+    palette: _strings(json['palette']),
+    people: _list(json['people'], DressCodePerson.fromJson),
+    onCount: (json['onCount'] as num?)?.toInt() ?? 0,
+    total: (json['total'] as num?)?.toInt() ?? 0,
+  );
+
+  final List<String> palette;
+  final List<DressCodePerson> people;
+  final int onCount;
+  final int total;
+
+  DressCodePerson? byId(String userId) =>
+      people.where((p) => p.userId == userId).firstOrNull;
+}
+
 /// A look the participant has already previewed on their current photo.
 class PreviewLook {
   const PreviewLook({
@@ -644,6 +705,7 @@ class Board {
     required this.units,
     required this.harmony,
     this.activity = const [],
+    this.dressCode,
   });
 
   factory Board.fromJson(Json json) => Board(
@@ -656,6 +718,9 @@ class Board {
     units: UnitsInfo.fromJson((json['units'] as Json?) ?? const {}),
     harmony: HarmonyReport.fromJson((json['harmony'] as Json?) ?? const {}),
     activity: _list(json['activity'], ActivityEntry.fromJson),
+    dressCode: json['dressCode'] is Json
+        ? DressCodeReport.fromJson(json['dressCode'] as Json)
+        : null,
   );
 
   final EventInfo event;
@@ -669,6 +734,9 @@ class Board {
 
   /// Newest first.
   final List<ActivityEntry> activity;
+
+  /// Null when the event has no dress code.
+  final DressCodeReport? dressCode;
 
   BoardParticipant? get me => participants.where((p) => p.isMe).firstOrNull;
 

@@ -19,6 +19,7 @@ create table if not exists public.events (
 );
 -- Added after the first version; harmless when the column already exists.
 alter table public.events add column if not exists event_date date;
+alter table public.events add column if not exists dress_code text[] not null default '{}';
 create index if not exists events_organizer_idx on public.events (organizer_id);
 
 create table if not exists public.participants (

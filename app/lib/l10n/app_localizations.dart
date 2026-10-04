@@ -2844,6 +2844,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'\"Applied\" counts renders a human reviewer did not reject; \"silent failures\" are renders returned without the garment.'**
   String get inclusionNoteApplied;
+
+  /// No description provided for @personLookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Look'**
+  String get personLookTitle;
+
+  /// No description provided for @personHarmonyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Next to the others'**
+  String get personHarmonyTitle;
+
+  /// No description provided for @personSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Own {subject} and outfit'**
+  String personSelf(Object subject);
+
+  /// No description provided for @personOpenMyLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Open my look'**
+  String get personOpenMyLook;
+
+  /// No description provided for @dressCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dress code'**
+  String get dressCodeTitle;
+
+  /// No description provided for @dressCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up to four colors for the group. Each outfit is checked against the nearest one.'**
+  String get dressCodeHint;
+
+  /// No description provided for @dressCodeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No dress code yet.'**
+  String get dressCodeEmpty;
+
+  /// No description provided for @dressCodeOnCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{on} of {total} in the dress code'**
+  String dressCodeOnCount(int on, int total);
+
+  /// No description provided for @dressFitOn.
+  ///
+  /// In en, this message translates to:
+  /// **'In the dress code'**
+  String get dressFitOn;
+
+  /// No description provided for @dressFitClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close to the dress code'**
+  String get dressFitClose;
+
+  /// No description provided for @dressFitOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside the dress code'**
+  String get dressFitOff;
+
+  /// No description provided for @swatchBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get swatchBlack;
+
+  /// No description provided for @swatchWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get swatchWhite;
+
+  /// No description provided for @swatchIvory.
+  ///
+  /// In en, this message translates to:
+  /// **'Ivory'**
+  String get swatchIvory;
+
+  /// No description provided for @swatchChampagne.
+  ///
+  /// In en, this message translates to:
+  /// **'Champagne'**
+  String get swatchChampagne;
+
+  /// No description provided for @swatchGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get swatchGold;
+
+  /// No description provided for @swatchSilver.
+  ///
+  /// In en, this message translates to:
+  /// **'Silver'**
+  String get swatchSilver;
+
+  /// No description provided for @swatchBlush.
+  ///
+  /// In en, this message translates to:
+  /// **'Blush'**
+  String get swatchBlush;
+
+  /// No description provided for @swatchRose.
+  ///
+  /// In en, this message translates to:
+  /// **'Rose'**
+  String get swatchRose;
+
+  /// No description provided for @swatchRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get swatchRed;
+
+  /// No description provided for @swatchCrimson.
+  ///
+  /// In en, this message translates to:
+  /// **'Crimson'**
+  String get swatchCrimson;
+
+  /// No description provided for @swatchBurgundy.
+  ///
+  /// In en, this message translates to:
+  /// **'Burgundy'**
+  String get swatchBurgundy;
+
+  /// No description provided for @swatchLavender.
+  ///
+  /// In en, this message translates to:
+  /// **'Lavender'**
+  String get swatchLavender;
+
+  /// No description provided for @swatchSky.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky blue'**
+  String get swatchSky;
+
+  /// No description provided for @swatchRoyal.
+  ///
+  /// In en, this message translates to:
+  /// **'Royal blue'**
+  String get swatchRoyal;
+
+  /// No description provided for @swatchNavy.
+  ///
+  /// In en, this message translates to:
+  /// **'Navy'**
+  String get swatchNavy;
+
+  /// No description provided for @swatchTeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get swatchTeal;
+
+  /// No description provided for @swatchEmerald.
+  ///
+  /// In en, this message translates to:
+  /// **'Emerald'**
+  String get swatchEmerald;
+
+  /// No description provided for @swatchSage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sage'**
+  String get swatchSage;
+
+  /// No description provided for @swatchMustard.
+  ///
+  /// In en, this message translates to:
+  /// **'Mustard'**
+  String get swatchMustard;
+
+  /// No description provided for @dressCodeFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Four colors chosen. Remove one to pick another.'**
+  String get dressCodeFull;
 }
 
 class _AppLocalizationsDelegate

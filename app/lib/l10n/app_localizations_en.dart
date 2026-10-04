@@ -1645,4 +1645,102 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get inclusionNoteApplied =>
       '\"Applied\" counts renders a human reviewer did not reject; \"silent failures\" are renders returned without the garment.';
+
+  @override
+  String get personLookTitle => 'Look';
+
+  @override
+  String get personHarmonyTitle => 'Next to the others';
+
+  @override
+  String personSelf(Object subject) {
+    return 'Own $subject and outfit';
+  }
+
+  @override
+  String get personOpenMyLook => 'Open my look';
+
+  @override
+  String get dressCodeTitle => 'Dress code';
+
+  @override
+  String get dressCodeHint =>
+      'Pick up to four colors for the group. Each outfit is checked against the nearest one.';
+
+  @override
+  String get dressCodeEmpty => 'No dress code yet.';
+
+  @override
+  String dressCodeOnCount(int on, int total) {
+    return '$on of $total in the dress code';
+  }
+
+  @override
+  String get dressFitOn => 'In the dress code';
+
+  @override
+  String get dressFitClose => 'Close to the dress code';
+
+  @override
+  String get dressFitOff => 'Outside the dress code';
+
+  @override
+  String get swatchBlack => 'Black';
+
+  @override
+  String get swatchWhite => 'White';
+
+  @override
+  String get swatchIvory => 'Ivory';
+
+  @override
+  String get swatchChampagne => 'Champagne';
+
+  @override
+  String get swatchGold => 'Gold';
+
+  @override
+  String get swatchSilver => 'Silver';
+
+  @override
+  String get swatchBlush => 'Blush';
+
+  @override
+  String get swatchRose => 'Rose';
+
+  @override
+  String get swatchRed => 'Red';
+
+  @override
+  String get swatchCrimson => 'Crimson';
+
+  @override
+  String get swatchBurgundy => 'Burgundy';
+
+  @override
+  String get swatchLavender => 'Lavender';
+
+  @override
+  String get swatchSky => 'Sky blue';
+
+  @override
+  String get swatchRoyal => 'Royal blue';
+
+  @override
+  String get swatchNavy => 'Navy';
+
+  @override
+  String get swatchTeal => 'Teal';
+
+  @override
+  String get swatchEmerald => 'Emerald';
+
+  @override
+  String get swatchSage => 'Sage';
+
+  @override
+  String get swatchMustard => 'Mustard';
+
+  @override
+  String get dressCodeFull => 'Four colors chosen. Remove one to pick another.';
 }

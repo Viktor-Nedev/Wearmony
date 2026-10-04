@@ -63,6 +63,14 @@ export const HARMONY_CONFIG = {
     unchangedMeanDelta: 3,
   },
 
+  /** Dress code: how close an outfit's main color must be to one of the event's colors. */
+  dressCode: {
+    /** ΔE00 up to this: the outfit is in the dress code (a shade a guest would call the same color). */
+    onMax: 10,
+    /** Up to this: close to the dress code, worth a second look. Farther: outside it. */
+    closeMax: 20,
+  },
+
   /** Photo quality gate, run on the participant photo after upload. */
   photo: {
     minLongSide: 640,

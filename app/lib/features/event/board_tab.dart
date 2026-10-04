@@ -11,7 +11,9 @@ import '../../util/format.dart';
 import '../../util/harmony_text.dart';
 import '../../widgets/common.dart';
 import 'board_loader.dart';
+import '../../widgets/dress_code.dart';
 import 'group_insights.dart';
+import 'person_detail.dart';
 
 /// Everyone side by side with their current look, per-person and total budget,
 /// render progress ("7 of 8 rendered") and the weakest color pair.
@@ -254,6 +256,7 @@ class _StatsRow extends StatelessWidget {
         ? 0.0
         : board.renderedCount / board.participantCount;
 
+    final dress = board.dressCode;
     final tiles = <Widget>[
       _StatTile(
         icon: Icons.auto_fix_high,
@@ -287,6 +290,25 @@ class _StatsRow extends StatelessWidget {
           footer: AnimatedBar(
             value: board.harmony.groupScore! / 100,
             color: scoreColor(board.harmony.groupScore!),
+          ),
+        ),
+      if (dress != null && dress.total > 0)
+        _StatTile(
+          icon: Icons.checkroom_outlined,
+          label: l10n.dressCodeTitle,
+          value: CountUp(
+            value: dress.onCount.toDouble(),
+            format: (v) => '${v.round()}/${dress.total}',
+            style: _valueStyle(context),
+          ),
+          footer: Row(
+            children: [
+              for (final hex in dress.palette)
+                Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: Swatch(hex, size: 18),
+                ),
+            ],
           ),
         ),
       _StatTile(
@@ -514,6 +536,15 @@ class _PersonCard extends StatelessWidget {
     final look = person.look;
 
     return Hoverable(
+      onTap: () => showPersonDetail(
+        context,
+        person: person,
+        board: board,
+        // My look is the first tab for participants.
+        onOpenMyLook: board.event.isParticipant
+            ? () => DefaultTabController.of(context).animateTo(0)
+            : null,
+      ),
       child: Card(
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
@@ -525,7 +556,10 @@ class _PersonCard extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  NetImage(person.pictureUrl),
+                  Hero(
+                    tag: personHeroTag(person.userId),
+                    child: NetImage(person.pictureUrl),
+                  ),
                   const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -593,6 +627,13 @@ class _PersonCard extends StatelessWidget {
                           ),
                         if (look.locked)
                           _Badge(icon: Icons.lock, tooltip: l10n.lockedLabel),
+                        if (board.dressCode?.byId(person.userId)
+                            case final fit?)
+                          _Badge(
+                            icon: fitIcon(fit.fit),
+                            color: fitColor(fit.fit),
+                            tooltip: fitLabel(l10n, fit.fit),
+                          ),
                       ],
                     ),
                   ),

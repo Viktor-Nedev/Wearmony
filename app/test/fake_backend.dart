@@ -149,6 +149,29 @@ Map<String, Object?> boardJson() {
       },
       'withoutOutfit': [],
     },
+    'dressCode': {
+      'palette': ['#E8A0B4', '#1F2A44'],
+      'people': [
+        {
+          'userId': 'u1',
+          'name': 'Maria',
+          'fit': 'on',
+          'deltaE': 0.0,
+          'nearest': '#E8A0B4',
+          'outfit': '#E8A0B4',
+        },
+        {
+          'userId': 'u2',
+          'name': 'Ivan',
+          'fit': 'close',
+          'deltaE': 12.3,
+          'nearest': '#E8A0B4',
+          'outfit': '#E39AB6',
+        },
+      ],
+      'onCount': 1,
+      'total': 2,
+    },
     'activity': [
       {
         'kind': 'look',

@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { withRenderCache } from '../../data/render-cache.js';
 import { recentActivity } from '../../domain/activity.js';
 import type { EventRecord, ItemRecord, LookRecord, ParticipantRecord } from '../../domain/types.js';
+import { checkDressCode } from '../../harmony/dresscode.js';
 import { computeHarmony, type HarmonyPersonInput } from '../../harmony/engine.js';
 import { pickTarget, suggestFixes } from '../../harmony/suggest.js';
 import { summarizeUnits } from '../../ledger/ledger.js';
@@ -109,6 +110,7 @@ export async function buildBoard(services: Services, event: EventRecord, viewerI
       mode: event.demo ? 'demo' : services.pipeline.provider.mode,
     },
     harmony: computeHarmony(harmonyInputs(participants, looks, items)),
+    dressCode: checkDressCode(harmonyInputs(participants, looks, items), event.dressCode),
     activity: recentActivity(participants, looks, items, renders),
   };
 }

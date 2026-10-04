@@ -88,6 +88,24 @@ describe('events', () => {
     const cleared = await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { eventDate: null });
     expect(cleared.json.eventDate).toBeNull();
   });
+
+  it('keeps a dress code of up to four colors and reports who fits it', async () => {
+    const t = await eventWithTwoParticipants();
+    const set = await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { dressCode: ['#1f2a44', '#1F2A44', '#e9d8b8'] });
+    expect(set.json.dressCode).toEqual(['#1F2A44', '#E9D8B8']);
+    const tooMany = ['#000000', '#111111', '#222222', '#333333', '#444444'];
+    expect((await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { dressCode: tooMany })).status).toBe(400);
+    expect((await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { dressCode: ['navy'] })).status).toBe(400);
+
+    const navy = await addGarment(t, t.eventId, 'Navy suit', '#1F2A44', 120);
+    await t.call('PUT', `/events/${t.eventId}/look`, ANA, { garmentId: navy.id });
+    const board = (await t.call('GET', `/events/${t.eventId}/board`, ORGANIZER)).json;
+    expect(board.dressCode).toMatchObject({ palette: ['#1F2A44', '#E9D8B8'], onCount: 1, total: 1 });
+    expect(board.dressCode.people[0]).toMatchObject({ fit: 'on', nearest: '#1F2A44' });
+
+    await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { dressCode: [] });
+    expect((await t.call('GET', `/events/${t.eventId}/board`, ORGANIZER)).json.dressCode).toBeNull();
+  });
 });
 
 describe('photos', () => {

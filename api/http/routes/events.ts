@@ -38,6 +38,13 @@ const eventDate = z
   .nullable()
   .optional();
 
+/** Up to four #RRGGBB colors, stored upper-case and without repeats. */
+const dressCode = z
+  .array(z.string().regex(/^#[0-9a-fA-F]{6}$/))
+  .max(4)
+  .transform((colors) => [...new Set(colors.map((color) => color.toUpperCase()))])
+  .optional();
+
 const CreateEvent = z.object({
   name: z.string().trim().min(1).max(80),
   template: z.enum(['prom', 'theatre', 'group']),
@@ -45,6 +52,7 @@ const CreateEvent = z.object({
   budgetTotal: money,
   currency: z.string().regex(/^[A-Z]{3}$/).default('EUR'),
   eventDate,
+  dressCode,
 });
 
 const UpdateEvent = z.object({
@@ -52,6 +60,7 @@ const UpdateEvent = z.object({
   budgetPerPerson: money,
   budgetTotal: money,
   eventDate,
+  dressCode,
 });
 
 const Join = z.object({ code: z.string().min(4).max(12), displayName });
@@ -87,6 +96,7 @@ events.post('/events', requireUser, async (c) => {
     budgetTotal: body.budgetTotal ?? null,
     currency: body.currency,
     eventDate: body.eventDate ?? null,
+    dressCode: body.dressCode ?? [],
     demo: false,
     createdAt: iso(now()),
   };

@@ -9,6 +9,7 @@ import '../../ui/harmony_map.dart';
 import '../../ui/harmony_visuals.dart';
 import '../../ui/motion.dart';
 import '../../widgets/common.dart';
+import '../../widgets/dress_code.dart';
 import '../../widgets/finding_widgets.dart';
 import '../../widgets/fix_suggestions.dart';
 import 'board_loader.dart';
@@ -122,6 +123,11 @@ class _HarmonyTabState extends State<HarmonyTab> with BoardLoader {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 16),
+                  ],
+                  if (data.dressCode case final dress?
+                      when dress.total > 0) ...[
+                    DressCodeCard(report: dress, board: data),
                     const SizedBox(height: 16),
                   ],
                   if (report.warnings.isEmpty)

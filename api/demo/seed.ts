@@ -122,6 +122,8 @@ interface Scenario {
   hairVendor: string;
   /** The visitor's illustrated avatar and look; without one they join with no photo. */
   visitor?: DemoPerson;
+  /** The event's dress code colors. */
+  dressCode: string[];
 }
 
 const SCENARIOS: Record<DemoKind, Scenario> = {
@@ -137,6 +139,8 @@ const SCENARIOS: Record<DemoKind, Scenario> = {
     locked: 'georgi',
     hairVendor: 'Salon demo',
     visitor: PROM_VISITOR,
+    // Champagne, blush, navy and emerald: the colors the class agreed on.
+    dressCode: ['#E9D8B8', '#E8A0B4', '#1F2A44', '#1E7F5C'],
   },
   // World Theatre Day.
   theatre: {
@@ -149,6 +153,8 @@ const SCENARIOS: Record<DemoKind, Scenario> = {
     people: THEATRE_PEOPLE,
     locked: 'nurse',
     hairVendor: 'Wig room demo',
+    // House colors: Montague teal, Capulet crimson, and ivory for Juliet.
+    dressCode: ['#1F6F78', '#8E1B2A', '#EFE6D2'],
   },
 };
 
@@ -187,6 +193,7 @@ export async function seedDemoEvent(
     budgetTotal: scenario.budgetTotal,
     currency: 'EUR',
     eventDate: nextDay(services.now(), ...scenario.day),
+    dressCode: scenario.dressCode,
     demo: true,
     createdAt: stamp(),
   };

@@ -16,7 +16,7 @@ export interface Repository {
   listEventsForUser(userId: string): Promise<EventRecord[]>;
   updateEvent(
     id: string,
-    patch: Partial<Pick<EventRecord, 'name' | 'budgetPerPerson' | 'budgetTotal' | 'eventDate'>>,
+    patch: Partial<Pick<EventRecord, 'name' | 'budgetPerPerson' | 'budgetTotal' | 'eventDate' | 'dressCode'>>,
   ): Promise<void>;
   /** Deletes the event and every row that belongs to it. */
   deleteEvent(id: string): Promise<void>;

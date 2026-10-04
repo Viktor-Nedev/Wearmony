@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../../theme.dart';
 import '../../ui/motion.dart';
 import '../../widgets/common.dart';
+import '../../widgets/dress_code.dart';
 import '../../widgets/event_date_field.dart';
 import 'board_loader.dart';
 
@@ -30,6 +31,7 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
     text: _format(widget.event.budgetTotal),
   );
   late DateTime? _date = widget.event.eventDate;
+  late List<String> _dressCode = [...widget.event.dressCode];
 
   @override
   String get boardEventId => widget.event.id;
@@ -65,6 +67,7 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
             _perPerson.text.trim().isEmpty || _total.text.trim().isEmpty,
         eventDate: _date,
         clearDate: _date == null,
+        dressCode: _dressCode,
       ),
       success: l10n.saved,
     );
@@ -201,6 +204,12 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 18),
+                      DressCodePicker(
+                        colors: _dressCode,
+                        onChanged: (colors) =>
+                            setState(() => _dressCode = colors),
                       ),
                       const SizedBox(height: 16),
                       Align(

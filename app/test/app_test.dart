@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wearmony/api/models.dart';
 import 'package:wearmony/features/event/group_insights.dart';
 import 'package:wearmony/features/event/look_previews.dart';
+import 'package:wearmony/features/event/person_detail.dart';
 import 'package:wearmony/app.dart';
 import 'package:wearmony/l10n/app_localizations.dart';
 import 'package:wearmony/ui/group_frame.dart';
 import 'package:wearmony/ui/motion.dart';
 import 'package:wearmony/util/format.dart';
 import 'package:wearmony/util/harmony_text.dart';
+import 'package:wearmony/widgets/dress_code.dart';
 import 'package:wearmony/widgets/render_view.dart';
 
 import 'fake_backend.dart';
@@ -175,6 +177,10 @@ void main() {
       expect(find.text('with Ivan'), findsOneWidget);
       expect(find.byTooltip('Seated'), findsOneWidget);
       expect(find.text('Recent activity'), findsOneWidget);
+      // The dress code: a stat tile and a badge on each card.
+      expect(find.text('1/2'), findsOneWidget);
+      expect(find.byTooltip('In the dress code'), findsOneWidget);
+      expect(find.byTooltip('Close to the dress code'), findsOneWidget);
       expect(find.text('Ivan chose Dress Ivan'), findsOneWidget);
       expect(find.text('2 h ago'), findsOneWidget);
       expect(find.text('3 days ago'), findsOneWidget);
@@ -200,6 +206,8 @@ void main() {
 
     expect(find.text('Harmony map'), findsOneWidget);
     expect(find.text('ΔE 4.6'), findsOneWidget);
+    expect(find.text('1 of 2 in the dress code'), findsOneWidget);
+    expect(find.text('Close to the dress code · ΔE 12.3'), findsOneWidget);
     expect(find.text('Near-miss'), findsWidgets);
     await unmount(tester);
   });
@@ -541,6 +549,42 @@ void main() {
     expect(find.text('Какво ще бъде публикувано'), findsNothing);
   });
 
+  testWidgets('tapping a person on the board opens their look in detail', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=board',
+      locale: const Locale('en'),
+    );
+
+    await tester.tap(find.text('Maria').first);
+    await tester.pumpAndSettle();
+    expect(find.byType(PersonDetail), findsOneWidget);
+    expect(find.text('Next to the others'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(PersonDetail),
+        matching: find.text('Near-miss · ΔE 4.6'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byTooltip('Close'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PersonDetail), findsNothing);
+    await unmount(tester);
+  });
+
   testWidgets('a render that did not apply the outfit is labeled honestly', (
     tester,
   ) async {
@@ -597,6 +641,17 @@ void main() {
     expect(ago(const Duration(days: 4)), '4 days ago');
     expect(ago(const Duration(hours: 3), bg), 'преди 3 ч');
   });
+
+  test(
+    'dress code swatches have names, other colors keep their code',
+    () async {
+      final en = await AppLocalizations.delegate.load(const Locale('en'));
+      final bg = await AppLocalizations.delegate.load(const Locale('bg'));
+      expect(swatchName(en, '#e9d8b8'), 'Champagne');
+      expect(swatchName(bg, '#1F2A44'), 'Тъмносиньо');
+      expect(swatchName(en, '#123456'), '#123456');
+    },
+  );
 
   test('event days travel as YYYY-MM-DD', () {
     expect(parseDay('2027-05-23'), DateTime(2027, 5, 23));

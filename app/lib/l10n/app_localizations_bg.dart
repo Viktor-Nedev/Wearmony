@@ -1657,4 +1657,103 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get inclusionNoteApplied =>
       '„Приложено“ брои резултатите, които проверяващ човек не е отхвърлил; „тихи неуспехи“ са резултатите, върнати без дрехата.';
+
+  @override
+  String get personLookTitle => 'Визия';
+
+  @override
+  String get personHarmonyTitle => 'До останалите';
+
+  @override
+  String personSelf(Object subject) {
+    return '$subject спрямо тоалета';
+  }
+
+  @override
+  String get personOpenMyLook => 'Към моята визия';
+
+  @override
+  String get dressCodeTitle => 'Дрескод';
+
+  @override
+  String get dressCodeHint =>
+      'Изберете до четири цвята за групата. Всеки тоалет се сравнява с най-близкия от тях.';
+
+  @override
+  String get dressCodeEmpty => 'Още няма дрескод.';
+
+  @override
+  String dressCodeOnCount(int on, int total) {
+    return '$on от $total са в дрескода';
+  }
+
+  @override
+  String get dressFitOn => 'В дрескода';
+
+  @override
+  String get dressFitClose => 'Близо до дрескода';
+
+  @override
+  String get dressFitOff => 'Извън дрескода';
+
+  @override
+  String get swatchBlack => 'Черно';
+
+  @override
+  String get swatchWhite => 'Бяло';
+
+  @override
+  String get swatchIvory => 'Слонова кост';
+
+  @override
+  String get swatchChampagne => 'Шампанско';
+
+  @override
+  String get swatchGold => 'Златисто';
+
+  @override
+  String get swatchSilver => 'Сребристо';
+
+  @override
+  String get swatchBlush => 'Пудрено розово';
+
+  @override
+  String get swatchRose => 'Розово';
+
+  @override
+  String get swatchRed => 'Червено';
+
+  @override
+  String get swatchCrimson => 'Тъмночервено';
+
+  @override
+  String get swatchBurgundy => 'Бордо';
+
+  @override
+  String get swatchLavender => 'Лавандула';
+
+  @override
+  String get swatchSky => 'Небесносиньо';
+
+  @override
+  String get swatchRoyal => 'Кралско синьо';
+
+  @override
+  String get swatchNavy => 'Тъмносиньо';
+
+  @override
+  String get swatchTeal => 'Петролено';
+
+  @override
+  String get swatchEmerald => 'Изумрудено';
+
+  @override
+  String get swatchSage => 'Пепелявозелено';
+
+  @override
+  String get swatchMustard => 'Горчица';
+
+  @override
+  String get dressCodeFull =>
+      'Избрани са четири цвята. Махнете един, за да изберете друг.';
 }

@@ -127,8 +127,10 @@ class ApiClient {
     bool clearBudgets = false,
     DateTime? eventDate,
     bool clearDate = false,
+    List<String>? dressCode,
   }) async {
     final body = <String, dynamic>{
+      'dressCode': ?dressCode,
       if (name != null) 'name': name,
       if (budgetPerPerson != null || clearBudgets)
         'budgetPerPerson': budgetPerPerson,
