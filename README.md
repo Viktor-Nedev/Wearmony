@@ -35,6 +35,8 @@ The group board shows everyone side by side ("7 of 8 rendered"), per-person and 
 - **Budget and readiness**: spending split into outfits, lip colors and hair colors, each person against the per-person cap, and who still needs a photo, a look, a preview or a lock, with a reminder to paste into the group chat.
 - **Compare looks**: every look a participant has previewed on their photo stays one tap away; two can be compared with a slider, and an earlier one worn again at no cost because each step is cached.
 - **Recent activity**: who joined, chose or locked a look, and who tried theirs on, as a timeline that updates while the group works.
+- **Dress code**: the organizer picks up to four colors; each outfit is placed in, close to or outside the dress code by its distance to the nearest color, shown on every card, as a group stat and in the harmony report.
+- **Person details**: tapping someone on the board opens their look in detail, with prices and how their colors sit next to each other person.
 - **Event day**: an optional date with a countdown in the event header.
 
 English and Bulgarian throughout.

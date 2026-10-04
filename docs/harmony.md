@@ -56,14 +56,26 @@ For a near-miss, the engine looks for swaps from the event's own catalogue that 
 
 Each suggestion states what it would change: the new relation and ΔE, the group score before and after, and the price difference. A participant can switch to their own suggestion with one tap; the new preview is a separate, explicit step because a live render spends units. Suggestions for someone else can be copied and sent to them.
 
-## 7. Render checks
+## 7. Dress code
+
+An organizer can pick up to four colors for the event. Each participant's main outfit color is compared with every one of them with CIEDE2000 and placed by the nearest:
+
+| ΔE00 to the nearest dress-code color | Shown as |
+| --- | --- |
+| up to 10 | in the dress code |
+| 10 to 20 | close to the dress code |
+| over 20 | outside the dress code |
+
+The thresholds are in [`config.ts`](../api/harmony/config.ts) (`dressCode`). The dress code is its own report: it never changes the group score, which stays about how people look next to each other.
+
+## 8. Render checks
 
 These never change a score; they only add notes.
 
 - **Garment not applied**: the render and the photo are compared pixel by pixel on a 48×64 grid in CIELAB; a mean change under 3 means the outfit was probably not applied (YouCam can return the photo unchanged, for example when the original clothing is dark or bulky).
 - **Color drift**: the closest color in the render to the catalogue color; farther than ΔE00 14 gives a "check this render" note.
 
-## 8. Photo quality gate
+## 9. Photo quality gate
 
 After upload, before any try-on: minimum size (640 × 480), aspect ratio (≤ 2.4), mean lightness (dark < 28, overexposed > 90), contrast (L* standard deviation < 10), and a warning when the torso area is very dark (dark clothing). Size and ratio block the photo; the rest is advice the participant can act on.
 
