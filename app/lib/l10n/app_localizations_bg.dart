@@ -1861,11 +1861,11 @@ class AppLocalizationsBg extends AppLocalizations {
   String get showcaseDeckTitle => 'Интерактивно представяне';
 
   @override
-  String get showcaseDeckRunway => '3D Подиум';
+  String get showcaseDeckRunway => 'Виртуален подиум';
 
   @override
   String get showcaseDeckRunwayHint =>
-      'Модно дефиле със сценични прожектори и корекции на живо';
+      'Всички на осветен подиум, с поправки на почти еднаквите цветове на сцената';
 
   @override
   String get showcaseDeckFrame => 'Групова снимка';
@@ -1883,7 +1883,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get showcaseDeckLookbook => 'Lookbook';
 
   @override
-  String get showcaseDeckLookbookHint => 'Гланцирано модно списание';
+  String get showcaseDeckLookbookHint =>
+      'Страници като в списание, за запазване и споделяне';
 
   @override
   String get lookbookSeal => 'Хармония';
@@ -1921,4 +1922,116 @@ class AppLocalizationsBg extends AppLocalizations {
   String lookbookIssue(String year) {
     return 'Брой $year';
   }
+
+  @override
+  String get pollTitle => 'Попитай групата';
+
+  @override
+  String get pollHint =>
+      'Гласовете са съвет: само човекът, който пита, сменя визията си. Всяка опция показва как ще се отрази на цветовете на групата.';
+
+  @override
+  String pollAsks(String name) {
+    return '$name пита: кое да е?';
+  }
+
+  @override
+  String get pollYouAsk => 'Твоят въпрос към групата';
+
+  @override
+  String pollVotes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count гласа',
+      one: '1 глас',
+      zero: 'Още няма гласове',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pollVote => 'Гласувай';
+
+  @override
+  String get pollYourVote => 'Твоят глас';
+
+  @override
+  String get pollChoose => 'Избирам това';
+
+  @override
+  String pollChooseConfirm(String item) {
+    return 'Да избереш „$item“ и да затвориш въпроса?';
+  }
+
+  @override
+  String get pollChosen =>
+      'Визията е обновена. Пробвай я в „Моята визия“, когато решиш.';
+
+  @override
+  String get pollClose => 'Затвори въпроса';
+
+  @override
+  String get pollCloseConfirm =>
+      'Да затвориш въпроса? Гласовете ще бъдат изтрити.';
+
+  @override
+  String get pollLeading => 'Води';
+
+  @override
+  String get pollCurrent => 'Текущо';
+
+  @override
+  String pollNearMisses(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count почти еднакви цвята',
+      one: '1 почти еднакъв цвят',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pollNoNearMiss => 'Без почти еднакви цветове';
+
+  @override
+  String get pollMatchesPartner => 'В тон с партньора';
+
+  @override
+  String pollGroupScore(int score) {
+    return 'Група $score/100';
+  }
+
+  @override
+  String get pollAskCta => 'Не можеш да избереш облекло?';
+
+  @override
+  String get pollAskCtaHint =>
+      'Избери две или три облекла от каталога. Всички гласуват и виждат как всяко пасва на цветовете на групата.';
+
+  @override
+  String get pollPickTitle => 'Избери две или три облекла';
+
+  @override
+  String pollPicked(int count) {
+    return 'Избрани $count от 3';
+  }
+
+  @override
+  String get pollSend => 'Питай';
+
+  @override
+  String get pollSent => 'Въпросът ти е на таблото на групата.';
+
+  @override
+  String get pollNeedGarments =>
+      'Първо в каталога трябва да има поне две облекла.';
+
+  @override
+  String get pollOpenLabel => 'Въпросът към групата е отворен';
+
+  @override
+  String get pollPickHint =>
+      'Всички виждат как всяко пасва на цветовете на групата и гласуват. Ти избираш накрая.';
 }

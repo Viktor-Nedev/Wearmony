@@ -137,6 +137,15 @@ await step('vendor link', async () => {
   return (await repo.getVendorLink(`check-${eventId}`))?.scope === 'hair';
 });
 
+await step('poll and vote', async () => {
+  // The participant votes on their own poll here only to exercise the tables.
+  await repo.replacePoll({ eventId, userId, itemIds: [itemId], createdAt: now });
+  await repo.castVote({ eventId, ownerId: userId, voterId: userId, itemId, votedAt: now });
+  const voted = (await repo.listPollVotes(eventId)).length === 1;
+  await repo.deletePoll(eventId, userId);
+  return voted && (await repo.listPollVotes(eventId)).length === 0;
+});
+
 await step('private storage with signed URLs', async () => {
   const path = `events/${eventId}/people/${userId}/check.jpg`;
   await storage.put(path, Buffer.from([0xff, 0xd8, 0xff, 0xd9]), 'image/jpeg');

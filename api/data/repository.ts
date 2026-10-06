@@ -3,6 +3,8 @@ import type {
   ItemRecord,
   LookRecord,
   ParticipantRecord,
+  PollRecord,
+  PollVoteRecord,
   RenderRecord,
   VendorLinkRecord,
 } from '../domain/types.js';
@@ -48,6 +50,17 @@ export interface Repository {
   getVendorLink(tokenHash: string): Promise<VendorLinkRecord | null>;
   listVendorLinks(eventId: string): Promise<VendorLinkRecord[]>;
   deleteVendorLink(tokenHash: string): Promise<void>;
+
+  /** Starts or replaces a participant's poll; votes on an earlier poll are cleared. */
+  replacePoll(poll: PollRecord): Promise<void>;
+  getPoll(eventId: string, userId: string): Promise<PollRecord | null>;
+  listPolls(eventId: string): Promise<PollRecord[]>;
+  /** Closes the poll and removes its votes. */
+  deletePoll(eventId: string, userId: string): Promise<void>;
+  /** One vote per voter and poll; voting again changes it. */
+  castVote(vote: PollVoteRecord): Promise<void>;
+  deleteVote(eventId: string, ownerId: string, voterId: string): Promise<void>;
+  listPollVotes(eventId: string): Promise<PollVoteRecord[]>;
 
   /** YouCam file ids by image content hash (valid for 30 days at YouCam). */
   getProviderFile(imageHash: string): Promise<{ fileId: string; uploadedAt: string } | null>;

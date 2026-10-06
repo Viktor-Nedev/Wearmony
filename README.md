@@ -35,6 +35,7 @@ The group board shows everyone side by side ("7 of 8 rendered"), per-person and 
 - **Lookbook**: four editorial spreads (cover, partners, the whole collection with prices, the color story), each saved as an image.
 - **Confetti** when a near-miss is fixed or a look is locked.
 - **How to fix it**: for a near-miss, the harmony engine tries every catalogue item on the people involved and keeps only the swaps that remove the clash, each with its new relation, the group score before and after, and the price difference. A participant switches with one tap; a suggestion for someone else can be copied and sent to them.
+- **Ask the group**: a participant who cannot decide offers two or three catalogue outfits and the others vote. Each option shows what it would do to the group's colors (near-misses it would cause, a match with the partner, the group score), computed by the same harmony engine. Votes are advice: only the person who asks changes their look, with one tap on the option they choose.
 - **Group photo**: everyone's current look in one frame on a painted backdrop (ballroom, stage, garden or studio), partners side by side, with the harmony score and the group's palette. Saved as a PNG on the web, shared from Android, and it keeps the labels that say what is simulated.
 - **Harmony map**: the group as a ring of outfit colors with one line per pair, colored by relation; the weakest near-miss pulses.
 - **Budget and readiness**: spending split into outfits, lip colors and hair colors, each person against the per-person cap, and who still needs a photo, a look, a preview or a lock, with a reminder to paste into the group chat.
@@ -148,7 +149,7 @@ The evaluation runs the same garments on standing and seated photos of consentin
 - Photos are resized, auto-rotated and **stripped of all metadata, including GPS location**, before storage and before anything is sent to YouCam.
 - Media lives in a private bucket and is only reachable through signed URLs that expire after an hour. All database tables have row-level security with no public policies; only the backend reads them.
 - Photos are visible only to members of the event. Vendor links are read-only, scoped, expiring, and only a hash of the token is stored.
-- Participants can delete their photo, leave an event, or delete their data in every event at once. The organizer can delete the event with all its media.
+- Participants can delete their photo, leave an event, or delete their data in every event at once; leaving also removes their open question to the group and the votes they cast. The organizer can delete the event with all its media.
 - No "flattering" or body-related language anywhere, including the optional AI summary.
 
 ## Architecture

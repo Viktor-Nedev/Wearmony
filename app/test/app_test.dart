@@ -672,6 +672,89 @@ void main() {
     );
   });
 
+  testWidgets('the group votes on a question and sees each option\'s harmony', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    Map<String, Object?> option(
+      String id,
+      String name,
+      int votes,
+      int ownWarnings, {
+      bool leading = false,
+    }) => {
+      'itemId': id,
+      'name': name,
+      'price': 150,
+      'colorHex': '#E8A0B4',
+      'imageUrl': null,
+      'votes': votes,
+      'voters': [for (var i = 0; i < votes; i++) 'Maria'],
+      'leading': leading,
+      'harmony': {
+        'groupScore': 70,
+        'warnings': ownWarnings,
+        'ownWarnings': ownWarnings,
+        'partnerRelation': null,
+      },
+    };
+    Map<String, Object?> board() {
+      final data = boardJson();
+      final people = (data['participants'] as List)
+          .cast<Map<String, Object?>>();
+      people[0]['isMe'] = true;
+      data['polls'] = [
+        {
+          'ownerId': 'u2',
+          'ownerName': 'Ivan',
+          'isMine': false,
+          'canVote': true,
+          'myVote': null,
+          'currentGarmentId': 'g-a',
+          'totalVotes': 1,
+          'createdAt': '2026-10-01T10:00:00Z',
+          'options': [
+            option('g-a', 'Rose tie', 1, 1, leading: true),
+            option('g-b', 'Navy tie', 0, 0),
+          ],
+        },
+      ];
+      return data;
+    }
+
+    String? voted;
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(participant: true),
+      'GET /api/events/e1/board': (_) => board(),
+      'PUT /api/events/e1/polls/u2/vote': (request) {
+        voted = request.body;
+        return null;
+      },
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=board',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Ivan asks: which one?'), findsOneWidget);
+    expect(find.text('1 vote'), findsOneWidget);
+    expect(find.text('Leading'), findsOneWidget);
+    expect(find.text('1 near-miss'), findsOneWidget);
+    expect(find.text('No near-miss'), findsOneWidget);
+    // Maria has no question open, so she is offered to ask one.
+    expect(find.text('Can’t decide between outfits?'), findsOneWidget);
+
+    await tester.tap(find.text('Vote').last);
+    await tester.pumpAndSettle();
+    expect(voted, contains('g-b'));
+    await unmount(tester);
+  });
+
   testWidgets('the showcase deck offers runway, moodboard, and lookbook', (
     tester,
   ) async {
@@ -687,14 +770,14 @@ void main() {
       locale: const Locale('en'),
     );
 
-    expect(find.text('3D Runway'), findsOneWidget);
+    expect(find.text('Virtual runway'), findsOneWidget);
     expect(find.text('Group photo'), findsOneWidget);
     expect(find.text('Moodboard'), findsOneWidget);
     expect(find.text('Lookbook'), findsOneWidget);
     await unmount(tester);
   });
 
-  testWidgets('runway screen shows 3D catwalk and model navigation', (
+  testWidgets('runway screen shows the catwalk and model navigation', (
     tester,
   ) async {
     final backend = FakeBackend({

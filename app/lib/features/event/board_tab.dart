@@ -13,6 +13,7 @@ import '../../widgets/common.dart';
 import 'board_loader.dart';
 import '../../widgets/dress_code.dart';
 import 'group_insights.dart';
+import 'group_polls.dart';
 import 'person_detail.dart';
 
 /// Everyone side by side with their current look, per-person and total budget,
@@ -108,6 +109,11 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
                     ),
                   if (data.participants.isNotEmpty) ...[
                     const SizedBox(height: 24),
+                    RevealOnScroll(
+                      child: GroupPolls(board: data, onChanged: loadBoard),
+                    ),
+                    if (data.polls.isNotEmpty || data.me != null)
+                      const SizedBox(height: 16),
                     LayoutBuilder(
                       builder: (context, constraints) {
                         final budget = RevealOnScroll(

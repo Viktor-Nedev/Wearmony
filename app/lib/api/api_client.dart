@@ -277,6 +277,26 @@ class ApiClient {
   Future<Board> board(String eventId) async =>
       Board.fromJson(await _send('GET', 'events/$eventId/board'));
 
+  /// Asks the group to choose between two or three catalogue garments.
+  Future<void> askGroup(String eventId, List<String> itemIds) =>
+      _send('PUT', 'events/$eventId/poll', body: {'itemIds': itemIds});
+
+  Future<void> closePoll(String eventId) =>
+      _send('DELETE', 'events/$eventId/poll');
+
+  /// Wears the chosen option and closes the poll.
+  Future<void> choosePollOption(String eventId, String itemId) =>
+      _send('POST', 'events/$eventId/poll/choose', body: {'itemId': itemId});
+
+  Future<void> vote(String eventId, String ownerId, String itemId) => _send(
+    'PUT',
+    'events/$eventId/polls/$ownerId/vote',
+    body: {'itemId': itemId},
+  );
+
+  Future<void> unvote(String eventId, String ownerId) =>
+      _send('DELETE', 'events/$eventId/polls/$ownerId/vote');
+
   /// Catalogue swaps that remove the group's weakest near-miss, or with [user]
   /// the weakest near-miss involving that person.
   Future<FixSuggestions> suggestions(

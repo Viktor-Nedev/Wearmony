@@ -119,3 +119,22 @@ export interface VendorLinkRecord {
   expiresAt: string;
   createdAt: string;
 }
+
+/** "Ask the group": a participant offers two or three garments and the others vote. */
+export interface PollRecord {
+  eventId: string;
+  /** The participant who asks. One open poll per participant. */
+  userId: string;
+  /** Catalogue garment ids, in the order the participant chose them. */
+  itemIds: string[];
+  createdAt: string;
+}
+
+export interface PollVoteRecord {
+  eventId: string;
+  /** Owner of the poll. */
+  ownerId: string;
+  voterId: string;
+  itemId: string;
+  votedAt: string;
+}

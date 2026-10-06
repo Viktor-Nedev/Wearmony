@@ -7,6 +7,7 @@ import { board } from './routes/board.js';
 import { catalogue } from './routes/catalogue.js';
 import { events } from './routes/events.js';
 import { looks } from './routes/looks.js';
+import { polls } from './routes/polls.js';
 import { publicRoutes } from './routes/public.js';
 
 const LOCALHOST_ORIGIN = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
@@ -44,6 +45,7 @@ export function createApp(services: Services) {
   app.route('/', catalogue);
   app.route('/', looks);
   app.route('/', board);
+  app.route('/', polls);
 
   app.notFound((c) => c.json({ error: 'not_found', message: 'Not found.' }, 404));
   app.onError((err, c) => {

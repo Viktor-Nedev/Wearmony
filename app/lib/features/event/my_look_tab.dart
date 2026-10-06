@@ -15,6 +15,7 @@ import '../../ui/motion.dart';
 import '../../util/format.dart';
 import '../../widgets/common.dart';
 import '../../widgets/render_view.dart';
+import 'group_polls.dart';
 import 'look_previews.dart';
 
 /// Look builder for one participant: catalogue browser, try-on, total price, lock and share.
@@ -379,6 +380,14 @@ class _MyLookTabState extends State<MyLookTab> {
         _Section(
           icon: Icons.checkroom_outlined,
           title: l10n.sectionOutfit,
+          // Undecided between outfits: the group votes on the board.
+          trailing: enabled && garments.where((g) => g.hasImage).length >= 2
+              ? TextButton.icon(
+                  onPressed: () => showAskGroupSheet(context, _eventId),
+                  icon: const Icon(Icons.how_to_vote_outlined, size: 18),
+                  label: Text(l10n.pollTitle),
+                )
+              : null,
           child: Wrap(
             spacing: 14,
             runSpacing: 14,
@@ -461,11 +470,13 @@ class _Section extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.child,
+    this.trailing,
   });
 
   final IconData icon;
   final String title;
   final Widget child;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -482,7 +493,13 @@ class _Section extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 8),
-              Text(title, style: Theme.of(context).textTheme.titleLarge),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              ?trailing,
             ],
           ),
           const SizedBox(height: 12),

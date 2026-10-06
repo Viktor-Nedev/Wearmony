@@ -56,6 +56,16 @@ For a near-miss, the engine looks for swaps from the event's own catalogue that 
 
 Each suggestion states what it would change: the new relation and ΔE, the group score before and after, and the price difference. A participant can switch to their own suggestion with one tap; the new preview is a separate, explicit step because a live render spends units. Suggestions for someone else can be copied and sent to them.
 
+### Ask the group
+
+A participant can offer two or three catalogue garments to the group ([`poll.ts`](../api/harmony/poll.ts)). For each option the engine puts the garment on that person and recomputes the whole group, as for a fix suggestion, and reports:
+
+- the near-misses the garment takes part in (with other people's outfits and the person's own lip and hair colors),
+- how it relates to the partner's outfit, if there is a partner,
+- the group score with that garment. This score also covers pairs the garment does not touch, so the app shows it without a warning color.
+
+An option whose catalogue image has no extracted colors gets no hints rather than a guess. Votes never change a look; the person who asks chooses, and the poll closes.
+
 ## 7. Dress code
 
 An organizer can pick up to four colors for the event. Each participant's main outfit color is compared with every one of them with CIEDE2000 and placed by the nearest:

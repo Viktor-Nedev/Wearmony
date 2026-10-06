@@ -326,6 +326,100 @@ describe('group board and harmony', () => {
   });
 });
 
+describe('ask the group', () => {
+  async function pollEvent() {
+    const t = await eventWithTwoParticipants();
+    const blush = await addGarment(t, t.eventId, 'Blush dress', '#E8A0B4', 180);
+    const rose = await addGarment(t, t.eventId, 'Rose dress', '#E39AB6', 150);
+    const navy = await addGarment(t, t.eventId, 'Navy dress', '#1F2A44', 120);
+    await t.call('PUT', `/events/${t.eventId}/look`, ANA, { garmentId: blush.id });
+    const poll = (user: string, itemIds: string[]) => t.call('PUT', `/events/${t.eventId}/poll`, user, { itemIds });
+    const vote = (user: string, owner: string, itemId: string) =>
+      t.call('PUT', `/events/${t.eventId}/polls/${owner}/vote`, user, { itemId });
+    const polls = async (user: string) => (await t.call('GET', `/events/${t.eventId}/board`, user)).json.polls;
+    return { ...t, blush, rose, navy, poll, vote, polls };
+  }
+
+  it('lets the group vote and shows what each option does to the harmony', async () => {
+    const t = await pollEvent();
+    expect((await t.poll(BORIS, [t.rose.id, t.navy.id])).status).toBe(204);
+    expect((await t.vote(BORIS, BORIS, t.rose.id)).status).toBe(403);
+    expect((await t.vote(ANA, BORIS, t.blush.id)).status).toBe(400);
+    expect((await t.vote(ANA, BORIS, t.navy.id)).status).toBe(204);
+
+    const [poll] = await t.polls(ANA);
+    expect(poll).toMatchObject({ ownerName: 'Boris', isMine: false, canVote: true, myVote: t.navy.id, totalVotes: 1 });
+    const [rose, navy] = poll.options;
+    expect(rose).toMatchObject({ name: 'Rose dress', votes: 0, leading: false });
+    expect(rose.harmony.ownWarnings).toBe(1);
+    expect(navy).toMatchObject({ votes: 1, voters: ['Ana'], leading: true });
+    expect(navy.harmony.ownWarnings).toBe(0);
+    expect(navy.harmony.groupScore).toBeGreaterThan(rose.harmony.groupScore);
+
+    expect((await t.polls(BORIS))[0]).toMatchObject({ isMine: true, canVote: false, myVote: null });
+    expect((await t.polls(ORGANIZER))[0].canVote).toBe(false);
+  });
+
+  it('changes a look only when the owner chooses, then closes the poll', async () => {
+    const t = await pollEvent();
+    await t.poll(BORIS, [t.rose.id, t.navy.id]);
+    await t.vote(ANA, BORIS, t.navy.id);
+    expect((await t.call('GET', `/events/${t.eventId}/look`, BORIS)).json.garmentId).toBeNull();
+
+    const choose = (itemId: string) => t.call('POST', `/events/${t.eventId}/poll/choose`, BORIS, { itemId });
+    expect((await choose(t.blush.id)).status).toBe(400);
+    expect((await choose(t.navy.id)).status).toBe(204);
+    expect((await t.call('GET', `/events/${t.eventId}/look`, BORIS)).json.garmentId).toBe(t.navy.id);
+    expect(await t.polls(ANA)).toEqual([]);
+  });
+
+  it('starts a fresh poll without old votes and validates the options', async () => {
+    const t = await pollEvent();
+    expect((await t.poll(BORIS, [t.rose.id])).status).toBe(400);
+    expect((await t.poll(BORIS, [t.rose.id, t.rose.id])).status).toBe(400);
+    const lips = await addColorItem(t, t.eventId, 'makeup', 'Red lips', '#B0304A');
+    expect((await t.poll(BORIS, [t.rose.id, lips.id])).status).toBe(400);
+
+    await t.poll(BORIS, [t.rose.id, t.navy.id]);
+    await t.vote(ANA, BORIS, t.rose.id);
+    await t.poll(BORIS, [t.rose.id, t.navy.id, t.blush.id]);
+    const [poll] = await t.polls(ANA);
+    expect(poll.options).toHaveLength(3);
+    expect(poll.totalVotes).toBe(0);
+
+    await t.vote(ANA, BORIS, t.rose.id);
+    expect((await t.call('DELETE', `/events/${t.eventId}/polls/${BORIS}/vote`, ANA)).status).toBe(204);
+    expect((await t.polls(ANA))[0].totalVotes).toBe(0);
+  });
+
+  it('removes the poll and the votes of a participant who deletes their data', async () => {
+    const t = await pollEvent();
+    await t.poll(ANA, [t.rose.id, t.navy.id]);
+    await t.poll(BORIS, [t.rose.id, t.navy.id]);
+    await t.vote(ANA, BORIS, t.rose.id);
+    await t.call('DELETE', `/events/${t.eventId}/me`, ANA);
+    const polls = await t.polls(BORIS);
+    expect(polls.map((p: any) => p.ownerName)).toEqual(['Boris']);
+    expect(polls[0].totalVotes).toBe(0);
+  });
+
+  it('drops a deleted garment from the options', async () => {
+    const t = await pollEvent();
+    await t.poll(BORIS, [t.rose.id, t.navy.id]);
+    await t.vote(ANA, BORIS, t.rose.id);
+    await t.call('DELETE', `/events/${t.eventId}/items/${t.rose.id}`, ORGANIZER);
+    const [poll] = await t.polls(ANA);
+    expect(poll.options.map((o: any) => o.name)).toEqual(['Navy dress']);
+    expect(poll.totalVotes).toBe(0);
+  });
+
+  it('does not let a locked look ask the group', async () => {
+    const t = await pollEvent();
+    await t.call('POST', `/events/${t.eventId}/look/lock`, ANA, { locked: true });
+    expect((await t.poll(ANA, [t.rose.id, t.navy.id])).status).toBe(423);
+  });
+});
+
 describe('vendor links', () => {
   it('shares a read-only hair view that expires', async () => {
     const t = await eventWithTwoParticipants();
@@ -399,6 +493,18 @@ describe('demo event', () => {
     expect(Math.max(...times)).toBeLessThanOrEqual(Date.now());
     expect(board.activity.map((a: any) => a.kind)).toEqual(expect.arrayContaining(['previewed', 'look']));
     expect(board.participants.every((p: any) => p.render.mock)).toBe(true);
+    // Elena asks the group; the visitor can still vote. The rose gown would nearly match
+    // both Maria's dress and Elena's own nude lipstick.
+    const [poll] = board.polls;
+    expect(poll).toMatchObject({ ownerName: 'Elena', canVote: true, myVote: null, totalVotes: 3 });
+    expect(poll.options.map((o: any) => [o.name, o.votes, o.leading])).toEqual([
+      ['Emerald gown', 2, true],
+      ['Champagne dress', 1, false],
+      ['Rose gown', 0, false],
+    ]);
+    expect(poll.options[2].harmony.ownWarnings).toBe(2);
+    expect(poll.options[0].harmony.ownWarnings).toBe(0);
+    expect(poll.options[0].imageUrl).toBeTruthy();
   });
 
   it('suggests catalogue swaps that fix the near-miss, with prices and images', async () => {

@@ -3226,13 +3226,13 @@ abstract class AppLocalizations {
   /// No description provided for @showcaseDeckRunway.
   ///
   /// In en, this message translates to:
-  /// **'3D Runway'**
+  /// **'Virtual runway'**
   String get showcaseDeckRunway;
 
   /// No description provided for @showcaseDeckRunwayHint.
   ///
   /// In en, this message translates to:
-  /// **'Catwalk fashion show with stage lights & live fixes'**
+  /// **'Everyone on a lit catwalk, with near-misses fixed on stage'**
   String get showcaseDeckRunwayHint;
 
   /// No description provided for @showcaseDeckFrame.
@@ -3268,7 +3268,7 @@ abstract class AppLocalizations {
   /// No description provided for @showcaseDeckLookbookHint.
   ///
   /// In en, this message translates to:
-  /// **'Glossy editorial fashion magazine spread'**
+  /// **'Magazine spreads to save and share'**
   String get showcaseDeckLookbookHint;
 
   /// No description provided for @lookbookSeal.
@@ -3330,6 +3330,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Issue {year}'**
   String lookbookIssue(String year);
+
+  /// No description provided for @pollTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the group'**
+  String get pollTitle;
+
+  /// No description provided for @pollHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Votes are advice: only the person who asks changes their look. Each option shows what it would do to the group’s colors.'**
+  String get pollHint;
+
+  /// No description provided for @pollAsks.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} asks: which one?'**
+  String pollAsks(String name);
+
+  /// No description provided for @pollYouAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Your question to the group'**
+  String get pollYouAsk;
+
+  /// No description provided for @pollVotes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No votes yet} =1{1 vote} other{{count} votes}}'**
+  String pollVotes(int count);
+
+  /// No description provided for @pollVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Vote'**
+  String get pollVote;
+
+  /// No description provided for @pollYourVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your vote'**
+  String get pollYourVote;
+
+  /// No description provided for @pollChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Wear this'**
+  String get pollChoose;
+
+  /// No description provided for @pollChooseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Wear “{item}” and close the question?'**
+  String pollChooseConfirm(String item);
+
+  /// No description provided for @pollChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Look updated. Preview it in My look when you are ready.'**
+  String get pollChosen;
+
+  /// No description provided for @pollClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close question'**
+  String get pollClose;
+
+  /// No description provided for @pollCloseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Close this question? The votes are removed.'**
+  String get pollCloseConfirm;
+
+  /// No description provided for @pollLeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Leading'**
+  String get pollLeading;
+
+  /// No description provided for @pollCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get pollCurrent;
+
+  /// No description provided for @pollNearMisses.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 near-miss} other{{count} near-misses}}'**
+  String pollNearMisses(int count);
+
+  /// No description provided for @pollNoNearMiss.
+  ///
+  /// In en, this message translates to:
+  /// **'No near-miss'**
+  String get pollNoNearMiss;
+
+  /// No description provided for @pollMatchesPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches partner'**
+  String get pollMatchesPartner;
+
+  /// No description provided for @pollGroupScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Group {score}/100'**
+  String pollGroupScore(int score);
+
+  /// No description provided for @pollAskCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Can’t decide between outfits?'**
+  String get pollAskCta;
+
+  /// No description provided for @pollAskCtaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick two or three outfits from the catalogue. Everyone votes and sees how each one fits the group’s colors.'**
+  String get pollAskCtaHint;
+
+  /// No description provided for @pollPickTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick two or three outfits'**
+  String get pollPickTitle;
+
+  /// No description provided for @pollPicked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 3 picked'**
+  String pollPicked(int count);
+
+  /// No description provided for @pollSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get pollSend;
+
+  /// No description provided for @pollSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your question is on the group board.'**
+  String get pollSent;
+
+  /// No description provided for @pollNeedGarments.
+  ///
+  /// In en, this message translates to:
+  /// **'The catalogue needs at least two outfits first.'**
+  String get pollNeedGarments;
+
+  /// No description provided for @pollOpenLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Question to the group is open'**
+  String get pollOpenLabel;
+
+  /// No description provided for @pollPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone sees how each one fits the group’s colors and votes. You make the final choice.'**
+  String get pollPickHint;
 }
 
 class _AppLocalizationsDelegate

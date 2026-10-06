@@ -43,6 +43,7 @@ const PROM_ITEMS: DemoItem[] = [
   { key: 'emerald', type: 'garment', name: 'Emerald gown', price: 210, color: '#1E7F5C', category: 'full_body', shape: 'gown' },
   { key: 'champagne', type: 'garment', name: 'Champagne dress', price: 195, color: '#E9D8B8', category: 'full_body', shape: 'dress' },
   { key: 'blazer', type: 'garment', name: 'Burgundy velvet blazer', price: 150, color: '#6D1F33', category: 'outer', shape: 'blazer' },
+  { key: 'roseGown', type: 'garment', name: 'Rose gown', price: 190, color: '#E39AB6', category: 'full_body', shape: 'gown' },
   { key: 'berry', type: 'makeup', name: 'Berry lipstick', price: 18, color: '#9E2A4B' },
   { key: 'nude', type: 'makeup', name: 'Nude rose lipstick', price: 15, color: '#C98A7D' },
   { key: 'honey', type: 'hair', name: 'Honey blonde', price: 60, color: '#C8A165' },
@@ -124,6 +125,8 @@ interface Scenario {
   visitor?: DemoPerson;
   /** The event's dress code colors. */
   dressCode: string[];
+  /** An open "ask the group" question: whose, which garments, and who voted for which. */
+  poll?: { owner: string; options: string[]; votes: Record<string, string> };
 }
 
 const SCENARIOS: Record<DemoKind, Scenario> = {
@@ -141,6 +144,8 @@ const SCENARIOS: Record<DemoKind, Scenario> = {
     visitor: PROM_VISITOR,
     // Champagne, blush, navy and emerald: the colors the class agreed on.
     dressCode: ['#E9D8B8', '#E8A0B4', '#1F2A44', '#1E7F5C'],
+    // Elena keeps the emerald or picks one of two others; the rose gown would nearly match Maria.
+    poll: { owner: 'elena', options: ['emerald', 'champagne', 'roseGown'], votes: { maria: 'emerald', georgi: 'emerald', ivan: 'champagne' } },
   },
   // World Theatre Day.
   theatre: {
@@ -155,6 +160,7 @@ const SCENARIOS: Record<DemoKind, Scenario> = {
     hairVendor: 'Wig room demo',
     // House colors: Montague teal, Capulet crimson, and ivory for Juliet.
     dressCode: ['#1F6F78', '#8E1B2A', '#EFE6D2'],
+    poll: { owner: 'mercutio', options: ['mercutioTeal', 'mustard'], votes: { juliet: 'mustard', nurse: 'mustard', tybalt: 'mercutioTeal' } },
   },
 };
 
@@ -308,6 +314,15 @@ export async function seedDemoEvent(
       await repo.upsertRender(render);
       inputHash = hash;
       inputPath = resultPath;
+    }
+  }
+
+  if (scenario.poll) {
+    const { owner, options, votes } = scenario.poll;
+    const itemId = (key: string) => items.get(key)!.id;
+    await repo.replacePoll({ eventId: event.id, userId: ids.get(owner)!, itemIds: options.map(itemId), createdAt: stamp() });
+    for (const [voter, option] of Object.entries(votes)) {
+      await repo.castVote({ eventId: event.id, ownerId: ids.get(owner)!, voterId: ids.get(voter)!, itemId: itemId(option), votedAt: stamp() });
     }
   }
 

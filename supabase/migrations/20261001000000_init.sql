@@ -109,6 +109,28 @@ create table if not exists public.provider_files (
   uploaded_at timestamptz not null default now()
 );
 
+-- "Ask the group": one open poll per participant over two or three catalogue garments.
+-- Item ids are an array (no foreign key); the backend skips ids whose item was deleted.
+create table if not exists public.polls (
+  event_id uuid not null,
+  user_id uuid not null,
+  item_ids uuid[] not null,
+  created_at timestamptz not null default now(),
+  primary key (event_id, user_id),
+  foreign key (event_id, user_id) references public.participants (event_id, user_id) on delete cascade
+);
+
+create table if not exists public.poll_votes (
+  event_id uuid not null,
+  owner_id uuid not null,
+  voter_id uuid not null,
+  item_id uuid not null references public.items (id) on delete cascade,
+  voted_at timestamptz not null default now(),
+  primary key (event_id, owner_id, voter_id),
+  foreign key (event_id, owner_id) references public.polls (event_id, user_id) on delete cascade,
+  foreign key (event_id, voter_id) references public.participants (event_id, user_id) on delete cascade
+);
+
 alter table public.events enable row level security;
 alter table public.participants enable row level security;
 alter table public.items enable row level security;
@@ -116,3 +138,5 @@ alter table public.looks enable row level security;
 alter table public.renders enable row level security;
 alter table public.vendor_links enable row level security;
 alter table public.provider_files enable row level security;
+alter table public.polls enable row level security;
+alter table public.poll_votes enable row level security;

@@ -694,6 +694,108 @@ class ActivityEntry {
   final DateTime at;
 }
 
+/// What one poll option would do to the group's harmony, from the same engine.
+class PollOptionHarmony {
+  const PollOptionHarmony({
+    required this.groupScore,
+    required this.warnings,
+    required this.ownWarnings,
+    required this.partnerRelation,
+  });
+
+  factory PollOptionHarmony.fromJson(Json json) => PollOptionHarmony(
+    groupScore: (json['groupScore'] as num?)?.toInt(),
+    warnings: (json['warnings'] as num?)?.toInt() ?? 0,
+    ownWarnings: (json['ownWarnings'] as num?)?.toInt() ?? 0,
+    partnerRelation: json['partnerRelation'] as String?,
+  );
+
+  final int? groupScore;
+
+  /// Near-misses in the whole group with this option.
+  final int warnings;
+
+  /// Near-misses this garment takes part in.
+  final int ownWarnings;
+
+  /// matched, near_miss, complementary or contrast with the partner's outfit.
+  final String? partnerRelation;
+}
+
+class PollOption {
+  const PollOption({
+    required this.itemId,
+    required this.name,
+    required this.price,
+    required this.colorHex,
+    required this.imageUrl,
+    required this.votes,
+    required this.voters,
+    required this.leading,
+    required this.harmony,
+  });
+
+  factory PollOption.fromJson(Json json) => PollOption(
+    itemId: json['itemId'] as String,
+    name: json['name'] as String? ?? '',
+    price: _toDouble(json['price']) ?? 0,
+    colorHex: json['colorHex'] as String?,
+    imageUrl: json['imageUrl'] as String?,
+    votes: (json['votes'] as num?)?.toInt() ?? 0,
+    voters: _strings(json['voters']),
+    leading: json['leading'] == true,
+    harmony: json['harmony'] is Json
+        ? PollOptionHarmony.fromJson(json['harmony'] as Json)
+        : null,
+  );
+
+  final String itemId;
+  final String name;
+  final double price;
+  final String? colorHex;
+  final String? imageUrl;
+  final int votes;
+  final List<String> voters;
+
+  /// Has the most votes (ties included); never true with no votes.
+  final bool leading;
+  final PollOptionHarmony? harmony;
+}
+
+/// "Ask the group": a participant offers two or three garments and the others vote.
+class GroupPoll {
+  const GroupPoll({
+    required this.ownerId,
+    required this.ownerName,
+    required this.isMine,
+    required this.canVote,
+    required this.myVote,
+    required this.currentGarmentId,
+    required this.totalVotes,
+    required this.options,
+  });
+
+  factory GroupPoll.fromJson(Json json) => GroupPoll(
+    ownerId: json['ownerId'] as String,
+    ownerName: json['ownerName'] as String? ?? '',
+    isMine: json['isMine'] == true,
+    canVote: json['canVote'] == true,
+    myVote: json['myVote'] as String?,
+    currentGarmentId: json['currentGarmentId'] as String?,
+    totalVotes: (json['totalVotes'] as num?)?.toInt() ?? 0,
+    options: _list(json['options'], PollOption.fromJson),
+  );
+
+  final String ownerId;
+  final String ownerName;
+  final bool isMine;
+  final bool canVote;
+  final String? myVote;
+  final String? currentGarmentId;
+  final int totalVotes;
+  final List<PollOption> options;
+}
+
 class Board {
   const Board({
     required this.event,
@@ -705,6 +807,7 @@ class Board {
     required this.units,
     required this.harmony,
     this.activity = const [],
+    this.polls = const [],
     this.dressCode,
   });
 
@@ -718,6 +821,7 @@ class Board {
     units: UnitsInfo.fromJson((json['units'] as Json?) ?? const {}),
     harmony: HarmonyReport.fromJson((json['harmony'] as Json?) ?? const {}),
     activity: _list(json['activity'], ActivityEntry.fromJson),
+    polls: _list(json['polls'], GroupPoll.fromJson),
     dressCode: json['dressCode'] is Json
         ? DressCodeReport.fromJson(json['dressCode'] as Json)
         : null,
@@ -734,6 +838,9 @@ class Board {
 
   /// Newest first.
   final List<ActivityEntry> activity;
+
+  /// Open "ask the group" questions, newest first.
+  final List<GroupPoll> polls;
 
   /// Null when the event has no dress code.
   final DressCodeReport? dressCode;

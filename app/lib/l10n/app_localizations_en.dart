@@ -1847,11 +1847,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showcaseDeckTitle => 'Interactive Showcase';
 
   @override
-  String get showcaseDeckRunway => '3D Runway';
+  String get showcaseDeckRunway => 'Virtual runway';
 
   @override
   String get showcaseDeckRunwayHint =>
-      'Catwalk fashion show with stage lights & live fixes';
+      'Everyone on a lit catwalk, with near-misses fixed on stage';
 
   @override
   String get showcaseDeckFrame => 'Group Photo';
@@ -1869,8 +1869,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showcaseDeckLookbook => 'Lookbook';
 
   @override
-  String get showcaseDeckLookbookHint =>
-      'Glossy editorial fashion magazine spread';
+  String get showcaseDeckLookbookHint => 'Magazine spreads to save and share';
 
   @override
   String get lookbookSeal => 'Harmony';
@@ -1908,4 +1907,115 @@ class AppLocalizationsEn extends AppLocalizations {
   String lookbookIssue(String year) {
     return 'Issue $year';
   }
+
+  @override
+  String get pollTitle => 'Ask the group';
+
+  @override
+  String get pollHint =>
+      'Votes are advice: only the person who asks changes their look. Each option shows what it would do to the group’s colors.';
+
+  @override
+  String pollAsks(String name) {
+    return '$name asks: which one?';
+  }
+
+  @override
+  String get pollYouAsk => 'Your question to the group';
+
+  @override
+  String pollVotes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count votes',
+      one: '1 vote',
+      zero: 'No votes yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pollVote => 'Vote';
+
+  @override
+  String get pollYourVote => 'Your vote';
+
+  @override
+  String get pollChoose => 'Wear this';
+
+  @override
+  String pollChooseConfirm(String item) {
+    return 'Wear “$item” and close the question?';
+  }
+
+  @override
+  String get pollChosen =>
+      'Look updated. Preview it in My look when you are ready.';
+
+  @override
+  String get pollClose => 'Close question';
+
+  @override
+  String get pollCloseConfirm => 'Close this question? The votes are removed.';
+
+  @override
+  String get pollLeading => 'Leading';
+
+  @override
+  String get pollCurrent => 'Current';
+
+  @override
+  String pollNearMisses(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count near-misses',
+      one: '1 near-miss',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pollNoNearMiss => 'No near-miss';
+
+  @override
+  String get pollMatchesPartner => 'Matches partner';
+
+  @override
+  String pollGroupScore(int score) {
+    return 'Group $score/100';
+  }
+
+  @override
+  String get pollAskCta => 'Can’t decide between outfits?';
+
+  @override
+  String get pollAskCtaHint =>
+      'Pick two or three outfits from the catalogue. Everyone votes and sees how each one fits the group’s colors.';
+
+  @override
+  String get pollPickTitle => 'Pick two or three outfits';
+
+  @override
+  String pollPicked(int count) {
+    return '$count of 3 picked';
+  }
+
+  @override
+  String get pollSend => 'Ask';
+
+  @override
+  String get pollSent => 'Your question is on the group board.';
+
+  @override
+  String get pollNeedGarments =>
+      'The catalogue needs at least two outfits first.';
+
+  @override
+  String get pollOpenLabel => 'Question to the group is open';
+
+  @override
+  String get pollPickHint =>
+      'Everyone sees how each one fits the group’s colors and votes. You make the final choice.';
 }

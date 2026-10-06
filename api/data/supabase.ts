@@ -4,6 +4,8 @@ import type {
   ItemRecord,
   LookRecord,
   ParticipantRecord,
+  PollRecord,
+  PollVoteRecord,
   RenderRecord,
   VendorLinkRecord,
 } from '../domain/types.js';
@@ -182,6 +184,33 @@ const rowToLink = (r: Row): VendorLinkRecord => ({
   createdAt: r.created_at as string,
 });
 
+const pollToRow = (p: PollRecord): Row => ({
+  event_id: p.eventId,
+  user_id: p.userId,
+  item_ids: p.itemIds,
+  created_at: p.createdAt,
+});
+const rowToPoll = (r: Row): PollRecord => ({
+  eventId: r.event_id as string,
+  userId: r.user_id as string,
+  itemIds: (r.item_ids as string[] | null) ?? [],
+  createdAt: r.created_at as string,
+});
+const voteToRow = (v: PollVoteRecord): Row => ({
+  event_id: v.eventId,
+  owner_id: v.ownerId,
+  voter_id: v.voterId,
+  item_id: v.itemId,
+  voted_at: v.votedAt,
+});
+const rowToVote = (r: Row): PollVoteRecord => ({
+  eventId: r.event_id as string,
+  ownerId: r.owner_id as string,
+  voterId: r.voter_id as string,
+  itemId: r.item_id as string,
+  votedAt: r.voted_at as string,
+});
+
 function toNumberOrNull(value: unknown): number | null {
   return value === null || value === undefined ? null : Number(value);
 }
@@ -316,6 +345,39 @@ export function createSupabaseRepository(url: string, secretKey: string): Reposi
     },
     async deleteVendorLink(tokenHash) {
       unwrap(await db.from('vendor_links').delete().eq('token_hash', tokenHash), 'deleteVendorLink');
+    },
+
+    async replacePoll(poll) {
+      unwrap(
+        await db.from('poll_votes').delete().eq('event_id', poll.eventId).eq('owner_id', poll.userId),
+        'replacePoll',
+      );
+      unwrap(await db.from('polls').upsert(pollToRow(poll), { onConflict: 'event_id,user_id' }), 'replacePoll');
+    },
+    async getPoll(eventId, userId) {
+      const row = unwrap(await db.from('polls').select('*').eq('event_id', eventId).eq('user_id', userId).maybeSingle(), 'getPoll');
+      return row ? rowToPoll(row) : null;
+    },
+    async listPolls(eventId) {
+      const rows = unwrap(await db.from('polls').select('*').eq('event_id', eventId).order('created_at', { ascending: false }), 'listPolls');
+      return (rows ?? []).map(rowToPoll);
+    },
+    async deletePoll(eventId, userId) {
+      // Votes cascade.
+      unwrap(await db.from('polls').delete().eq('event_id', eventId).eq('user_id', userId), 'deletePoll');
+    },
+    async castVote(vote) {
+      unwrap(await db.from('poll_votes').upsert(voteToRow(vote), { onConflict: 'event_id,owner_id,voter_id' }), 'castVote');
+    },
+    async deleteVote(eventId, ownerId, voterId) {
+      unwrap(
+        await db.from('poll_votes').delete().eq('event_id', eventId).eq('owner_id', ownerId).eq('voter_id', voterId),
+        'deleteVote',
+      );
+    },
+    async listPollVotes(eventId) {
+      const rows = unwrap(await db.from('poll_votes').select('*').eq('event_id', eventId), 'listPollVotes');
+      return (rows ?? []).map(rowToVote);
     },
 
     async getProviderFile(imageHash) {

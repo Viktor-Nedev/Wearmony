@@ -13,6 +13,7 @@ import type { Services } from '../../services.js';
 import { HttpError, loadEvent, loadOrganizerEvent, parseJson, requireUser, type AppEnv } from '../context.js';
 import { eventDto, iso, lookTotal, renderDto, signAll } from '../dto.js';
 import { itemMap } from './looks.js';
+import { buildPolls } from './polls.js';
 
 export const board = new Hono<AppEnv>();
 
@@ -67,6 +68,7 @@ export async function buildBoard(services: Services, event: EventRecord, viewerI
   const totals = participants.map((p) => lookTotal(looks.get(p.userId) ?? null, items));
   const total = Math.round(totals.reduce((sum, t) => sum + t, 0) * 100) / 100;
   const units = summarizeUnits(await pipeline.repo.listRenders(event.id));
+  const [pollList, votes] = await Promise.all([services.repo.listPolls(event.id), services.repo.listPollVotes(event.id)]);
 
   const rows = participants.map((p, i) => {
     const look = looks.get(p.userId) ?? null;
@@ -112,6 +114,7 @@ export async function buildBoard(services: Services, event: EventRecord, viewerI
     harmony: computeHarmony(harmonyInputs(participants, looks, items)),
     dressCode: checkDressCode(harmonyInputs(participants, looks, items), event.dressCode),
     activity: recentActivity(participants, looks, items, renders),
+    polls: await buildPolls(services, { participants, looks, items, polls: pollList, votes }, viewerId),
   };
 }
 

@@ -3,6 +3,8 @@ import type {
   ItemRecord,
   LookRecord,
   ParticipantRecord,
+  PollRecord,
+  PollVoteRecord,
   RenderRecord,
   VendorLinkRecord,
 } from '../domain/types.js';
@@ -20,6 +22,8 @@ export function createMemoryRepository(): Repository {
   const looks = new Map<string, LookRecord>();
   const renders = new Map<string, RenderRecord>();
   const vendorLinks = new Map<string, VendorLinkRecord>();
+  const polls = new Map<string, PollRecord>();
+  const votes = new Map<string, PollVoteRecord>();
   const providerFiles = new Map<string, { fileId: string; uploadedAt: string }>();
 
   const key = (...parts: string[]) => parts.join('/');
@@ -55,7 +59,7 @@ export function createMemoryRepository(): Repository {
     },
     async deleteEvent(id) {
       events.delete(id);
-      for (const map of [participants, items, looks, renders, vendorLinks] as Map<string, { eventId: string }>[]) {
+      for (const map of [participants, items, looks, renders, vendorLinks, polls, votes] as Map<string, { eventId: string }>[]) {
         removeWhere(map, (value) => value.eventId === id);
       }
     },
@@ -75,6 +79,8 @@ export function createMemoryRepository(): Repository {
       looks.delete(key(eventId, userId));
       removeWhere(renders, (r) => r.eventId === eventId && r.userId === userId);
       removeWhere(vendorLinks, (l) => l.eventId === eventId && l.userId === userId);
+      polls.delete(key(eventId, userId));
+      removeWhere(votes, (v) => v.eventId === eventId && (v.ownerId === userId || v.voterId === userId));
     },
 
     async upsertItem(item) {
@@ -89,6 +95,10 @@ export function createMemoryRepository(): Repository {
     },
     async deleteItem(eventId, itemId) {
       items.delete(key(eventId, itemId));
+      removeWhere(votes, (v) => v.eventId === eventId && v.itemId === itemId);
+      for (const [k, poll] of polls) {
+        if (poll.eventId === eventId) polls.set(k, { ...poll, itemIds: poll.itemIds.filter((id) => id !== itemId) });
+      }
       for (const [k, look] of looks) {
         if (look.eventId !== eventId) continue;
         looks.set(k, {
@@ -146,6 +156,31 @@ export function createMemoryRepository(): Repository {
     },
     async deleteVendorLink(tokenHash) {
       vendorLinks.delete(tokenHash);
+    },
+
+    async replacePoll(poll) {
+      polls.set(key(poll.eventId, poll.userId), copy(poll));
+      removeWhere(votes, (v) => v.eventId === poll.eventId && v.ownerId === poll.userId);
+    },
+    async getPoll(eventId, userId) {
+      const poll = polls.get(key(eventId, userId));
+      return poll ? copy(poll) : null;
+    },
+    async listPolls(eventId) {
+      return inEvent(polls, eventId).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    },
+    async deletePoll(eventId, userId) {
+      polls.delete(key(eventId, userId));
+      removeWhere(votes, (v) => v.eventId === eventId && v.ownerId === userId);
+    },
+    async castVote(vote) {
+      votes.set(key(vote.eventId, vote.ownerId, vote.voterId), copy(vote));
+    },
+    async deleteVote(eventId, ownerId, voterId) {
+      votes.delete(key(eventId, ownerId, voterId));
+    },
+    async listPollVotes(eventId) {
+      return inEvent(votes, eventId);
     },
 
     async getProviderFile(imageHash) {
