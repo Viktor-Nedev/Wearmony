@@ -2091,4 +2091,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get visionNote =>
       'An approximate simulation of full dichromacy (Machado, Oliveira and Fernandes, 2009); real color vision varies. It never changes the harmony score. If you see colors differently yourself, the harmony check measures the colors, so its warnings do not depend on your eyes.';
+
+  @override
+  String get featurePollTitle => 'Ask the group';
+
+  @override
+  String get featurePollBody =>
+      'Torn between outfits? Everyone votes, and each option shows what it would do to the group’s colors.';
+
+  @override
+  String get featureVisionTitle => 'Color vision';
+
+  @override
+  String get featureVisionBody =>
+      'See the group as people with color vision deficiencies might, and which outfits would look alike to them.';
+
+  @override
+  String get featureShowcaseTitle => 'Showcase';
+
+  @override
+  String get featureShowcaseBody =>
+      'A virtual runway, a color moodboard and a lookbook to present the group’s looks.';
 }

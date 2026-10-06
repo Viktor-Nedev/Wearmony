@@ -318,6 +318,17 @@ class _Features extends StatelessWidget {
         l10n.featureInclusiveTitle,
         l10n.featureInclusiveBody,
       ),
+      (Icons.how_to_vote_outlined, l10n.featurePollTitle, l10n.featurePollBody),
+      (
+        Icons.visibility_outlined,
+        l10n.featureVisionTitle,
+        l10n.featureVisionBody,
+      ),
+      (
+        Icons.auto_awesome_outlined,
+        l10n.featureShowcaseTitle,
+        l10n.featureShowcaseBody,
+      ),
     ];
     return LayoutBuilder(
       builder: (context, constraints) {

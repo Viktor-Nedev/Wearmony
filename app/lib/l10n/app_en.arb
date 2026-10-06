@@ -603,5 +603,11 @@
   "visionNoAlike": "No outfits look alike in this view: the group stays easy to tell apart.",
   "visionAlike": "{a} and {b}: clearly different for typical vision (ΔE {typical}), alike in this view (ΔE {simulated}).",
   "@visionAlike": {"placeholders":{"a":{"type":"String"},"b":{"type":"String"},"typical":{"type":"String"},"simulated":{"type":"String"}}},
-  "visionNote": "An approximate simulation of full dichromacy (Machado, Oliveira and Fernandes, 2009); real color vision varies. It never changes the harmony score. If you see colors differently yourself, the harmony check measures the colors, so its warnings do not depend on your eyes."
+  "visionNote": "An approximate simulation of full dichromacy (Machado, Oliveira and Fernandes, 2009); real color vision varies. It never changes the harmony score. If you see colors differently yourself, the harmony check measures the colors, so its warnings do not depend on your eyes.",
+  "featurePollTitle": "Ask the group",
+  "featurePollBody": "Torn between outfits? Everyone votes, and each option shows what it would do to the group’s colors.",
+  "featureVisionTitle": "Color vision",
+  "featureVisionBody": "See the group as people with color vision deficiencies might, and which outfits would look alike to them.",
+  "featureShowcaseTitle": "Showcase",
+  "featureShowcaseBody": "A virtual runway, a color moodboard and a lookbook to present the group’s looks."
 }

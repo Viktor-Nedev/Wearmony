@@ -3606,6 +3606,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An approximate simulation of full dichromacy (Machado, Oliveira and Fernandes, 2009); real color vision varies. It never changes the harmony score. If you see colors differently yourself, the harmony check measures the colors, so its warnings do not depend on your eyes.'**
   String get visionNote;
+
+  /// No description provided for @featurePollTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the group'**
+  String get featurePollTitle;
+
+  /// No description provided for @featurePollBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Torn between outfits? Everyone votes, and each option shows what it would do to the group’s colors.'**
+  String get featurePollBody;
+
+  /// No description provided for @featureVisionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Color vision'**
+  String get featureVisionTitle;
+
+  /// No description provided for @featureVisionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'See the group as people with color vision deficiencies might, and which outfits would look alike to them.'**
+  String get featureVisionBody;
+
+  /// No description provided for @featureShowcaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Showcase'**
+  String get featureShowcaseTitle;
+
+  /// No description provided for @featureShowcaseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A virtual runway, a color moodboard and a lookbook to present the group’s looks.'**
+  String get featureShowcaseBody;
 }
 
 class _AppLocalizationsDelegate

@@ -2107,4 +2107,25 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get visionNote =>
       'Приблизителна симулация на пълна дихромазия (Machado, Oliveira и Fernandes, 2009); реалното цветово зрение е различно при всеки. Никога не променя оценката на хармонията. Ако виждаш цветовете различно, проверката на хармонията измерва цветовете, така че предупрежденията ѝ не зависят от очите ти.';
+
+  @override
+  String get featurePollTitle => 'Попитай групата';
+
+  @override
+  String get featurePollBody =>
+      'Не можеш да избереш облекло? Всички гласуват, а всяка опция показва как ще се отрази на цветовете на групата.';
+
+  @override
+  String get featureVisionTitle => 'Цветово зрение';
+
+  @override
+  String get featureVisionBody =>
+      'Виж групата така, както може би я виждат хора с нарушено цветово зрение, и кои облекла биха им изглеждали еднакви.';
+
+  @override
+  String get featureShowcaseTitle => 'Витрина';
+
+  @override
+  String get featureShowcaseBody =>
+      'Виртуален подиум, цветови мудборд и лукбук, за да представите визиите на групата.';
 }
