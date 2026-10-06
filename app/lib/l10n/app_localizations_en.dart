@@ -2018,4 +2018,77 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pollPickHint =>
       'Everyone sees how each one fits the group’s colors and votes. You make the final choice.';
+
+  @override
+  String activityAsked(String name) {
+    return '$name asked the group about an outfit';
+  }
+
+  @override
+  String get activityAskedYou => 'You asked the group about an outfit';
+
+  @override
+  String activityVoted(String name, String owner) {
+    return '$name voted on $owner’s question';
+  }
+
+  @override
+  String activityVotedYou(String owner) {
+    return 'You voted on $owner’s question';
+  }
+
+  @override
+  String get tourPollTitle => 'Ask the group';
+
+  @override
+  String get tourPollBody =>
+      'Someone cannot decide between outfits. See the votes and what each option would do to the group’s colors, then add yours.';
+
+  @override
+  String get visionTitle => 'Color vision';
+
+  @override
+  String get visionSubtitle =>
+      'About 1 in 12 men and 1 in 200 women see some colors differently. See the group’s outfits as they might.';
+
+  @override
+  String get visionTypical => 'Typical';
+
+  @override
+  String get visionProtan => 'Protanopia';
+
+  @override
+  String get visionDeutan => 'Deuteranopia';
+
+  @override
+  String get visionTritan => 'Tritanopia';
+
+  @override
+  String get visionTypicalHint =>
+      'The outfit colors as the harmony check measures them.';
+
+  @override
+  String get visionProtanHint =>
+      'Without red-sensitive cones: reds look darker and closer to greens and browns.';
+
+  @override
+  String get visionDeutanHint =>
+      'Without green-sensitive cones, the most common type: reds and greens look alike.';
+
+  @override
+  String get visionTritanHint =>
+      'Without blue-sensitive cones, which is rare: blues and greens, and yellows and pinks, look alike.';
+
+  @override
+  String get visionNoAlike =>
+      'No outfits look alike in this view: the group stays easy to tell apart.';
+
+  @override
+  String visionAlike(String a, String b, String typical, String simulated) {
+    return '$a and $b: clearly different for typical vision (ΔE $typical), alike in this view (ΔE $simulated).';
+  }
+
+  @override
+  String get visionNote =>
+      'An approximate simulation of full dichromacy (Machado, Oliveira and Fernandes, 2009); real color vision varies. It never changes the harmony score. If you see colors differently yourself, the harmony check measures the colors, so its warnings do not depend on your eyes.';
 }

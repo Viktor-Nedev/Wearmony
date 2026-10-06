@@ -1,15 +1,16 @@
-import type { ItemRecord, LookRecord, ParticipantRecord, RenderRecord } from './types.js';
+import type { ItemRecord, LookRecord, ParticipantRecord, PollRecord, PollVoteRecord, RenderRecord } from './types.js';
 
 // Recent activity in an event, derived from timestamps the records already keep:
-// who joined, who chose or locked a look, and who tried their look on.
+// who joined, who chose or locked a look, who tried their look on, who asked
+// the group about an outfit and who voted.
 
-export type ActivityKind = 'joined' | 'look' | 'locked' | 'previewed';
+export type ActivityKind = 'joined' | 'look' | 'locked' | 'previewed' | 'asked' | 'voted';
 
 export interface ActivityEntry {
   kind: ActivityKind;
   userId: string;
   name: string;
-  /** For a chosen look: the garment's name. */
+  /** For a chosen look: the garment's name. For a vote: whose question it was. */
   item: string | null;
   at: string;
 }
@@ -20,6 +21,7 @@ export function recentActivity(
   items: Map<string, ItemRecord>,
   renders: RenderRecord[],
   limit = 8,
+  group: { polls?: PollRecord[]; votes?: PollVoteRecord[] } = {},
 ): ActivityEntry[] {
   const names = new Map(participants.map((p) => [p.userId, p.displayName]));
   const entries: ActivityEntry[] = participants.map((p) => ({
@@ -50,6 +52,16 @@ export function recentActivity(
   }
   for (const [userId, at] of latest) {
     entries.push({ kind: 'previewed', userId, name: names.get(userId)!, item: null, at: new Date(at).toISOString() });
+  }
+
+  for (const poll of group.polls ?? []) {
+    const name = names.get(poll.userId);
+    if (name) entries.push({ kind: 'asked', userId: poll.userId, name, item: null, at: poll.createdAt });
+  }
+  for (const vote of group.votes ?? []) {
+    const name = names.get(vote.voterId);
+    const owner = names.get(vote.ownerId);
+    if (name && owner) entries.push({ kind: 'voted', userId: vote.voterId, name, item: owner, at: vote.votedAt });
   }
 
   // Timestamps from the database and from the app can differ in format, so compare instants.

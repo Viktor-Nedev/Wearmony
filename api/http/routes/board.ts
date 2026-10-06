@@ -7,6 +7,7 @@ import type { EventRecord, ItemRecord, LookRecord, ParticipantRecord } from '../
 import { checkDressCode } from '../../harmony/dresscode.js';
 import { computeHarmony, type HarmonyPersonInput } from '../../harmony/engine.js';
 import { pickTarget, suggestFixes } from '../../harmony/suggest.js';
+import { visionReport } from '../../harmony/vision.js';
 import { summarizeUnits } from '../../ledger/ledger.js';
 import { advanceLook } from '../../render/pipeline.js';
 import type { Services } from '../../services.js';
@@ -113,7 +114,7 @@ export async function buildBoard(services: Services, event: EventRecord, viewerI
     },
     harmony: computeHarmony(harmonyInputs(participants, looks, items)),
     dressCode: checkDressCode(harmonyInputs(participants, looks, items), event.dressCode),
-    activity: recentActivity(participants, looks, items, renders),
+    activity: recentActivity(participants, looks, items, renders, 8, { polls: pollList, votes }),
     polls: await buildPolls(services, { participants, looks, items, polls: pollList, votes }, viewerId),
   };
 }
@@ -128,6 +129,16 @@ board.get('/events/:eventId/harmony', requireUser, async (c) => {
   const { event } = await loadEvent(c, c.req.param('eventId'));
   const { participants, looks, items } = await loadGroup(c.var.services, event);
   return c.json(computeHarmony(harmonyInputs(participants, looks, items)));
+});
+
+/**
+ * The group's colors as seen with protanopia, deuteranopia and tritanopia, and the
+ * outfits that would look alike to such a viewer. Informational; never a score change.
+ */
+board.get('/events/:eventId/harmony/vision', requireUser, async (c) => {
+  const { event } = await loadEvent(c, c.req.param('eventId'));
+  const { participants, looks, items } = await loadGroup(c.var.services, event);
+  return c.json({ views: visionReport(harmonyInputs(participants, looks, items)) });
 });
 
 /**

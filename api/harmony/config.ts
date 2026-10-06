@@ -89,6 +89,16 @@ export const HARMONY_CONFIG = {
      */
     darkClothingMeanL: 30,
   },
+
+  /** Color vision view: how the group's outfits look with a color vision deficiency. */
+  vision: {
+    /**
+     * Two outfits that are clearly different for typical vision (above nearMissMax)
+     * but at or below this ΔE00 in the simulated view look alike to that viewer.
+     * Informational only: it never changes the group score.
+     */
+    lookAlikeMax: 8.0,
+  },
 } as const;
 
 export type HarmonyConfig = typeof HARMONY_CONFIG;

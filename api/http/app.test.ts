@@ -314,6 +314,19 @@ describe('group board and harmony', () => {
     expect((await t.call('GET', `/events/${t.eventId}/harmony`, BORIS)).json.weakest.relation).toBe('near_miss');
   });
 
+  it('shows how the outfits look with color vision deficiencies', async () => {
+    const t = await eventWithTwoParticipants();
+    const red = await addGarment(t, t.eventId, 'Red dress', '#C0392B');
+    const olive = await addGarment(t, t.eventId, 'Olive suit', '#6B8E23');
+    await t.call('PUT', `/events/${t.eventId}/look`, ANA, { garmentId: red.id });
+    await t.call('PUT', `/events/${t.eventId}/look`, BORIS, { garmentId: olive.id });
+    const { views } = (await t.call('GET', `/events/${t.eventId}/harmony/vision`, ANA)).json;
+    const deutan = views.find((v: any) => v.mode === 'deutan');
+    expect(deutan.people.map((p: any) => p.name)).toEqual(['Ana', 'Boris']);
+    expect(deutan.lookAlike[0].names).toEqual(['Ana', 'Boris']);
+    expect((await t.call('GET', `/events/${t.eventId}/harmony/vision`, OUTSIDER)).status).toBe(404);
+  });
+
   it('explains results with the configured writer, never for scoring', async () => {
     const explainer = { model: 'test-model', explain: async () => 'Ana and Boris wear almost the same pink.' };
     const t = await eventWithTwoParticipants({}, { explainer });

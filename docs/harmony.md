@@ -78,14 +78,23 @@ An organizer can pick up to four colors for the event. Each participant's main o
 
 The thresholds are in [`config.ts`](../api/harmony/config.ts) (`dressCode`). The dress code is its own report: it never changes the group score, which stays about how people look next to each other.
 
-## 8. Render checks
+## 8. Color vision
+
+About 1 in 12 men and 1 in 200 women have a red-green color vision deficiency. The harmony tab can show the group's outfits as they might look to them ([`vision.ts`](../api/harmony/vision.ts)):
+
+- Each color is converted to linear sRGB, multiplied by the Machado, Oliveira and Fernandes (2009) matrix for protanopia, deuteranopia or tritanopia at full severity, and converted back.
+- Two outfits that are clearly different for typical vision (ΔE00 above the near-miss band) but within ΔE00 8 of each other in a simulated view are listed as looking alike in that view. Pairs that are already a near-miss or a match for typical vision are left to the harmony check.
+
+This is an approximation of full dichromacy; real color vision varies, and milder forms are more common. It is informational only and never changes the group score. The threshold is in [`config.ts`](../api/harmony/config.ts) (`vision`).
+
+## 9. Render checks
 
 These never change a score; they only add notes.
 
 - **Garment not applied**: the render and the photo are compared pixel by pixel on a 48×64 grid in CIELAB; a mean change under 3 means the outfit was probably not applied (YouCam can return the photo unchanged, for example when the original clothing is dark or bulky).
 - **Color drift**: the closest color in the render to the catalogue color; farther than ΔE00 14 gives a "check this render" note.
 
-## 9. Photo quality gate
+## 10. Photo quality gate
 
 After upload, before any try-on: minimum size (640 × 480), aspect ratio (≤ 2.4), mean lightness (dark < 28, overexposed > 90), contrast (L* standard deviation < 10), and a warning when the torso area is very dark (dark clothing). Size and ratio block the photo; the rest is advice the participant can act on.
 

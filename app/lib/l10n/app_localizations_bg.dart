@@ -2034,4 +2034,77 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get pollPickHint =>
       'Всички виждат как всяко пасва на цветовете на групата и гласуват. Ти избираш накрая.';
+
+  @override
+  String activityAsked(String name) {
+    return '$name попита групата за облекло';
+  }
+
+  @override
+  String get activityAskedYou => 'Ти попита групата за облекло';
+
+  @override
+  String activityVoted(String name, String owner) {
+    return '$name гласува по въпроса на $owner';
+  }
+
+  @override
+  String activityVotedYou(String owner) {
+    return 'Ти гласува по въпроса на $owner';
+  }
+
+  @override
+  String get tourPollTitle => 'Попитай групата';
+
+  @override
+  String get tourPollBody =>
+      'Някой не може да избере облекло. Виж гласовете и как всяка опция би се отразила на цветовете на групата, и гласувай и ти.';
+
+  @override
+  String get visionTitle => 'Цветово зрение';
+
+  @override
+  String get visionSubtitle =>
+      'Около 1 на 12 мъже и 1 на 200 жени виждат някои цветове различно. Виж облеклата на групата така, както може би ги виждат те.';
+
+  @override
+  String get visionTypical => 'Типично';
+
+  @override
+  String get visionProtan => 'Протанопия';
+
+  @override
+  String get visionDeutan => 'Деутеранопия';
+
+  @override
+  String get visionTritan => 'Тританопия';
+
+  @override
+  String get visionTypicalHint =>
+      'Цветовете на облеклата така, както ги измерва проверката на хармонията.';
+
+  @override
+  String get visionProtanHint =>
+      'Без чувствителни към червено колбички: червените изглеждат по-тъмни и по-близо до зелените и кафявите.';
+
+  @override
+  String get visionDeutanHint =>
+      'Без чувствителни към зелено колбички, най-честият вид: червеното и зеленото си приличат.';
+
+  @override
+  String get visionTritanHint =>
+      'Без чувствителни към синьо колбички, което е рядко: синьото и зеленото, жълтото и розовото си приличат.';
+
+  @override
+  String get visionNoAlike =>
+      'В този изглед няма облекла, които да си приличат: хората в групата лесно се различават.';
+
+  @override
+  String visionAlike(String a, String b, String typical, String simulated) {
+    return '$a и $b: ясно различни при типично зрение (ΔE $typical), почти еднакви в този изглед (ΔE $simulated).';
+  }
+
+  @override
+  String get visionNote =>
+      'Приблизителна симулация на пълна дихромазия (Machado, Oliveira и Fernandes, 2009); реалното цветово зрение е различно при всеки. Никога не променя оценката на хармонията. Ако виждаш цветовете различно, проверката на хармонията измерва цветовете, така че предупрежденията ѝ не зависят от очите ти.';
 }

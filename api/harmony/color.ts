@@ -27,12 +27,14 @@ export function rgbToHex([r, g, b]: Rgb): string {
   return `#${part(r)}${part(g)}${part(b)}`.toUpperCase();
 }
 
-function toLinear(channel: number) {
+/** sRGB channel (0-255) to linear light (0-1). */
+export function toLinear(channel: number) {
   const c = channel / 255;
   return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 }
 
-function fromLinear(c: number) {
+/** Linear light (0-1) to an sRGB channel (0-255), clamped. */
+export function fromLinear(c: number) {
   const v = c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
   return Math.min(1, Math.max(0, v)) * 255;
 }

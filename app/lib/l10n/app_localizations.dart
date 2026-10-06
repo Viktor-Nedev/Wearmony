@@ -3492,6 +3492,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Everyone sees how each one fits the group’s colors and votes. You make the final choice.'**
   String get pollPickHint;
+
+  /// No description provided for @activityAsked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} asked the group about an outfit'**
+  String activityAsked(String name);
+
+  /// No description provided for @activityAskedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You asked the group about an outfit'**
+  String get activityAskedYou;
+
+  /// No description provided for @activityVoted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} voted on {owner}’s question'**
+  String activityVoted(String name, String owner);
+
+  /// No description provided for @activityVotedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You voted on {owner}’s question'**
+  String activityVotedYou(String owner);
+
+  /// No description provided for @tourPollTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the group'**
+  String get tourPollTitle;
+
+  /// No description provided for @tourPollBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone cannot decide between outfits. See the votes and what each option would do to the group’s colors, then add yours.'**
+  String get tourPollBody;
+
+  /// No description provided for @visionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Color vision'**
+  String get visionTitle;
+
+  /// No description provided for @visionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About 1 in 12 men and 1 in 200 women see some colors differently. See the group’s outfits as they might.'**
+  String get visionSubtitle;
+
+  /// No description provided for @visionTypical.
+  ///
+  /// In en, this message translates to:
+  /// **'Typical'**
+  String get visionTypical;
+
+  /// No description provided for @visionProtan.
+  ///
+  /// In en, this message translates to:
+  /// **'Protanopia'**
+  String get visionProtan;
+
+  /// No description provided for @visionDeutan.
+  ///
+  /// In en, this message translates to:
+  /// **'Deuteranopia'**
+  String get visionDeutan;
+
+  /// No description provided for @visionTritan.
+  ///
+  /// In en, this message translates to:
+  /// **'Tritanopia'**
+  String get visionTritan;
+
+  /// No description provided for @visionTypicalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The outfit colors as the harmony check measures them.'**
+  String get visionTypicalHint;
+
+  /// No description provided for @visionProtanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Without red-sensitive cones: reds look darker and closer to greens and browns.'**
+  String get visionProtanHint;
+
+  /// No description provided for @visionDeutanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Without green-sensitive cones, the most common type: reds and greens look alike.'**
+  String get visionDeutanHint;
+
+  /// No description provided for @visionTritanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Without blue-sensitive cones, which is rare: blues and greens, and yellows and pinks, look alike.'**
+  String get visionTritanHint;
+
+  /// No description provided for @visionNoAlike.
+  ///
+  /// In en, this message translates to:
+  /// **'No outfits look alike in this view: the group stays easy to tell apart.'**
+  String get visionNoAlike;
+
+  /// No description provided for @visionAlike.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} and {b}: clearly different for typical vision (ΔE {typical}), alike in this view (ΔE {simulated}).'**
+  String visionAlike(String a, String b, String typical, String simulated);
+
+  /// No description provided for @visionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'An approximate simulation of full dichromacy (Machado, Oliveira and Fernandes, 2009); real color vision varies. It never changes the harmony score. If you see colors differently yourself, the harmony check measures the colors, so its warnings do not depend on your eyes.'**
+  String get visionNote;
 }
 
 class _AppLocalizationsDelegate

@@ -467,6 +467,11 @@ class ActivityFeed extends StatelessWidget {
         'locked' => mine ? l10n.activityLockedYou : l10n.activityLocked(name),
         'previewed' =>
           mine ? l10n.activityPreviewedYou : l10n.activityPreviewed(name),
+        'asked' => mine ? l10n.activityAskedYou : l10n.activityAsked(name),
+        'voted' =>
+          mine
+              ? l10n.activityVotedYou(entry.item ?? '')
+              : l10n.activityVoted(name, entry.item ?? ''),
         _ => l10n.activityJoined(name),
       };
     }
@@ -475,6 +480,8 @@ class ActivityFeed extends StatelessWidget {
       'look' => Icons.checkroom,
       'locked' => Icons.lock_outline_rounded,
       'previewed' => Icons.auto_fix_high,
+      'asked' => Icons.how_to_vote_outlined,
+      'voted' => Icons.favorite_border,
       _ => Icons.person_add_alt_1_outlined,
     };
 

@@ -32,6 +32,21 @@ const render = (userId: string, status: RenderRecord['status'], updatedAt: strin
   ({ userId, status, updatedAt }) as RenderRecord;
 
 describe('recentActivity', () => {
+  it('lists who asked the group and who voted on whose question', () => {
+    const people = [person('ana', '2026-10-01T10:00:00Z'), person('boris', '2026-10-01T10:05:00Z')];
+    const activity = recentActivity(people, new Map(), new Map(), [], 8, {
+      polls: [{ eventId: 'e', userId: 'boris', itemIds: ['a', 'b'], createdAt: '2026-10-01T11:00:00Z' }],
+      votes: [
+        { eventId: 'e', ownerId: 'boris', voterId: 'ana', itemId: 'a', votedAt: '2026-10-01T12:00:00Z' },
+        { eventId: 'e', ownerId: 'gone', voterId: 'ana', itemId: 'a', votedAt: '2026-10-01T12:30:00Z' },
+      ],
+    });
+    expect(activity.slice(0, 2)).toEqual([
+      { kind: 'voted', userId: 'ana', name: 'ana', item: 'boris', at: '2026-10-01T12:00:00.000Z' },
+      { kind: 'asked', userId: 'boris', name: 'boris', item: null, at: '2026-10-01T11:00:00.000Z' },
+    ]);
+  });
+
   const participants = [person('Maria', '2026-10-01T10:00:00Z'), person('Ivan', '2026-10-01T11:00:00Z')];
   const looks = new Map([
     ['Maria', look('Maria', 'tie', '2026-10-02T09:00:00Z', true)],

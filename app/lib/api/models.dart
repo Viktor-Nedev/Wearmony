@@ -851,6 +851,77 @@ class Board {
       participants.where((p) => p.userId == userId).firstOrNull;
 }
 
+/// One person's colors as seen in a color vision view.
+class VisionPerson {
+  const VisionPerson({
+    required this.id,
+    required this.name,
+    required this.outfit,
+    required this.lips,
+    required this.hair,
+  });
+
+  factory VisionPerson.fromJson(Json json) => VisionPerson(
+    id: json['id'] as String,
+    name: json['name'] as String? ?? '',
+    outfit: json['outfit'] as String?,
+    lips: json['lips'] as String?,
+    hair: json['hair'] as String?,
+  );
+
+  final String id;
+  final String name;
+  final String? outfit;
+  final String? lips;
+  final String? hair;
+}
+
+/// Two outfits that are clearly different for typical vision but look alike in a view.
+class LookAlikePair {
+  const LookAlikePair({
+    required this.people,
+    required this.names,
+    required this.partners,
+    required this.typicalDeltaE,
+    required this.deltaE,
+  });
+
+  factory LookAlikePair.fromJson(Json json) => LookAlikePair(
+    people: _strings(json['people']),
+    names: _strings(json['names']),
+    partners: json['partners'] == true,
+    typicalDeltaE: _toDouble(json['typicalDeltaE']) ?? 0,
+    deltaE: _toDouble(json['deltaE']) ?? 0,
+  );
+
+  final List<String> people;
+  final List<String> names;
+  final bool partners;
+  final double typicalDeltaE;
+  final double deltaE;
+}
+
+/// The group's colors as seen with one color vision deficiency (protan, deutan or tritan).
+class VisionView {
+  const VisionView({
+    required this.mode,
+    required this.people,
+    required this.lookAlike,
+  });
+
+  factory VisionView.fromJson(Json json) => VisionView(
+    mode: json['mode'] as String? ?? 'deutan',
+    people: _list(json['people'], VisionPerson.fromJson),
+    lookAlike: _list(json['lookAlike'], LookAlikePair.fromJson),
+  );
+
+  final String mode;
+  final List<VisionPerson> people;
+  final List<LookAlikePair> lookAlike;
+
+  VisionPerson? byId(String id) => people.where((p) => p.id == id).firstOrNull;
+}
+
 /// A catalogue swap that would remove a near-miss, as computed by the harmony engine.
 class FixSuggestion {
   const FixSuggestion({

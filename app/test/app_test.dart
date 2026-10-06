@@ -212,6 +212,59 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('the color vision view names outfits that look alike', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 3200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    Map<String, Object?> view(String mode, {bool alike = false}) => {
+      'mode': mode,
+      'people': [
+        {'id': 'u1', 'name': 'Maria', 'outfit': '#A8A39A'},
+        {'id': 'u2', 'name': 'Ivan', 'outfit': '#A39F95'},
+      ],
+      'lookAlike': [
+        if (alike)
+          {
+            'people': ['u1', 'u2'],
+            'names': ['Maria', 'Ivan'],
+            'partners': true,
+            'typicalDeltaE': 34.2,
+            'deltaE': 3.1,
+          },
+      ],
+    };
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+      'GET /api/events/e1/harmony/vision': (_) => {
+        'views': [view('protan'), view('deutan', alike: true), view('tritan')],
+      },
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=harmony',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Color vision'), findsOneWidget);
+    await tester.tap(find.text('Tritanopia'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('No outfits look alike'), findsOneWidget);
+    await tester.tap(find.text('Deuteranopia'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text(
+        'Maria and Ivan: clearly different for typical vision (ΔE 34.2), alike in this view (ΔE 3.1).',
+      ),
+      findsOneWidget,
+    );
+    await unmount(tester);
+  });
+
   testWidgets('the harmony tab suggests a swap that fixes the near-miss', (
     tester,
   ) async {

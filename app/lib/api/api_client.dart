@@ -277,6 +277,15 @@ class ApiClient {
   Future<Board> board(String eventId) async =>
       Board.fromJson(await _send('GET', 'events/$eventId/board'));
 
+  /// The group's colors with protanopia, deuteranopia and tritanopia (simulated).
+  Future<List<VisionView>> colorVision(String eventId) async {
+    final json = await _send('GET', 'events/$eventId/harmony/vision') as Json;
+    return (json['views'] as List? ?? const [])
+        .whereType<Json>()
+        .map(VisionView.fromJson)
+        .toList();
+  }
+
   /// Asks the group to choose between two or three catalogue garments.
   Future<void> askGroup(String eventId, List<String> itemIds) =>
       _send('PUT', 'events/$eventId/poll', body: {'itemIds': itemIds});

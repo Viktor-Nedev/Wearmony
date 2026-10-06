@@ -75,6 +75,12 @@ class _DemoTourButtonState extends State<DemoTourButton> {
           (c) => tab(c, EventTab.board),
         ),
         _TourStep(
+          Icons.how_to_vote_outlined,
+          l10n.tourPollTitle,
+          l10n.tourPollBody,
+          (c) => tab(c, EventTab.board),
+        ),
+        _TourStep(
           Icons.school_outlined,
           l10n.tourPromTitle,
           l10n.tourPromBody,
@@ -106,6 +112,12 @@ class _DemoTourButtonState extends State<DemoTourButton> {
         Icons.savings_outlined,
         l10n.tourBudgetTitle,
         l10n.tourBudgetBody,
+        (c) => tab(c, EventTab.board),
+      ),
+      _TourStep(
+        Icons.how_to_vote_outlined,
+        l10n.tourPollTitle,
+        l10n.tourPollBody,
         (c) => tab(c, EventTab.board),
       ),
       _TourStep(
