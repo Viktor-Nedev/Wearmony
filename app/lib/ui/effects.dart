@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme.dart';
+import 'confetti.dart';
 import 'motion.dart';
 
 /// Slowly drifting, softly blurred color blobs: the brand backdrop.
@@ -960,9 +961,10 @@ class _CelebrationBannerState extends State<CelebrationBanner> {
   void didUpdateWidget(CelebrationBanner old) {
     super.didUpdateWidget(old);
     if (widget.visible && !old.visible) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _sparkles.currentState?.burst(),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _sparkles.currentState?.burst();
+        if (mounted) ConfettiCannon.of(context).burst(count: 75);
+      });
     }
   }
 

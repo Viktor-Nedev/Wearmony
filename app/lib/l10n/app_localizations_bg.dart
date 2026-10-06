@@ -1756,4 +1756,169 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get dressCodeFull =>
       'Избрани са четири цвята. Махнете един, за да изберете друг.';
+
+  @override
+  String get runwayTitle => 'Виртуален подиум';
+
+  @override
+  String get runwaySolo => 'Индивидуално';
+
+  @override
+  String get runwayDuo => 'Двойки';
+
+  @override
+  String get runwayFinale => 'Финал';
+
+  @override
+  String get runwayPlay => 'Автоматично дефиле';
+
+  @override
+  String get runwayPause => 'Пауза';
+
+  @override
+  String get runwayFixNow => 'Поправи на подиума';
+
+  @override
+  String get moodboardTitle => 'Цветен Moodboard';
+
+  @override
+  String get moodboardSubtitle =>
+      'Цветовите акорди на групата, мостри и цветова температура.';
+
+  @override
+  String get moodboardExport => 'Запази палитрата';
+
+  @override
+  String get moodboardWheelTitle => 'Хроматично колело на хармонията';
+
+  @override
+  String get moodboardWheelHint =>
+      'Докоснете точка, за да проверите точните CIELAB стойности и съчетания на този участник.';
+
+  @override
+  String get moodboardInspectTitle => 'Детайли за цвета';
+
+  @override
+  String get moodboardInspectHint =>
+      'Изберете участник от колелото, за да видите извлечения нюанс и релациите му.';
+
+  @override
+  String get moodboardPairRelations => 'Цветови връзки';
+
+  @override
+  String get moodboardPaletteTitle => 'Групова цветова палитра';
+
+  @override
+  String get moodboardNoSwatches => 'Все още няма избрани тоалети.';
+
+  @override
+  String get moodboardVibeTitle => 'Естетически баланс и кохезия';
+
+  @override
+  String get moodboardCohesionScore =>
+      'Хармония на групата (най-слабата двойка)';
+
+  @override
+  String get moodboardCohesionHigh =>
+      'Отлична цветова хармония в цялата група.';
+
+  @override
+  String get moodboardCohesionMed =>
+      'Добра координация с дребни контрастни вариации.';
+
+  @override
+  String get moodboardCohesionLow =>
+      'Открити са смущаващи разминавания за коригиране.';
+
+  @override
+  String get moodboardTempBalance => 'Температурен баланс на цветовете';
+
+  @override
+  String get moodboardWarm => 'Топли (Червени / Розови / Златисти)';
+
+  @override
+  String get moodboardCool => 'Студени (Сини / Петролени / Зелени)';
+
+  @override
+  String get lookbookTitle => 'Дигитален лукбук';
+
+  @override
+  String get lookbookExportSpread => 'Запази страницата като изображение';
+
+  @override
+  String get lookbookSpreadCover => 'Корица';
+
+  @override
+  String get lookbookSpreadPairs => 'Двойки';
+
+  @override
+  String get lookbookSpreadCollection => 'Колекция';
+
+  @override
+  String get lookbookSpreadStory => 'Цветова история';
+
+  @override
+  String get showcaseDeckTitle => 'Интерактивно представяне';
+
+  @override
+  String get showcaseDeckRunway => '3D Подиум';
+
+  @override
+  String get showcaseDeckRunwayHint =>
+      'Модно дефиле със сценични прожектори и корекции на живо';
+
+  @override
+  String get showcaseDeckFrame => 'Групова снимка';
+
+  @override
+  String get showcaseDeckFrameHint => 'Всички заедно на рисуван фон';
+
+  @override
+  String get showcaseDeckMoodboard => 'Moodboard';
+
+  @override
+  String get showcaseDeckMoodboardHint => 'Цветово колело и палитра от мостри';
+
+  @override
+  String get showcaseDeckLookbook => 'Lookbook';
+
+  @override
+  String get showcaseDeckLookbookHint => 'Гланцирано модно списание';
+
+  @override
+  String get lookbookSeal => 'Хармония';
+
+  @override
+  String get lookbookPairsHint =>
+      'Цветове, подбрани така, че две визии да не си пречат една до друга.';
+
+  @override
+  String get lookbookPairNote =>
+      'Сравнени със CIEDE2000, същата цветова математика като проверката на хармонията.';
+
+  @override
+  String get lookbookCollectionHint =>
+      'Всеки тоалет, цвят на червилото и на косата, с цените.';
+
+  @override
+  String get lookbookStoryHint =>
+      'Палитрата на групата и за кого е направен Wearmony.';
+
+  @override
+  String get lookbookChords => 'Цветовете на събитието';
+
+  @override
+  String get lookbookInclusionTitle => 'За всички';
+
+  @override
+  String get lookbookInclusionBody =>
+      'Виртуалното пробване обикновено се тества с изправени модели. Wearmony опитва седналите снимки отново с рамка за горната част на тялото и измерва колко добре работят, преди да публикува каквото и да е число.';
+
+  @override
+  String get lookbookMasthead => 'Брой „Хармония“ · Том I';
+
+  @override
+  String lookbookIssue(String year) {
+    return 'Брой $year';
+  }
 }

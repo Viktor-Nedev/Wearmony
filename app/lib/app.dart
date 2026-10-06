@@ -7,6 +7,8 @@ import 'router.dart';
 import 'state/session.dart';
 import 'theme.dart';
 
+import 'ui/confetti.dart';
+
 const _fallbackLocale = Locale('en');
 
 class WearmonyApp extends StatefulWidget {
@@ -59,6 +61,8 @@ class _WearmonyAppState extends State<WearmonyApp> {
             orElse: () => _fallbackLocale,
           ),
           routerConfig: _router,
+          builder: (context, child) =>
+              ConfettiCannon(child: child ?? const SizedBox.shrink()),
         ),
       ),
     );

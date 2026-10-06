@@ -69,9 +69,7 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
                   if (data.participants.isNotEmpty)
                     Reveal(
                       delay: const Duration(milliseconds: 260),
-                      child: _FrameBanner(
-                        onOpen: () => context.push('/e/${data.event.id}/frame'),
-                      ),
+                      child: _ShowcaseDeck(eventId: data.event.id),
                     ),
                   const SizedBox(height: 16),
                   if (data.participants.isEmpty)
@@ -175,69 +173,138 @@ class _BoardTabState extends State<BoardTab> with BoardLoader {
   }
 }
 
-/// The way into the group photo.
-class _FrameBanner extends StatelessWidget {
-  const _FrameBanner({required this.onOpen});
+/// Interactive showcase deck for the event: Runway, Group Photo, Moodboard, and Lookbook.
+class _ShowcaseDeck extends StatelessWidget {
+  const _ShowcaseDeck({required this.eventId});
 
-  final VoidCallback onOpen;
+  final String eventId;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final text = Theme.of(context).textTheme;
-    return Hoverable(
-      onTap: onOpen,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(18, 14, 14, 14),
-        decoration: BoxDecoration(
-          gradient: Brand.gradient,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Brand.berry.withValues(alpha: 0.3),
-              blurRadius: 24,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.18),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: const Icon(
-                Icons.photo_camera_front_outlined,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.frameOpen,
-                    style: text.titleMedium?.copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    l10n.frameOpenHint,
-                    style: text.bodySmall?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.88),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Icon(Icons.arrow_forward_rounded, color: Colors.white),
-          ],
+
+    final items = [
+      (
+        icon: Icons.stadium_outlined,
+        title: l10n.showcaseDeckRunway,
+        subtitle: l10n.showcaseDeckRunwayHint,
+        path: '/e/$eventId/runway',
+        gradient: const LinearGradient(
+          colors: [Color(0xFF5A1E48), Brand.berry],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       ),
+      (
+        icon: Icons.photo_camera_front_outlined,
+        title: l10n.frameOpen,
+        subtitle: l10n.showcaseDeckFrameHint,
+        path: '/e/$eventId/frame',
+        gradient: Brand.gradient,
+      ),
+      (
+        icon: Icons.lens_blur_rounded,
+        title: l10n.showcaseDeckMoodboard,
+        subtitle: l10n.showcaseDeckMoodboardHint,
+        path: '/e/$eventId/moodboard',
+        gradient: const LinearGradient(
+          colors: [Color(0xFF382245), Color(0xFF6B4278)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      (
+        icon: Icons.auto_stories_outlined,
+        title: l10n.showcaseDeckLookbook,
+        subtitle: l10n.showcaseDeckLookbookHint,
+        path: '/e/$eventId/lookbook',
+        gradient: const LinearGradient(
+          colors: [Color(0xFF2E2242), Color(0xFF4A3464)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= 720;
+        final cardWidth = wide
+            ? (constraints.maxWidth - 14) / 2
+            : constraints.maxWidth;
+
+        return Wrap(
+          spacing: 14,
+          runSpacing: 14,
+          children: [
+            for (final item in items)
+              SizedBox(
+                width: cardWidth,
+                child: Hoverable(
+                  onTap: () => context.push(item.path),
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
+                    decoration: BoxDecoration(
+                      gradient: item.gradient,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Brand.berry.withValues(alpha: 0.25),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.18),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Icon(item.icon, color: Colors.white, size: 22),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.title,
+                                style: text.titleMedium?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                item.subtitle,
+                                style: text.bodySmall?.copyWith(
+                                  color: Colors.white.withValues(alpha: 0.88),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

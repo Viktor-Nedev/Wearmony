@@ -671,4 +671,94 @@ void main() {
       'Едно до друго това може да изглежда като грешка: изберете точно същия цвят или ясно различен.',
     );
   });
+
+  testWidgets('the showcase deck offers runway, moodboard, and lookbook', (
+    tester,
+  ) async {
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=board',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('3D Runway'), findsOneWidget);
+    expect(find.text('Group photo'), findsOneWidget);
+    expect(find.text('Moodboard'), findsOneWidget);
+    expect(find.text('Lookbook'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('runway screen shows 3D catwalk and model navigation', (
+    tester,
+  ) async {
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1/runway',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Virtual Runway'), findsOneWidget);
+    expect(find.text('Solo'), findsOneWidget);
+    expect(find.text('Partners'), findsOneWidget);
+    expect(find.text('Finale'), findsOneWidget);
+    expect(find.text('Maria'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('moodboard screen shows chromatic wheel and swatch deck', (
+    tester,
+  ) async {
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1/moodboard',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Color Moodboard'), findsOneWidget);
+    expect(find.text('Chromatic Harmony Wheel'), findsOneWidget);
+    expect(find.text('Group Color Palette'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('lookbook screen displays magazine cover and editorial spreads', (
+    tester,
+  ) async {
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => eventJson(),
+      'GET /api/events/e1/board': (_) => boardJson(),
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1/lookbook',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Digital Lookbook'), findsOneWidget);
+    expect(find.text('Cover'), findsOneWidget);
+    expect(find.text('Partners'), findsOneWidget);
+    expect(find.text('Collection'), findsOneWidget);
+    expect(find.text('Color Story'), findsOneWidget);
+    expect(find.text('WEARMONY'), findsOneWidget);
+    await unmount(tester);
+  });
 }

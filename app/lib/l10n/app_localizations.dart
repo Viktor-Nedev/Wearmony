@@ -3030,6 +3030,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Four colors chosen. Remove one to pick another.'**
   String get dressCodeFull;
+
+  /// No description provided for @runwayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtual Runway'**
+  String get runwayTitle;
+
+  /// No description provided for @runwaySolo.
+  ///
+  /// In en, this message translates to:
+  /// **'Solo'**
+  String get runwaySolo;
+
+  /// No description provided for @runwayDuo.
+  ///
+  /// In en, this message translates to:
+  /// **'Partners'**
+  String get runwayDuo;
+
+  /// No description provided for @runwayFinale.
+  ///
+  /// In en, this message translates to:
+  /// **'Finale'**
+  String get runwayFinale;
+
+  /// No description provided for @runwayPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-walk'**
+  String get runwayPlay;
+
+  /// No description provided for @runwayPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get runwayPause;
+
+  /// No description provided for @runwayFixNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix on stage'**
+  String get runwayFixNow;
+
+  /// No description provided for @moodboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Moodboard'**
+  String get moodboardTitle;
+
+  /// No description provided for @moodboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the group\'s color chords, swatches and color temperature.'**
+  String get moodboardSubtitle;
+
+  /// No description provided for @moodboardExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export palette'**
+  String get moodboardExport;
+
+  /// No description provided for @moodboardWheelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chromatic Harmony Wheel'**
+  String get moodboardWheelTitle;
+
+  /// No description provided for @moodboardWheelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a node to inspect that person\'s exact CIELAB colors and harmony pairings.'**
+  String get moodboardWheelHint;
+
+  /// No description provided for @moodboardInspectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Inspector'**
+  String get moodboardInspectTitle;
+
+  /// No description provided for @moodboardInspectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a person on the wheel above to examine their extracted shade and pairwise relations.'**
+  String get moodboardInspectHint;
+
+  /// No description provided for @moodboardPairRelations.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony pairings'**
+  String get moodboardPairRelations;
+
+  /// No description provided for @moodboardPaletteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Color Palette'**
+  String get moodboardPaletteTitle;
+
+  /// No description provided for @moodboardNoSwatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No garments selected yet.'**
+  String get moodboardNoSwatches;
+
+  /// No description provided for @moodboardVibeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Aesthetic & Cohesion Vibe'**
+  String get moodboardVibeTitle;
+
+  /// No description provided for @moodboardCohesionScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Group harmony (weakest pair)'**
+  String get moodboardCohesionScore;
+
+  /// No description provided for @moodboardCohesionHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent color cohesion across the whole group.'**
+  String get moodboardCohesionHigh;
+
+  /// No description provided for @moodboardCohesionMed.
+  ///
+  /// In en, this message translates to:
+  /// **'Good color coordination with minor contrast variations.'**
+  String get moodboardCohesionMed;
+
+  /// No description provided for @moodboardCohesionLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Notable near-miss color clashes to adjust.'**
+  String get moodboardCohesionLow;
+
+  /// No description provided for @moodboardTempBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Temperature Balance'**
+  String get moodboardTempBalance;
+
+  /// No description provided for @moodboardWarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm (Reds / Roses / Golds)'**
+  String get moodboardWarm;
+
+  /// No description provided for @moodboardCool.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool (Blues / Teals / Greens)'**
+  String get moodboardCool;
+
+  /// No description provided for @lookbookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital Lookbook'**
+  String get lookbookTitle;
+
+  /// No description provided for @lookbookExportSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Export spread as image'**
+  String get lookbookExportSpread;
+
+  /// No description provided for @lookbookSpreadCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get lookbookSpreadCover;
+
+  /// No description provided for @lookbookSpreadPairs.
+  ///
+  /// In en, this message translates to:
+  /// **'Partners'**
+  String get lookbookSpreadPairs;
+
+  /// No description provided for @lookbookSpreadCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection'**
+  String get lookbookSpreadCollection;
+
+  /// No description provided for @lookbookSpreadStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Color Story'**
+  String get lookbookSpreadStory;
+
+  /// No description provided for @showcaseDeckTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive Showcase'**
+  String get showcaseDeckTitle;
+
+  /// No description provided for @showcaseDeckRunway.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Runway'**
+  String get showcaseDeckRunway;
+
+  /// No description provided for @showcaseDeckRunwayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Catwalk fashion show with stage lights & live fixes'**
+  String get showcaseDeckRunwayHint;
+
+  /// No description provided for @showcaseDeckFrame.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Photo'**
+  String get showcaseDeckFrame;
+
+  /// No description provided for @showcaseDeckFrameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone together on a painted backdrop'**
+  String get showcaseDeckFrameHint;
+
+  /// No description provided for @showcaseDeckMoodboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Moodboard'**
+  String get showcaseDeckMoodboard;
+
+  /// No description provided for @showcaseDeckMoodboardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Color wheel and swatch palette'**
+  String get showcaseDeckMoodboardHint;
+
+  /// No description provided for @showcaseDeckLookbook.
+  ///
+  /// In en, this message translates to:
+  /// **'Lookbook'**
+  String get showcaseDeckLookbook;
+
+  /// No description provided for @showcaseDeckLookbookHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Glossy editorial fashion magazine spread'**
+  String get showcaseDeckLookbookHint;
+
+  /// No description provided for @lookbookSeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmony'**
+  String get lookbookSeal;
+
+  /// No description provided for @lookbookPairsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Colors chosen so no two looks clash side by side.'**
+  String get lookbookPairsHint;
+
+  /// No description provided for @lookbookPairNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Compared with CIEDE2000, the same color math as the harmony check.'**
+  String get lookbookPairNote;
+
+  /// No description provided for @lookbookCollectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Every outfit, lip color and hair color, with prices.'**
+  String get lookbookCollectionHint;
+
+  /// No description provided for @lookbookStoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The group\'s palette, and who Wearmony is built for.'**
+  String get lookbookStoryHint;
+
+  /// No description provided for @lookbookChords.
+  ///
+  /// In en, this message translates to:
+  /// **'Event colors'**
+  String get lookbookChords;
+
+  /// No description provided for @lookbookInclusionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Made for everyone'**
+  String get lookbookInclusionTitle;
+
+  /// No description provided for @lookbookInclusionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtual try-on is usually tested on standing models. Wearmony retries seated photos with upper-body framing and measures how well they work before publishing any number.'**
+  String get lookbookInclusionBody;
+
+  /// No description provided for @lookbookMasthead.
+  ///
+  /// In en, this message translates to:
+  /// **'The harmony issue · Vol. I'**
+  String get lookbookMasthead;
+
+  /// No description provided for @lookbookIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue {year}'**
+  String lookbookIssue(String year);
 }
 
 class _AppLocalizationsDelegate

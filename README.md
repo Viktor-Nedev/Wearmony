@@ -29,6 +29,11 @@ Try-on is also usually tested on standing models. The YouCam AI Clothes document
 
 The group board shows everyone side by side ("7 of 8 rendered"), per-person and total budget, and the weakest color pair in plain words. On top of that:
 
+- **Showcase**: from the group board, four ways to present the group: a virtual runway, the group photo, a color moodboard and a lookbook.
+- **Virtual runway**: participants walk a lit catwalk one at a time, as partners or in a finale lineup, and a near-miss can be fixed right on stage.
+- **Color moodboard**: the group's outfit colors on a hue wheel with one chord per pair (green for a match, pulsing red for a near-miss, gold for complementary), swatch cards with their hex codes, the warm and cool balance, and a PNG export.
+- **Lookbook**: four editorial spreads (cover, partners, the whole collection with prices, the color story), each saved as an image.
+- **Confetti** when a near-miss is fixed or a look is locked.
 - **How to fix it**: for a near-miss, the harmony engine tries every catalogue item on the people involved and keeps only the swaps that remove the clash, each with its new relation, the group score before and after, and the price difference. A participant switches with one tap; a suggestion for someone else can be copied and sent to them.
 - **Group photo**: everyone's current look in one frame on a painted backdrop (ballroom, stage, garden or studio), partners side by side, with the harmony score and the group's palette. Saved as a PNG on the web, shared from Android, and it keeps the labels that say what is simulated.
 - **Harmony map**: the group as a ring of outfit colors with one line per pair, colored by relation; the weakest near-miss pulses.
@@ -178,12 +183,12 @@ Requirements: Node 22 and Flutter 3.35+. No accounts: the backend defaults to in
 ```bash
 cd api
 npm install
-npm test                 # 129 tests: CIEDE2000, extraction, rules, API flows, ledger, YouCam client
+npm test                 # 159 tests: CIEDE2000, extraction, rules, API flows, ledger, YouCam client
 npm run dev              # http://localhost:8787/api/health
 
 cd ../app                # second terminal
 flutter pub get
-flutter test
+flutter test             # 34 tests: widgets, navigation, runway, moodboard, lookbook, accessibility
 flutter run -d chrome    # then press "Open the demo event"
 ```
 

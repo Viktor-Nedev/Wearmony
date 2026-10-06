@@ -1743,4 +1743,169 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dressCodeFull => 'Four colors chosen. Remove one to pick another.';
+
+  @override
+  String get runwayTitle => 'Virtual Runway';
+
+  @override
+  String get runwaySolo => 'Solo';
+
+  @override
+  String get runwayDuo => 'Partners';
+
+  @override
+  String get runwayFinale => 'Finale';
+
+  @override
+  String get runwayPlay => 'Auto-walk';
+
+  @override
+  String get runwayPause => 'Pause';
+
+  @override
+  String get runwayFixNow => 'Fix on stage';
+
+  @override
+  String get moodboardTitle => 'Color Moodboard';
+
+  @override
+  String get moodboardSubtitle =>
+      'Explore the group\'s color chords, swatches and color temperature.';
+
+  @override
+  String get moodboardExport => 'Export palette';
+
+  @override
+  String get moodboardWheelTitle => 'Chromatic Harmony Wheel';
+
+  @override
+  String get moodboardWheelHint =>
+      'Tap a node to inspect that person\'s exact CIELAB colors and harmony pairings.';
+
+  @override
+  String get moodboardInspectTitle => 'Color Inspector';
+
+  @override
+  String get moodboardInspectHint =>
+      'Select a person on the wheel above to examine their extracted shade and pairwise relations.';
+
+  @override
+  String get moodboardPairRelations => 'Harmony pairings';
+
+  @override
+  String get moodboardPaletteTitle => 'Group Color Palette';
+
+  @override
+  String get moodboardNoSwatches => 'No garments selected yet.';
+
+  @override
+  String get moodboardVibeTitle => 'Aesthetic & Cohesion Vibe';
+
+  @override
+  String get moodboardCohesionScore => 'Group harmony (weakest pair)';
+
+  @override
+  String get moodboardCohesionHigh =>
+      'Excellent color cohesion across the whole group.';
+
+  @override
+  String get moodboardCohesionMed =>
+      'Good color coordination with minor contrast variations.';
+
+  @override
+  String get moodboardCohesionLow =>
+      'Notable near-miss color clashes to adjust.';
+
+  @override
+  String get moodboardTempBalance => 'Color Temperature Balance';
+
+  @override
+  String get moodboardWarm => 'Warm (Reds / Roses / Golds)';
+
+  @override
+  String get moodboardCool => 'Cool (Blues / Teals / Greens)';
+
+  @override
+  String get lookbookTitle => 'Digital Lookbook';
+
+  @override
+  String get lookbookExportSpread => 'Export spread as image';
+
+  @override
+  String get lookbookSpreadCover => 'Cover';
+
+  @override
+  String get lookbookSpreadPairs => 'Partners';
+
+  @override
+  String get lookbookSpreadCollection => 'Collection';
+
+  @override
+  String get lookbookSpreadStory => 'Color Story';
+
+  @override
+  String get showcaseDeckTitle => 'Interactive Showcase';
+
+  @override
+  String get showcaseDeckRunway => '3D Runway';
+
+  @override
+  String get showcaseDeckRunwayHint =>
+      'Catwalk fashion show with stage lights & live fixes';
+
+  @override
+  String get showcaseDeckFrame => 'Group Photo';
+
+  @override
+  String get showcaseDeckFrameHint => 'Everyone together on a painted backdrop';
+
+  @override
+  String get showcaseDeckMoodboard => 'Moodboard';
+
+  @override
+  String get showcaseDeckMoodboardHint => 'Color wheel and swatch palette';
+
+  @override
+  String get showcaseDeckLookbook => 'Lookbook';
+
+  @override
+  String get showcaseDeckLookbookHint =>
+      'Glossy editorial fashion magazine spread';
+
+  @override
+  String get lookbookSeal => 'Harmony';
+
+  @override
+  String get lookbookPairsHint =>
+      'Colors chosen so no two looks clash side by side.';
+
+  @override
+  String get lookbookPairNote =>
+      'Compared with CIEDE2000, the same color math as the harmony check.';
+
+  @override
+  String get lookbookCollectionHint =>
+      'Every outfit, lip color and hair color, with prices.';
+
+  @override
+  String get lookbookStoryHint =>
+      'The group\'s palette, and who Wearmony is built for.';
+
+  @override
+  String get lookbookChords => 'Event colors';
+
+  @override
+  String get lookbookInclusionTitle => 'Made for everyone';
+
+  @override
+  String get lookbookInclusionBody =>
+      'Virtual try-on is usually tested on standing models. Wearmony retries seated photos with upper-body framing and measures how well they work before publishing any number.';
+
+  @override
+  String get lookbookMasthead => 'The harmony issue · Vol. I';
+
+  @override
+  String lookbookIssue(String year) {
+    return 'Issue $year';
+  }
 }

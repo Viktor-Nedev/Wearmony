@@ -2,6 +2,9 @@ import 'package:go_router/go_router.dart';
 
 import 'features/event/event_shell.dart';
 import 'features/event/group_frame_screen.dart';
+import 'features/event/lookbook_screen.dart';
+import 'features/event/moodboard_screen.dart';
+import 'features/event/runway_screen.dart';
 import 'features/inclusion/inclusion_screen.dart';
 import 'features/landing/landing_screen.dart';
 import 'features/misc/not_found_screen.dart';
@@ -63,6 +66,24 @@ GoRouter buildRouter({String initialLocation = '/'}) => GoRouter(
           path: 'frame',
           builder: (context, state) => SessionGate(
             child: GroupFrameScreen(eventId: state.pathParameters['eventId']!),
+          ),
+        ),
+        GoRoute(
+          path: 'runway',
+          builder: (context, state) => SessionGate(
+            child: RunwayScreen(eventId: state.pathParameters['eventId']!),
+          ),
+        ),
+        GoRoute(
+          path: 'moodboard',
+          builder: (context, state) => SessionGate(
+            child: MoodboardScreen(eventId: state.pathParameters['eventId']!),
+          ),
+        ),
+        GoRoute(
+          path: 'lookbook',
+          builder: (context, state) => SessionGate(
+            child: LookbookScreen(eventId: state.pathParameters['eventId']!),
           ),
         ),
         GoRoute(
