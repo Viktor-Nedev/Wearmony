@@ -127,6 +127,8 @@ class ApiClient {
     bool clearBudgets = false,
     DateTime? eventDate,
     bool clearDate = false,
+    DateTime? lockBy,
+    bool clearLockBy = false,
     List<String>? dressCode,
   }) async {
     final body = <String, dynamic>{
@@ -137,6 +139,8 @@ class ApiClient {
       if (budgetTotal != null || clearBudgets) 'budgetTotal': budgetTotal,
       if (eventDate != null) 'eventDate': formatDay(eventDate),
       if (clearDate && eventDate == null) 'eventDate': null,
+      if (lockBy != null) 'lockBy': formatDay(lockBy),
+      if (clearLockBy && lockBy == null) 'lockBy': null,
     };
     return EventInfo.fromJson(
       await _send('PATCH', 'events/$eventId', body: body),

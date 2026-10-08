@@ -808,6 +808,31 @@ void main() {
     await unmount(tester);
   });
 
+  testWidgets('the board counts down to the day looks are due', (tester) async {
+    tester.view.physicalSize = const Size(1400, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final due = DateTime.now().add(const Duration(days: 10));
+    final day =
+        '${due.year}-${due.month.toString().padLeft(2, '0')}-${due.day.toString().padLeft(2, '0')}';
+    Map<String, Object?> event() => {...eventJson(), 'lockBy': day};
+    final backend = FakeBackend({
+      'GET /api/config': (_) => config(),
+      'GET /api/events/e1': (_) => event(),
+      'GET /api/events/e1/board': (_) => {...boardJson(), 'event': event()},
+    });
+    await pumpApp(
+      tester,
+      backend,
+      location: '/e/e1?tab=board',
+      locale: const Locale('en'),
+    );
+
+    expect(find.text('Looks due in 10 days'), findsOneWidget);
+    expect(find.textContaining('2 looks still to lock'), findsOneWidget);
+    await unmount(tester);
+  });
+
   testWidgets('the showcase deck offers runway, moodboard, and lookbook', (
     tester,
   ) async {

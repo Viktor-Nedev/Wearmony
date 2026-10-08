@@ -31,6 +31,7 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
     text: _format(widget.event.budgetTotal),
   );
   late DateTime? _date = widget.event.eventDate;
+  late DateTime? _lockBy = widget.event.lockBy;
   late List<String> _dressCode = [...widget.event.dressCode];
 
   @override
@@ -67,6 +68,8 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
             _perPerson.text.trim().isEmpty || _total.text.trim().isEmpty,
         eventDate: _date,
         clearDate: _date == null,
+        lockBy: _lockBy,
+        clearLockBy: _lockBy == null,
         dressCode: _dressCode,
       ),
       success: l10n.saved,
@@ -172,6 +175,16 @@ class _SettingsTabState extends State<SettingsTab> with BoardLoader {
                       EventDateField(
                         value: _date,
                         onChanged: (day) => setState(() => _date = day),
+                      ),
+                      const SizedBox(height: 12),
+                      // Looks are due on or before the event day; the server checks it too.
+                      EventDateField(
+                        value: _lockBy,
+                        label: l10n.lockByLabel,
+                        emptyText: l10n.lockByNone,
+                        icon: Icons.lock_clock_outlined,
+                        lastDate: _date,
+                        onChanged: (day) => setState(() => _lockBy = day),
                       ),
                       const SizedBox(height: 12),
                       Row(

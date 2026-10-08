@@ -2128,4 +2128,59 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get featureShowcaseBody =>
       'Виртуален подиум, цветови мудборд и лукбук, за да представите визиите на групата.';
+
+  @override
+  String get lockByLabel => 'Срок за визиите';
+
+  @override
+  String get lockByNone => 'Без срок';
+
+  @override
+  String lockByChip(String when) {
+    return 'Срок за визиите: $when';
+  }
+
+  @override
+  String lockByTooltip(String day) {
+    return 'Всички заключват визиите си до $day';
+  }
+
+  @override
+  String deadlineDue(String day, String when) {
+    return 'Срок за визиите: $day · $when';
+  }
+
+  @override
+  String deadlineLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Остават $count визии за заключване',
+      one: 'Остава 1 визия за заключване',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deadlineAllLocked => 'Всички заключиха визиите си.';
+
+  @override
+  String deadlinePassed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Срокът мина, а $count визии още не са заключени.',
+      one: 'Срокът мина, а 1 визия още не е заключена.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String lockYourLookBy(String day, String when) {
+    return 'Заключи визията си до $day ($when).';
+  }
+
+  @override
+  String get errorLockAfterEvent =>
+      'Срокът за визиите трябва да е в деня на събитието или преди него.';
 }

@@ -112,23 +112,22 @@ class _ColorVisionCardState extends State<ColorVisionCard> {
               style: text.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
             ),
             const SizedBox(height: 14),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SegmentedButton<String>(
-                showSelectedIcon: false,
-                segments: [
-                  for (final mode in _modes)
-                    ButtonSegment(
-                      value: mode,
-                      label: Text(_modeLabel(l10n, mode)),
-                      icon: hasAlike(mode)
-                          ? const Icon(Icons.error_outline, size: 16)
-                          : null,
-                    ),
-                ],
-                selected: {_mode},
-                onSelectionChanged: (s) => setState(() => _mode = s.first),
-              ),
+            // Chips wrap on narrow screens, so every view stays one tap away.
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final mode in _modes)
+                  ChoiceChip(
+                    label: Text(_modeLabel(l10n, mode)),
+                    selected: _mode == mode,
+                    showCheckmark: false,
+                    avatar: hasAlike(mode)
+                        ? const Icon(Icons.error_outline, size: 16)
+                        : null,
+                    onSelected: (_) => setState(() => _mode = mode),
+                  ),
+              ],
             ),
             const SizedBox(height: 8),
             AnimatedSwitcher(

@@ -33,6 +33,8 @@ export interface EventRecord {
   currency: string;
   /** Day of the event (YYYY-MM-DD) for the countdown, if the organizer set it. */
   eventDate: string | null;
+  /** Day (YYYY-MM-DD) by which everyone should lock their look; on or before eventDate. */
+  lockBy: string | null;
   /** Dress code: up to four colors (#RRGGBB) the group is asked to wear; empty for none. */
   dressCode: string[];
   /** Seeded demo event: participants and renders are illustrations. */

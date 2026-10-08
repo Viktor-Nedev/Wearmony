@@ -3642,6 +3642,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A virtual runway, a color moodboard and a lookbook to present the group’s looks.'**
   String get featureShowcaseBody;
+
+  /// No description provided for @lockByLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks due'**
+  String get lockByLabel;
+
+  /// No description provided for @lockByNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No deadline'**
+  String get lockByNone;
+
+  /// No description provided for @lockByChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks due {when}'**
+  String lockByChip(String when);
+
+  /// No description provided for @lockByTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone locks their look by {day}'**
+  String lockByTooltip(String day);
+
+  /// No description provided for @deadlineDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks due {day} · {when}'**
+  String deadlineDue(String day, String when);
+
+  /// No description provided for @deadlineLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 look still to lock} other{{count} looks still to lock}}'**
+  String deadlineLeft(int count);
+
+  /// No description provided for @deadlineAllLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone has locked their look.'**
+  String get deadlineAllLocked;
+
+  /// No description provided for @deadlinePassed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{The deadline has passed and 1 look is not locked yet.} other{The deadline has passed and {count} looks are not locked yet.}}'**
+  String deadlinePassed(int count);
+
+  /// No description provided for @lockYourLookBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock your look by {day} ({when}).'**
+  String lockYourLookBy(String day, String when);
+
+  /// No description provided for @errorLockAfterEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks must be due on or before the day of the event.'**
+  String get errorLockAfterEvent;
 }
 
 class _AppLocalizationsDelegate

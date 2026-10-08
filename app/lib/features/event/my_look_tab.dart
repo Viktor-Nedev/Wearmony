@@ -822,6 +822,30 @@ class _SummaryCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 18),
+            if (!look.locked && event.lockBy != null) ...[
+              Row(
+                children: [
+                  Icon(
+                    Icons.lock_clock_outlined,
+                    size: 18,
+                    color: daysUntil(event.lockBy!) <= 3
+                        ? Brand.warning
+                        : scheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.lockYourLookBy(
+                        formatEventDay(context, event.lockBy!),
+                        countdownLabel(l10n, event.lockBy!),
+                      ),
+                      style: text.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+            ],
             if (look.locked) ...[
               Reveal(
                 child: NoticeBar(l10n.lockedNote, icon: Icons.lock_outline),

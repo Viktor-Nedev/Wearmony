@@ -281,6 +281,68 @@ class _PersonBudget extends StatelessWidget {
 }
 
 /// Who is ready for the night: photo, look, preview and locked, per person.
+/// When looks are due, how many are still open, and a gentle pulse when it is close.
+class _Deadline extends StatelessWidget {
+  const _Deadline({required this.due, required this.unlocked});
+
+  final DateTime due;
+  final int unlocked;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    final days = daysUntil(due);
+    const red = Color(0xFFC0392B);
+    final (color, icon, message) = unlocked == 0
+        ? (Brand.success, Icons.celebration_outlined, l10n.deadlineAllLocked)
+        : days < 0
+        ? (red, Icons.alarm_off_outlined, l10n.deadlinePassed(unlocked))
+        : (
+            days <= 3 ? Brand.warning : Theme.of(context).colorScheme.primary,
+            Icons.lock_clock_outlined,
+            '${l10n.deadlineDue(formatEventDay(context, due), countdownLabel(l10n, due))}\n${l10n.deadlineLeft(unlocked)}',
+          );
+    final row = AnimatedContainer(
+      duration: Motion.medium,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: color),
+          const SizedBox(width: 10),
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: Motion.medium,
+              layoutBuilder: (current, previous) => Stack(
+                alignment: Alignment.centerLeft,
+                children: [...previous, ?current],
+              ),
+              child: Text(
+                message,
+                key: ValueKey(message),
+                style: text.bodySmall?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    // Close to the deadline with looks still open: a soft pulse draws the eye.
+    return unlocked > 0 && days >= 0 && days <= 3
+        ? PulseGlow(color: color, radius: 14, child: row)
+        : row;
+  }
+}
+
 class ReadinessTracker extends StatelessWidget {
   const ReadinessTracker({super.key, required this.board});
 
@@ -340,6 +402,13 @@ class ReadinessTracker extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             AnimatedBar(value: share, color: Brand.success),
+            if (board.event.lockBy case final due? when people.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              _Deadline(
+                due: due,
+                unlocked: people.where((p) => !p.look.locked).length,
+              ),
+            ],
             const SizedBox(height: 16),
             Row(
               children: [

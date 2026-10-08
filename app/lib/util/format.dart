@@ -66,6 +66,8 @@ String errorText(BuildContext context, Object error) {
         return l10n.vendorExpired;
       case 'link_not_found':
         return l10n.vendorNotFound;
+      case 'lock_after_event':
+        return l10n.errorLockAfterEvent;
       case 'photo_rejected':
         final issues =
             (error.details is Map ? (error.details as Map)['issues'] : null)

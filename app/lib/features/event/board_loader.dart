@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../api/models.dart';
 import '../../app_scope.dart';
+import '../../ui/confetti.dart';
 
 /// Loads the group board and refreshes it while the widget is on screen,
 /// so renders that finish elsewhere show up without a manual reload.
@@ -18,6 +19,7 @@ mixin BoardLoader<T extends StatefulWidget> on State<T> {
   Timer? _timer;
   Timer? _celebration;
   int? _lastWarnings;
+  bool? _allLocked;
 
   String get boardEventId;
 
@@ -46,6 +48,14 @@ mixin BoardLoader<T extends StatefulWidget> on State<T> {
       final warnings = result.harmony.warnings.length;
       final fixed = (_lastWarnings ?? 0) > 0 && warnings == 0;
       _lastWarnings = warnings;
+      // Confetti when the last open look gets locked (not on the first load).
+      final allLocked =
+          result.participants.length >= 2 &&
+          result.participants.every((p) => p.look.locked);
+      if (_allLocked == false && allLocked) {
+        ConfettiCannon.of(context).burst(count: 90);
+      }
+      _allLocked = allLocked;
       setState(() {
         board = result;
         boardError = null;

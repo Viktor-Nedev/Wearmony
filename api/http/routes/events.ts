@@ -52,6 +52,7 @@ const CreateEvent = z.object({
   budgetTotal: money,
   currency: z.string().regex(/^[A-Z]{3}$/).default('EUR'),
   eventDate,
+  lockBy: eventDate,
   dressCode,
 });
 
@@ -60,8 +61,16 @@ const UpdateEvent = z.object({
   budgetPerPerson: money,
   budgetTotal: money,
   eventDate,
+  lockBy: eventDate,
   dressCode,
 });
+
+/** Looks are due on or before the event day (YYYY-MM-DD compares as text). */
+function checkLockBy(eventDay: string | null, lockBy: string | null) {
+  if (eventDay && lockBy && lockBy > eventDay) {
+    throw new HttpError(400, 'lock_after_event', 'Looks must be due on or before the day of the event.');
+  }
+}
 
 const Join = z.object({ code: z.string().min(4).max(12), displayName });
 
@@ -96,10 +105,12 @@ events.post('/events', requireUser, async (c) => {
     budgetTotal: body.budgetTotal ?? null,
     currency: body.currency,
     eventDate: body.eventDate ?? null,
+    lockBy: body.lockBy ?? null,
     dressCode: body.dressCode ?? [],
     demo: false,
     createdAt: iso(now()),
   };
+  checkLockBy(event.eventDate, event.lockBy);
   await repo.createEvent(event);
   return c.json(eventDto(event, { isOrganizer: true, isParticipant: false }), 201);
 });
@@ -159,6 +170,10 @@ events.get('/events/:eventId', requireUser, async (c) => {
 events.patch('/events/:eventId', requireUser, async (c) => {
   const { event } = await loadOrganizerEvent(c, c.req.param('eventId'));
   const body = await parseJson(c, UpdateEvent);
+  checkLockBy(
+    body.eventDate !== undefined ? body.eventDate : event.eventDate,
+    body.lockBy !== undefined ? body.lockBy : event.lockBy,
+  );
   await c.var.services.repo.updateEvent(event.id, body);
   const updated = (await c.var.services.repo.getEvent(event.id))!;
   const participant = await c.var.services.repo.getParticipant(event.id, c.var.userId);

@@ -45,6 +45,7 @@ The group board shows everyone side by side ("7 of 8 rendered"), per-person and 
 - **Dress code**: the organizer picks up to four colors; each outfit is placed in, close to or outside the dress code by its distance to the nearest color, shown on every card, as a group stat and in the harmony report.
 - **Person details**: tapping someone on the board opens their look in detail, with prices and how their colors sit next to each other person.
 - **Event day**: an optional date with a countdown in the event header.
+- **Looks due**: an optional day, on or before the event, by which everyone locks their look. The header and the readiness card count down to it, show how many looks are still open (with a soft pulse in the last three days), and confetti marks the moment the last look is locked.
 
 English and Bulgarian throughout.
 

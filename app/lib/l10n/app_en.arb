@@ -609,5 +609,21 @@
   "featureVisionTitle": "Color vision",
   "featureVisionBody": "See the group as people with color vision deficiencies might, and which outfits would look alike to them.",
   "featureShowcaseTitle": "Showcase",
-  "featureShowcaseBody": "A virtual runway, a color moodboard and a lookbook to present the group’s looks."
+  "featureShowcaseBody": "A virtual runway, a color moodboard and a lookbook to present the group’s looks.",
+  "lockByLabel": "Looks due",
+  "lockByNone": "No deadline",
+  "lockByChip": "Looks due {when}",
+  "@lockByChip": {"placeholders":{"when":{"type":"String"}}},
+  "lockByTooltip": "Everyone locks their look by {day}",
+  "@lockByTooltip": {"placeholders":{"day":{"type":"String"}}},
+  "deadlineDue": "Looks due {day} · {when}",
+  "@deadlineDue": {"placeholders":{"day":{"type":"String"},"when":{"type":"String"}}},
+  "deadlineLeft": "{count, plural, =1{1 look still to lock} other{{count} looks still to lock}}",
+  "@deadlineLeft": {"placeholders":{"count":{"type":"int"}}},
+  "deadlineAllLocked": "Everyone has locked their look.",
+  "deadlinePassed": "{count, plural, =1{The deadline has passed and 1 look is not locked yet.} other{The deadline has passed and {count} looks are not locked yet.}}",
+  "@deadlinePassed": {"placeholders":{"count":{"type":"int"}}},
+  "lockYourLookBy": "Lock your look by {day} ({when}).",
+  "@lockYourLookBy": {"placeholders":{"day":{"type":"String"},"when":{"type":"String"}}},
+  "errorLockAfterEvent": "Looks must be due on or before the day of the event."
 }

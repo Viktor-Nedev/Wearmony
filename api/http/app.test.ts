@@ -89,6 +89,20 @@ describe('events', () => {
     expect(cleared.json.eventDate).toBeNull();
   });
 
+  it('keeps a day when looks are due, never after the event', async () => {
+    const t = await eventWithTwoParticipants();
+    const patch = (body: object) => t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, body);
+    expect((await patch({ eventDate: '2027-05-23', lockBy: '2027-05-09' })).json).toMatchObject({
+      eventDate: '2027-05-23',
+      lockBy: '2027-05-09',
+    });
+    expect((await patch({ lockBy: '2027-05-24' })).json.error).toBe('lock_after_event');
+    expect((await patch({ eventDate: '2027-05-01' })).json.error).toBe('lock_after_event');
+    expect((await patch({ lockBy: '2027-02-30' })).status).toBe(400);
+    expect((await patch({ lockBy: null })).json.lockBy).toBeNull();
+    expect((await t.call('GET', `/events/${t.eventId}`, ANA)).json.lockBy).toBeNull();
+  });
+
   it('keeps a dress code of up to four colors and reports who fits it', async () => {
     const t = await eventWithTwoParticipants();
     const set = await t.call('PATCH', `/events/${t.eventId}`, ORGANIZER, { dressCode: ['#1f2a44', '#1F2A44', '#e9d8b8'] });
@@ -499,6 +513,7 @@ describe('demo event', () => {
     expect(me).toMatchObject({ displayName: 'Guest', hasPhoto: true });
     expect((await t.call('GET', `/events/${demo.json.id}`, OUTSIDER)).json.me.consentAt).toBeNull();
     expect(board.event.eventDate).toMatch(/^\d{4}-05-23$/);
+    expect(board.event.lockBy).toBe(`${board.event.eventDate.slice(0, 4)}-05-09`);
     // Recent activity, newest first, all in the past.
     expect(board.activity.length).toBeGreaterThan(0);
     const times = board.activity.map((a: any) => Date.parse(a.at));

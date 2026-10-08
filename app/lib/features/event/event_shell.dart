@@ -140,6 +140,20 @@ class _EventShellState extends State<EventShell> {
                         ),
                       ),
                     ],
+                    if (event.lockBy != null) ...[
+                      const SizedBox(width: 6),
+                      Tooltip(
+                        message: l10n.lockByTooltip(
+                          formatEventDay(context, event.lockBy!),
+                        ),
+                        child: _HeaderChip(
+                          icon: Icons.lock_clock_outlined,
+                          label: l10n.lockByChip(
+                            countdownLabel(l10n, event.lockBy!),
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(width: 6),
                     _HeaderChip(
                       icon: Icons.tag,

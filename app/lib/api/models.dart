@@ -71,6 +71,7 @@ class EventInfo {
     required this.isOrganizer,
     required this.isParticipant,
     this.eventDate,
+    this.lockBy,
     this.dressCode = const [],
     this.me,
   });
@@ -87,6 +88,7 @@ class EventInfo {
     isOrganizer: json['isOrganizer'] == true,
     isParticipant: json['isParticipant'] == true,
     eventDate: parseDay(json['eventDate']),
+    lockBy: parseDay(json['lockBy']),
     dressCode: _strings(json['dressCode']),
     me: json['me'] is Json ? Participant.fromJson(json['me'] as Json) : null,
   );
@@ -104,6 +106,9 @@ class EventInfo {
 
   /// The day of the event (local midnight), if the organizer set one.
   final DateTime? eventDate;
+
+  /// The day by which everyone should lock their look, if the organizer set one.
+  final DateTime? lockBy;
 
   /// Up to four #RRGGBB colors the group is asked to wear.
   final List<String> dressCode;

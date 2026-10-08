@@ -2112,4 +2112,59 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get featureShowcaseBody =>
       'A virtual runway, a color moodboard and a lookbook to present the group’s looks.';
+
+  @override
+  String get lockByLabel => 'Looks due';
+
+  @override
+  String get lockByNone => 'No deadline';
+
+  @override
+  String lockByChip(String when) {
+    return 'Looks due $when';
+  }
+
+  @override
+  String lockByTooltip(String day) {
+    return 'Everyone locks their look by $day';
+  }
+
+  @override
+  String deadlineDue(String day, String when) {
+    return 'Looks due $day · $when';
+  }
+
+  @override
+  String deadlineLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count looks still to lock',
+      one: '1 look still to lock',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deadlineAllLocked => 'Everyone has locked their look.';
+
+  @override
+  String deadlinePassed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'The deadline has passed and $count looks are not locked yet.',
+      one: 'The deadline has passed and 1 look is not locked yet.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String lockYourLookBy(String day, String when) {
+    return 'Lock your look by $day ($when).';
+  }
+
+  @override
+  String get errorLockAfterEvent =>
+      'Looks must be due on or before the day of the event.';
 }

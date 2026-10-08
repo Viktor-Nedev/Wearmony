@@ -167,6 +167,13 @@ const SCENARIOS: Record<DemoKind, Scenario> = {
 const BEFORE_CLOTHING = '#9FB3C8';
 
 /** The next given month (1-12) and day from today, as YYYY-MM-DD. */
+/** A YYYY-MM-DD day moved by a number of days. */
+export function shiftDay(day: string, days: number): string {
+  const date = new Date(`${day}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
 export function nextDay(now: number, month: number, day: number): string {
   const today = new Date(now);
   let year = today.getUTCFullYear();
@@ -199,6 +206,8 @@ export async function seedDemoEvent(
     budgetTotal: scenario.budgetTotal,
     currency: 'EUR',
     eventDate: nextDay(services.now(), ...scenario.day),
+    // Looks are due two weeks before the event.
+    lockBy: shiftDay(nextDay(services.now(), ...scenario.day), -14),
     dressCode: scenario.dressCode,
     demo: true,
     createdAt: stamp(),

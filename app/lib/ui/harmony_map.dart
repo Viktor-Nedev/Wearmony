@@ -91,10 +91,10 @@ class _HarmonyMapState extends State<HarmonyMap> with TickerProviderStateMixin {
   }
 
   /// Moves a label a little away from the middle of the map, off the crossing lines.
-  static Offset _outward(Offset point, Offset center) {
+  static Offset _outward(Offset point, Offset center, {double by = 16}) {
     final away = point - center;
     if (away.distance < 1) return point;
-    return point + away / away.distance * 16;
+    return point + away / away.distance * by;
   }
 
   @override
@@ -179,19 +179,6 @@ class _HarmonyMapState extends State<HarmonyMap> with TickerProviderStateMixin {
                                     ),
                             ),
                           ),
-                          if (weakestEdge != null)
-                            _DeltaChip(
-                              at: _outward(
-                                Offset.lerp(
-                                  positions[weakestEdge.a],
-                                  positions[weakestEdge.b],
-                                  0.5,
-                                )!,
-                                size.center(Offset.zero),
-                              ),
-                              finding: weakestEdge.finding,
-                              opacity: const Interval(0.85, 1).transform(t),
-                            ),
                           for (final (i, person) in people.indexed)
                             Positioned(
                               left: positions[i].dx - 50,
@@ -222,6 +209,23 @@ class _HarmonyMapState extends State<HarmonyMap> with TickerProviderStateMixin {
                                       : person.userId,
                                 ),
                               ),
+                            ),
+                          // Last, so a name close to the line never hides the ΔE on small screens.
+                          if (weakestEdge != null)
+                            _DeltaChip(
+                              at: _outward(
+                                Offset.lerp(
+                                  positions[weakestEdge.a],
+                                  positions[weakestEdge.b],
+                                  0.5,
+                                )!,
+                                size.center(Offset.zero),
+                                // On small maps people sit close together, so the label moves
+                                // farther out to clear their names.
+                                by: size.width < 500 ? 56 : 16,
+                              ),
+                              finding: weakestEdge.finding,
+                              opacity: const Interval(0.85, 1).transform(t),
                             ),
                         ],
                       ),
